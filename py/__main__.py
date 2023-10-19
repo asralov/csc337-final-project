@@ -6,7 +6,7 @@ import nltk
 
 nltk.download('vader_lexicon')
 
-# If we pool are requests together than we can get 3,000 requests per hour
+# If we pool are requests together than we can get 4,000 requests per hour
 api_key = 'API_KEY'  
 newsapi = NewsApiClient(api_key=api_key)
 
@@ -27,7 +27,8 @@ def get_sentiment(stories):
     pass
 
 def fetch_news(search_query, api_key, page_size=10):
-    # Return sum of the sentiment score in JSON {title: query, pos: 0, neg: 0, neu: 0, compound: 0}
+    # Return sum of the sentiment score in JSON {title: query, URLs: [], 
+    #                                             pos: 0, neg: 0, neu: 0, compound: 0}
     pass
 
 def sentiment_analysis(text):
