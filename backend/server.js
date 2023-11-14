@@ -85,7 +85,7 @@ function calculateOldestStory(beginning) {
 }
 
 // Route to handle requests to get stories from the database
-app.get('/api/sentiment/', async function (req, res) {
+app.get('/api/stories/', async function (req, res) {
     var type = req.query.type || "all"; // Type of news 
     var beginning = req.query.time || "week"; // Time of news
     var oldestStory;
@@ -114,7 +114,7 @@ app.get('/api/sentiment/', async function (req, res) {
 });
 
 // Route to handle requests to delete all stories from the database
-app.delete('/api/sentiment/clear', async function (req, res) {
+app.delete('/api/stories/clear', async function (req, res) {
     try {
         // Use the deleteMany method to delete all documents in the collection
         const result = await NewsStory.deleteMany({});
