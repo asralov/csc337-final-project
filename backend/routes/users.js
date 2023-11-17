@@ -57,16 +57,16 @@ router.post('/login', (req, res) => {
     console.log("yessir");
     let u = req.body;
     // Checks if the user is in the database
-    let p1 = User.find({username: u.username, password: u.password}).exec();
+    let p1 = User.find({username: u.username}).exec();
     p1.then( (results) => { 
       if (results.length == 0) {
         res.end('Coult not find account');
       } else {
-        let sid = addSession(u.username);  
+        // let sid = addSession(u.username);  
         // Creates a cookie with 
-        res.cookie("login", 
-          {username: u.username, sessionID: sid}, 
-          {maxAge: 60000 * 5 });
+        // res.cookie("login", 
+        //   {username: u.username, sessionID: sid}, 
+        //   {maxAge: 60000 * 5 });
         res.end('SUCCESS');
       }
     });
