@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./index.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>Login Page</title>
+</head>
+<body>
+  <div id="wraper">
+    <div id="form-box">
+      <h2 id="statusTitle">
+        Login
+      </h2>
+      <form action="#">
+        <div id="input-box-username">
+          <input type="text" id="user" required>
+          <label for="user">
+            Username
+          </label>
+          <i class='bx bxs-user'></i>
+        </div>
+        <div id="input-box-password">
+          <input type="password" id="password" required>
+          <label for="password">
+            Password
+          </label>
+          <i class='bx bxs-lock-alt' ></i>
+        </div>
+        <button type="submit" id="btn">
+          Login
+        </button>
+        <div id="logreg-link">
+          <p>
+            Don't have an account? <button onclick="getCreatePage()" id="reg-link">Sign Up</button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>
