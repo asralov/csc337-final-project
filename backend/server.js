@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 // const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const commentsRouter = require('./routes/comments');
@@ -19,6 +20,10 @@ mongoose.connect('mongodb://0.0.0.0:27017/losethebias', { useNewUrlParser: true,
 // app.use('/uploads', authenticate, express.static('uploads'));
 app.set('json spaces', 2);
 // app.use('/users', usersRouter);
+
+app.use(cookieParser());    
+app.use(express.json());
+
 app.use('/comments', commentsRouter);
 app.use('/posts', postsRouter);
 app.use(express.static('../frontend/')); // TODO change how/where this is served
