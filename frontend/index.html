@@ -28,9 +28,12 @@
           </label>
           <i class='bx bxs-lock-alt' ></i>
         </div>
-        <button type="submit" id="btn">
-          Login
-        </button>
+        <div id="btnBox">
+            <button onclick="loginUser();" type="submit" id="btn">
+                Login
+            </button>
+        </div>
+        
         <div id="logreg-link">
           <p>
             Don't have an account? <button onclick="getCreatePage()" id="reg-link">Sign Up</button>
@@ -40,5 +43,6 @@
     </div>
   </div>
   <script src="./index.js"></script>
+  <script src="./local.js"></script>
 </body>
 </html>
