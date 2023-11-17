@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     salt: String,
-    email: { type: String, unique: true },
+    // email: { type: String, unique: true },
     lastLogin: { type: Date, default: Date.now() },
     profilePicture: String, // path to profile picture
     interests: {
