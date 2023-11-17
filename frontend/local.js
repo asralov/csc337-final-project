@@ -153,8 +153,8 @@ function loginUser() {
   }
 
   function addUser() {
-    let us = document.getElementById('user1').value;
-    let pw = document.getElementById('password1').value;
+    let us = document.getElementById('user').value;
+    let pw = document.getElementById('password').value;
     let data = {username: us, password: pw};
     // Encodes the password for protection
     let p = fetch('/user/add', {
@@ -165,14 +165,7 @@ function loginUser() {
     p.then((response) => {
       return response.text();
     }).then((text) => { 
-      // Shows the user the status message
-      document.getElementById("createMessage").innerText = text;
-      // message element changes color depending on the message
-      if (text == "USER ALREADY EXISTS" || text == "USER SAVE ERROR") {
-        document.getElementById("createMessage").style.color = "Red";
-      } else if (text == "USER SUCCESSFULLY SAVED") {
-        document.getElementById("createMessage").style.color = "Green";
-      }
+       window.alert(text);
     }).catch((err) => {
       console.log("yiker" + err);
     });
