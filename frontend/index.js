@@ -2,12 +2,13 @@ const createAcc = document.getElementById("reg-link");
 let signUp = false;
 // getting main components
 const st = document.getElementById("statusTitle");
-const btn = document.getElementById("btn");
+
+const btn = document.getElementById("btnBox");
 const promt = document.getElementById("logreg-link");
 
 function getCreatePage(){
     st.textContent = "Create Account";
-    btn.innerHTML = `<button type="submit" id="btn">
+    btn.innerHTML = `<button onclick="addUser();" type="submit" id="btn">
                         Sign Up
                     </button>`;
     promt.innerHTML =  `<p>
@@ -18,7 +19,7 @@ function getCreatePage(){
 }
 function getLoginPage(){
     st.textContent = "Login";
-    btn.innerHTML = `<button type="submit" id="btn">
+    btn.innerHTML = `<button onclick="loginUser();" type="submit" id="btn">
                         Login
                     </button>`;
     promt.innerHTML =  `<p>
