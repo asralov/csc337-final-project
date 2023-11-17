@@ -122,3 +122,58 @@ function registerHandlers() {
 }
 
 registerHandlers();
+
+
+/**
+ * This function get called whenever a user presses the log in button.
+ * Sends POST request to the server. If successful, sends the user to 
+ * the homepage
+ */
+function loginUser() {
+    let us = document.getElementById('user').value;
+    localStorage.setItem("user", us)
+    let pw = document.getElementById('password').value;
+    let data = {username: us, password: pw};
+    let p = fetch('/user/login', {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      headers: {"Content-Type": "application/json"}
+    });
+    p.then((response) => {
+      return response.text();
+    }).then((text) => {
+      console.log(text);
+      if (text.startsWith('SUCCESS')) {
+        alert(text);
+        window.location.href = '/app/home.html';
+      } else {
+        alert('FAILED');
+      }
+    });
+  }
+
+  function addUser() {
+    let us = document.getElementById('user').value;
+    let pw = document.getElementById('password').value;
+    let data = {username: us, password: pw};
+    // Encodes the password for protection
+    let p = fetch('/user/add', {
+        method: 'POST', 
+        body: JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}
+      });
+    p.then((response) => {
+      return response.text();
+    }).then((text) => { 
+      // Shows the user the status message
+      document.getElementById("createMessage").innerText = text;
+      // message element changes color depending on the message
+      if (text == "USER ALREADY EXISTS" || text == "USER SAVE ERROR") {
+        document.getElementById("createMessage").style.color = "Red";
+      } else if (text == "USER SUCCESSFULLY SAVED") {
+        document.getElementById("createMessage").style.color = "Green";
+      }
+    }).catch((err) => {
+      console.log("yiker" + err);
+    });
+  }
