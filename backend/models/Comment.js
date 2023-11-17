@@ -6,16 +6,15 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
-    isReply: Boolean,
-    userID: String, // _id tag of user object
-    postID: String, // _id tag of post object
-    commentID: String, // _id tag of comment object if it is a reply
-    content: String, 
-    likes: Number,
-    dislikes: Number,
-    replies: Array // list of comment IDs
+    isReply: { type: Boolean, default: false },
+    userId: { type: String, required: true }, // _id tag of user object
+    parentId: { type: String, required: true }, // _id tag of parent post or comment object
+    content: { type: String, required: true },
+    likes: { type: Number, default: 0 },
+    dislikes: { type: Number, default: 0 },
+    replies: [String] // Array of _id tags of reply comment objects
 }, {
-    timestamps: true,
+    timestamps: true
 });
 
 const Comment = mongoose.model('Comment', commentSchema);

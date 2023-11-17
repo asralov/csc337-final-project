@@ -6,13 +6,13 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    username: String,
+    username: { type: String, unique: true },
     password: String,
     firstName: String,
     lastName: String,
     salt: String,
-    email: String,
-    lastLogin: String, // date and time represented as string
+    email: { type: String, unique: true },
+    lastLogin: { type: Date, default: Date.now() },
     profilePicture: String, // path to profile picture
     interests: {
         userInput: Array, // list of strings that the user is interested in 
@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
             count: Number, // number of likes on that type of post
         }],
         views: [{
-            //idk how to do this yet
+            type: String, // type of post
+            count: Number, // number of views on that type of post
         }]
     },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
