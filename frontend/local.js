@@ -153,8 +153,8 @@ function loginUser() {
   }
 
   function addUser() {
-    let us = document.getElementById('user').value;
-    let pw = document.getElementById('password').value;
+    let us = document.getElementById('user1').value;
+    let pw = document.getElementById('password1').value;
     let data = {username: us, password: pw};
     // Encodes the password for protection
     let p = fetch('/user/add', {
