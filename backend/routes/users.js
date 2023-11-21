@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const authenticate = require('../config/authConfig');
 
 // Get all users
-router.get('/', authenticate.adminAuth(), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -14,7 +13,7 @@ router.get('/', authenticate.adminAuth(), async (req, res) => {
 });
 
 // Get a single user by ID
-router.get('/:id', authenticate.adminAuth(), async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (user) {
@@ -64,7 +63,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Update a user
-router.post('/update/:id', authenticate.userAuth(), async (req, res) => {
+router.post('/update/:id', async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(updatedUser);
@@ -74,7 +73,7 @@ router.post('/update/:id', authenticate.userAuth(), async (req, res) => {
 });
 
 // Delete a user
-router.delete('/delete/:id', authenticate.userAuth(), async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
         if (user) {

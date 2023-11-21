@@ -134,7 +134,7 @@ function loginUser() {
     localStorage.setItem("user", us)
     let pw = document.getElementById('password').value;
     let data = {username: us, password: pw};
-    let p = fetch('/user/login', {
+    let p = fetch('/users/login', {
       method: 'POST', 
       body: JSON.stringify(data),
       headers: {"Content-Type": "application/json"}
@@ -144,7 +144,6 @@ function loginUser() {
     }).then((text) => {
       console.log(text);
       if (text.startsWith('SUCCESS')) {
-        alert(text);
         window.location.href = '/app/home.html';
       } else {
         alert('FAILED');
@@ -157,7 +156,7 @@ function loginUser() {
     let pw = document.getElementById('password').value;
     let data = {username: us, password: pw};
     // Encodes the password for protection
-    let p = fetch('/user/add', {
+    let p = fetch('/users/add', {
         method: 'POST', 
         body: JSON.stringify(data),
         headers: {"Content-Type": "application/json"}
