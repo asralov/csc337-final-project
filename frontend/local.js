@@ -111,21 +111,20 @@ function deleteComment() {
 }
 
 function addUserTest() {
-    console.log("yes");
     let username = document.getElementById('createUsername').value;
     let password = document.getElementById('createPassword').value;
     let data = { username: username, password: password };
 
     let p = fetch('/users/add', {
         method: 'POST',
-        body: data,
+        body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
     });
 
     p.then(() => {
         window.alert("User " + username + " created!");
-    }).catch((err) => {
-        console.log("yiker" + err);
+    }).catch((error) => {
+        console.log(error);
     });
 }
 

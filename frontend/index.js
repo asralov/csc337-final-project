@@ -63,13 +63,13 @@ function addUser() {
 
     let p = fetch('/users/add', {
         method: 'POST',
-        body: data,
+        body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
     });
 
     p.then(() => {
         window.alert("User " + username + " created!");
-    }).catch((err) => {
-        console.log("yiker" + err);
+    }).catch((error) => {
+        console.log(error);
     });
 }

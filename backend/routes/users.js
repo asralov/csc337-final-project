@@ -29,20 +29,21 @@ router.get('/:id', async (req, res) => {
 
 // Add a new user
 router.post('/add', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const existingUser = await User.findOne({ username });
+    let user = req.body;
 
-        if (existingUser) {
-            return res.status(400).send("User already exists");
+    let p = User.find({ username: user.username }).exec();
+
+    p.then(results => {
+        if (results.length == 0) {
+            let newUser = new User(user);
+            newUser.save();
+            res.end('User created');
+        } else {
+            res.end('User already exists');
         }
-
-        const newUser = new User({ username, password });
-        await newUser.save();
-        res.status(201).send('User successfully saved');
-    } catch (err) {
-        res.status(500).send("User save error");
-    }
+    }).catch(err => {
+        res.end('Error: ' + err);
+    });
 });
 
 // User login
