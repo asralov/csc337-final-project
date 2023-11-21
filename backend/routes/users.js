@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const authenticator = require('../config/authConfig');
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -46,20 +47,22 @@ router.post('/add', async (req, res) => {
 
 // User login
 router.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
+    let user = req.body;
+    console.log(JSON.stringify(user));
+    console.log(user.username);
+    let p = User.find({ username: user.username, password: user.password }).exec();
 
-        if (!user) {
-            return res.status(404).send('Could not find account');
+    p.then(results => {
+        if (results.length == 0) {
+            res.end('Could not find account');
+        } else {
+            let sid = authenticator.addSession(user.username);
+            res.cookie("login",
+                { username: user.username, sessionID: sid },
+                { maxAge: 60000 * 2 });
+            res.redirect('/app/home.html');
         }
-
-        // Implement password checking logic here if needed
-
-        res.send('Login successful');
-    } catch (err) {
-        res.status(500).send('Error during login');
-    }
+    });
 });
 
 // Update a user

@@ -51,7 +51,6 @@ function addComment() {
         redirect: 'follow'
     })
         .then(response => {
-            console.log("LOL");
             response.json();
         })
         .then(result => {
@@ -112,19 +111,6 @@ function deleteComment() {
 }
 
 /**
- * Registers event handlers for various actions.
- */
-function registerHandlers() {
-    document.getElementById("createPost").onclick = addPost;
-    document.getElementById("postComment").onclick = addComment;
-    document.getElementById("postReply").onclick = addReply;
-    document.getElementById("deleteComment").onclick = deleteComment;
-}
-
-registerHandlers();
-
-
-/**
  * This function get called whenever a user presses the log in button.
  * Sends POST request to the server. If successful, sends the user to 
  * the homepage
@@ -133,39 +119,92 @@ function loginUser() {
     let us = document.getElementById('user').value;
     localStorage.setItem("user", us)
     let pw = document.getElementById('password').value;
-    let data = {username: us, password: pw};
+    let data = { username: us, password: pw };
     let p = fetch('/users/login', {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers: {"Content-Type": "application/json"}
-    });
-    p.then((response) => {
-      return response.text();
-    }).then((text) => {
-      console.log(text);
-      if (text.startsWith('SUCCESS')) {
-        window.location.href = '/app/home.html';
-      } else {
-        alert('FAILED');
-      }
-    });
-  }
-
-  function addUser() {
-    let us = document.getElementById('user').value;
-    let pw = document.getElementById('password').value;
-    let data = {username: us, password: pw};
-    // Encodes the password for protection
-    let p = fetch('/users/add', {
-        method: 'POST', 
+        method: 'POST',
         body: JSON.stringify(data),
-        headers: {"Content-Type": "application/json"}
-      });
-    p.then((response) => {
-      return response.text();
-    }).then((text) => { 
-       window.alert(text);
-    }).catch((err) => {
-      console.log("yiker" + err);
+        headers: { "Content-Type": "application/json" }
     });
-  }
+    p.then((response) => {
+        return response.text();
+    }).then((text) => {
+        console.log(text);
+        if (text.startsWith('SUCCESS')) {
+            window.location.href = '/app/home.html';
+        } else {
+            alert('FAILED');
+        }
+    });
+}
+
+function addUser() {
+    let username = document.getElementById('createUsername').value;
+    let password = document.getElementById('createPassword').value;
+    let data = { username: username, password: password };
+
+    let p = fetch('/users/add', {
+        method: 'POST',
+        body: data,
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then(() => {
+        window.alert("User " + username + " created!");
+    }).catch((err) => {
+        console.log("yiker" + err);
+    });
+}
+
+function addUserTest() {
+    let username = document.getElementById('createUsername').value;
+    let password = document.getElementById('createPassword').value;
+    let data = { username: username, password: password };
+
+    let p = fetch('/users/add', {
+        method: 'POST',
+        body: data,
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then(() => {
+        window.alert("User " + username + " created!");
+    }).catch((err) => {
+        console.log("yiker" + err);
+    });
+}
+
+function loginUserTest() {
+    let username = document.getElementById('loginUsername').value;
+    let password = document.getElementById('loginPassword').value;
+    let data = { username: username, password: password };
+
+    console.log(data);
+
+    let p = fetch('/users/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then((response) => {
+        console.log(response);
+        console.log(response.url);
+        window.location.href = response.url;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+/**
+ * Registers event handlers for various actions.
+ */
+function registerHandlers() {
+    document.getElementById("createPost").onclick = addPost;
+    document.getElementById("postComment").onclick = addComment;
+    document.getElementById("postReply").onclick = addReply;
+    document.getElementById("deleteComment").onclick = deleteComment;
+    document.getElementById("createUser").onclick = addUserTest;
+    document.getElementById("loginUser").onclick = loginUserTest;
+}
+
+registerHandlers();
