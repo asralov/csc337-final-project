@@ -156,6 +156,7 @@ function addUser() {
 }
 
 function addUserTest() {
+    console.log("yes");
     let username = document.getElementById('createUsername').value;
     let password = document.getElementById('createPassword').value;
     let data = { username: username, password: password };
@@ -174,6 +175,7 @@ function addUserTest() {
 }
 
 function loginUserTest() {
+    console.log("yeah");
     let username = document.getElementById('loginUsername').value;
     let password = document.getElementById('loginPassword').value;
     let data = { username: username, password: password };

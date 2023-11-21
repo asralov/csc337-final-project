@@ -8,7 +8,7 @@ const promt = document.getElementById("logreg-link");
 
 function getCreatePage(){
     st.textContent = "Create Account";
-    btn.innerHTML = `<button onclick="addUserTest();" type="submit" id="btn">
+    btn.innerHTML = `<button onclick="addUser();" type="submit" id="btn">
                         Sign Up
                     </button>`;
     promt.innerHTML =  `<p>
@@ -19,7 +19,7 @@ function getCreatePage(){
 }
 function getLoginPage(){
     st.textContent = "Login";
-    btn.innerHTML = `<button onclick="loginUserTest();" type="submit" id="btn">
+    btn.innerHTML = `<button onclick="loginUser();" type="submit" id="btn">
                         Login
                     </button>`;
     promt.innerHTML =  `<p>
