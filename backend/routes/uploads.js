@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const dynamicUpload = require('../multerConfig');
 
-// PUT request - upload a profile picture for a user
-router.put('/profilePicture/:id', dynamicUpload.single('profilePicture'), async (req, res) => {
+// Post a profile picture for a user
+router.post('/profilePicture/:id', dynamicUpload.single('profilePicture'), async (req, res) => {
     if (req.fileValidationError) {
         return res.status(400).json({ message: req.fileValidationError });
     }
