@@ -17,6 +17,7 @@ function getCreatePage(){
     document.getElementById("user").value = "";
     document.getElementById("password").value = "";
 }
+
 function getLoginPage(){
     st.textContent = "Login";
     btn.innerHTML = `<button onclick="loginUser();" type="submit" id="btn">
@@ -27,33 +28,6 @@ function getLoginPage(){
                         </p>`;
     document.getElementById("user").value = "";
     document.getElementById("password").value = "";
-}
-
-/**
- * This function get called whenever a user presses the log in button.
- * Sends POST request to the server. If successful, sends the user to 
- * the homepage
- */
-function loginUser() {
-    let us = document.getElementById('user').value;
-    localStorage.setItem("user", us)
-    let pw = document.getElementById('password').value;
-    let data = { username: us, password: pw };
-    let p = fetch('/users/login', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
-    });
-    p.then((response) => {
-        return response.text();
-    }).then((text) => {
-        console.log(text);
-        if (text.startsWith('SUCCESS')) {
-            window.location.href = '/app/home.html';
-        } else {
-            alert('FAILED');
-        }
-    });
 }
 
 function addUser() {
@@ -69,6 +43,28 @@ function addUser() {
 
     p.then(() => {
         window.alert("User " + username + " created!");
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+function loginUser() {
+    let username = document.getElementById('user').value;
+    let password = document.getElementById('password').value;
+    let data = { username: username, password: password };
+
+    console.log(data);
+
+    let p = fetch('/users/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then((response) => {
+        console.log(response);
+        console.log(response.url);
+        window.location.href = response.url;
     }).catch((error) => {
         console.log(error);
     });
