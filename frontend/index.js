@@ -28,3 +28,48 @@ function getLoginPage(){
     document.getElementById("user").value = "";
     document.getElementById("password").value = "";
 }
+
+/**
+ * This function get called whenever a user presses the log in button.
+ * Sends POST request to the server. If successful, sends the user to 
+ * the homepage
+ */
+function loginUser() {
+    let us = document.getElementById('user').value;
+    localStorage.setItem("user", us)
+    let pw = document.getElementById('password').value;
+    let data = { username: us, password: pw };
+    let p = fetch('/users/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+    });
+    p.then((response) => {
+        return response.text();
+    }).then((text) => {
+        console.log(text);
+        if (text.startsWith('SUCCESS')) {
+            window.location.href = '/app/home.html';
+        } else {
+            alert('FAILED');
+        }
+    });
+}
+
+function addUser() {
+    let username = document.getElementById('user').value;
+    let password = document.getElementById('password').value;
+    let data = { username: username, password: password };
+
+    let p = fetch('/users/add', {
+        method: 'POST',
+        body: data,
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then(() => {
+        window.alert("User " + username + " created!");
+    }).catch((err) => {
+        console.log("yiker" + err);
+    });
+}
