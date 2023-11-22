@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
     isReply: { type: Boolean, default: false },
-    userId: { type: String, required: true }, // _id tag of user object
+    username: { type: String, required: true },
     parentId: { type: String, required: true }, // _id tag of parent post or comment object
     content: { type: String, required: true },
     likes: { type: Number, default: 0 },

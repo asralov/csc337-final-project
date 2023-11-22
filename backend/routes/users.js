@@ -7,16 +7,18 @@ const authenticator = require('../config/authConfig');
 router.get('/', async (req, res) => {
     try {
         const users = await User.find();
+
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// Get a single user by ID
-router.get('/:id', async (req, res) => {
+// Get a single user by username
+router.get('/:username', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.find({ username: req.params.username });
+
         if (user) {
             res.json(user);
         } else {
@@ -30,7 +32,6 @@ router.get('/:id', async (req, res) => {
 // Add a new user
 router.post('/add', async (req, res) => {
     let user = req.body;
-
     let p = User.find({ username: user.username }).exec();
 
     p.then(results => {
@@ -41,16 +42,14 @@ router.post('/add', async (req, res) => {
         } else {
             res.end('User already exists');
         }
-    }).catch(err => {
-        res.end('Error: ' + err);
+    }).catch(error => {
+        res.end(error);
     });
 });
 
 // User login
 router.post('/login', async (req, res) => {
     let user = req.body;
-    console.log(JSON.stringify(user));
-    console.log(user.username);
     let p = User.find({ username: user.username, password: user.password }).exec();
 
     p.then(results => {
@@ -58,18 +57,26 @@ router.post('/login', async (req, res) => {
             res.end('Could not find account');
         } else {
             let sid = authenticator.addSession(user.username);
+
             res.cookie("login",
                 { username: user.username, sessionID: sid },
                 { maxAge: 60000 * 2 });
             res.redirect('/app/home.html');
         }
     });
+
+    console.log(p);
 });
 
 // Update a user
-router.post('/update/:id', async (req, res) => {
+router.post('/update/:username', async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedUser = await User.findOneAndUpdate(
+            { username: req.params.username },
+            req.body,
+            { new: true }
+        );
+
         res.json(updatedUser);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -77,9 +84,10 @@ router.post('/update/:id', async (req, res) => {
 });
 
 // Delete a user
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:username', async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findOneAndDelete({ username: req.params.username });
+
         if (user) {
             res.json({ message: 'User deleted successfully' });
         } else {
