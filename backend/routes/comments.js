@@ -11,7 +11,7 @@ router.post('/add/:postId', async (req, res) => {
         return;
 
     const comment = new Comment(req.body);
-    comment.userId = req.session.userId;
+    comment.username = req.cookies.login.username;
     comment.parentId = post._id;
 
     post.comments.push(comment);
@@ -27,7 +27,7 @@ router.post('/reply/:commentId', async (req, res) => {
         return;
 
     const reply = new Comment(req.body);
-    reply.userId = req.session.userId;
+    reply.username = req.cookies.login.username;
     reply.isReply = true;
     reply.parentId = comment._id;
 

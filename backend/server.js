@@ -20,7 +20,7 @@ app.set('json spaces', 2);
 app.use(cookieParser());
 app.use(express.json());
 // app.use('/uploads', authenticator.authenticate, express.static('uploads'));
-app.use('/comments', commentsRouter);
+app.use('/comments', authenticator.authenticate, commentsRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 app.use('/app/*', authenticator.authenticate);
