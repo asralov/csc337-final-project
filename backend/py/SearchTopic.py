@@ -131,7 +131,7 @@ class SearchTopic:
             file_name = f"Articles/group_{group_id}.json"
             urls = [self._articles[article_index]['url'] for article_index in article_indices]
             summary_json = {
-                "GPT_response": summary,
+                "GPT_response": json.loads(summary),
                 "urls": urls
             }
 
