@@ -1,0 +1,16 @@
+{
+    "GPT_response": {
+        "title": "March Against Antisemitism in London",
+        "background": "An estimated 100,000 people attended a march against antisemitism in London, organized by the charity Campaign Against Antisemitism. The rally was the largest gathering against antisemitism London had seen since the Battle of Cable Street in 1936. The march aimed to address rising antisemitic incidents sparked by the Gaza conflict.",
+        "summary": "The march against antisemitism in London saw tens of thousands of participants, including former Prime Minister Boris Johnson. Chief Rabbi Sir Ephraim Mirvis and immigration minister Robert Jenrick were among those who addressed the crowd. Organizers claimed that recent pro-Palestinian rallies had made London a 'no-go zone for Jews.' The aim of the march was to call out and combat antisemitism in the wake of the Gaza conflict.",
+        "topics": [
+            "world",
+            "politics"
+        ]
+    },
+    "sentiment": -0.9951,
+    "urls": [
+        "https://www.jewishnews.co.uk/tommy-robinson-escorted-from-march-against-antisemitism-as-man-arrested/",
+        "https://www.jewishnews.co.uk/100000-attend-uks-largest-gathering-against-antisemitism-since-the-battle-of-cable-street/"
+    ]
+}

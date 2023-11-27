@@ -1,0 +1,19 @@
+{
+    "GPT_response": {
+        "title": "Tanker hijacked off coast of Yemen in third attack on Israeli-linked ships since Gaza war began",
+        "background": "A tanker linked to Israel was seized off the coast of Yemen in the Gulf of Aden, marking the third attack on Israeli-linked ships since the Israel-Hamas war began. The Liberian-flagged tanker called Central Park, managed by Zodiac Maritime, was hijacked by unknown armed individuals. The vessel is owned by Clumvez Shipping Inc. and carries a multinational crew. Other recent maritime attacks have been linked to the ongoing conflict between Israel and Hamas.",
+        "summary": "Unknown armed individuals seized the Central Park tanker off the coast of Yemen. The hijacking is the third attack on Israeli-linked ships during the Israel-Hamas war. The vessel is owned by Clumvez Shipping Inc. and managed by Zodiac Maritime. The multinational crew of the tanker is reportedly safe. It is unclear who is behind the attack, but US and coalition forces are monitoring the situation. The seizure comes amidst a wider shadow war between Iran and Israel, which has seen increased attacks on Israeli-associated vessels. The attack follows similar incidents targeting Israeli-owned ships in the region. The ongoing conflict between Israel and Hamas has led to increased targeting of global shipping.",
+        "topics": [
+            "world"
+        ]
+    },
+    "sentiment": -0.9935,
+    "urls": [
+        "https://www.haaretz.com/israel-news/2023-11-26/ty-article/israeli-linked-tanker-hijacked-off-coast-of-yemen/0000018c-0be4-d679-abdc-9ffc65b10000",
+        "https://www.politico.com/news/2023/11/26/israeli-oil-tanker-seized-yemen-00128605",
+        "https://www.voanews.com/a/attackers-seize-another-israel-linked-tanker-off-yemen/7370730.html",
+        "https://www.newser.com/story/343085/attackers-seize-another-israel-linked-cargo-ship.html",
+        "https://economictimes.indiatimes.com/news/international/world-news/attackers-seize-an-israel-linked-tanker-off-the-coast-of-aden-yemen/articleshow/105516405.cms",
+        "https://abcnews.go.com/Business/wireStory/israeli-linked-oil-tanker-seized-off-coast-aden-105160009"
+    ]
+}
