@@ -113,7 +113,7 @@ class SearchTopic:
         return article_groups
 
     def create_prompt(self, articles):
-        """Function to create prompt for GPT-4"""
+        """Function to create prompt for GPT-3.5"""
         prompt = f'Below are summaries of articles related to {self._term}. Please provide a short summary for all of them and return back a JSON which has a general title listed as "title", then "background" which is a background of the topic, followed by the summary of the articles listed as "summary". Again, I only need 1 summary, background, and title for all of the articles and just the JSON which will be title: String, background:String, summary: String, as I will be using the response in a program. It should be short and like a debrief for the president. If there are any articles which don\'t seem to align with the general idea / topic please ignore them. \n\n'
         for article in articles:
             json_article = self._articles[article]
@@ -128,10 +128,12 @@ class SearchTopic:
         for group_id, article_indices in article_groups.items():
             prompt = self.create_prompt(article_indices)
             summary = self.generate_summary(prompt)
-            file_name = f"Articles/group_{group_id}.json"
+            file_name = f"Articles/group_{group_id}_{self._term}.json"
             urls = [self._articles[article_index]['url'] for article_index in article_indices]
             summary_json = {
                 "GPT_response": json.loads(summary),
+                "term": self._term,
+                "sentiment": self._articles[article_indices[0]]["sentiment"],
                 "urls": urls
             }
 
@@ -166,6 +168,3 @@ class SearchTopic:
             return ""
 
 
-# Testing Usage
-econ = SearchTopic(topic="economics")
-econ.export_GPT_summaries()
