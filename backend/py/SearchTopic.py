@@ -1,3 +1,4 @@
+import json
 import os
 import openai
 import re
@@ -7,8 +8,6 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from newsapi import NewsApiClient
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import transformers
-tokenizer = transformers.AutoTokenizer.from_pretrained("openai-gpt")
 
 
 
@@ -115,13 +114,12 @@ class SearchTopic:
 
     def create_prompt(self, articles):
         """Function to create prompt for GPT-4"""
-        prompt = f'Below are summaries of articles related to {self._term}. Please provide a short summary for all of them that includes a general title listed as "Title:", then "Background:" which is a background of the topic, followed by the summary of the articles listed as "Summary:". Again, I only need 1 summary, background, and title for all of the articles. It should be short and like a debrief for the president. If there are any articles which don\'t seem to align with the general idea / topic please ignore them. \n\n'
+        prompt = f'Below are summaries of articles related to {self._term}. Please provide a short summary for all of them and return back a JSON which has a general title listed as "title", then "background" which is a background of the topic, followed by the summary of the articles listed as "summary". Again, I only need 1 summary, background, and title for all of the articles and just the JSON which will be title: String, background:String, summary: String, as I will be using the response in a program. It should be short and like a debrief for the president. If there are any articles which don\'t seem to align with the general idea / topic please ignore them. \n\n'
         for article in articles:
             json_article = self._articles[article]
             prompt += f"\n\nTitle: {json_article['title']}\n"
             prompt += f"Text: {json_article['text']}\n"
-        
-        print(len(tokenizer(prompt)))
+
         return prompt
 
     def export_GPT_summaries(self):
@@ -130,16 +128,17 @@ class SearchTopic:
         for group_id, article_indices in article_groups.items():
             prompt = self.create_prompt(article_indices)
             summary = self.generate_summary(prompt)
-            file_name = f"Articles/group_{group_id}.txt"
-            print(f"Writing summary to {file_name}")
+            file_name = f"Articles/group_{group_id}.json"
+            urls = [self._articles[article_index]['url'] for article_index in article_indices]
+            summary_json = {
+                "GPT_response": summary,
+                "urls": urls
+            }
+
             with open(file_name, "w", encoding="utf-8") as file:
-                file.write(summary)
-                file.write("\n\n Summary Pulled from the following articles:")
-                file.write("-" * 80 + "\n\n")
-                for article_index in article_indices:
-                    article = self._articles[article_index]
-                    file.write(f"Article Title: {article['title']}\n")
-                    file.write(f"URL: {article['url']}\n")
+                # Write the JSON object to the file
+                json.dump(summary_json, file, indent=4, ensure_ascii=False)
+
 
     def generate_summary(self, prompt):
         """Function to generate summaries using GPT-3.5-turbo-16k"""
