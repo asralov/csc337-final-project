@@ -65,7 +65,11 @@ function likePost(content, likeOrDislike, user) {
         content.likes.push(likeOrDislike._id);
     else {
         content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
-        Like.findByIdAndDelete(likeOrDislike._id);
+        let p = Like.findOneAndDelete({ typeOfContent: likeOrDislike.typeOfContent, contentId: likeOrDislike.contentId, username: likeOrDislike.username });
+
+        p.then(result => {
+            console.log(result);
+        });
     }
 
     // Remove the dislike if the user has already disliked the content
@@ -92,12 +96,16 @@ function dislikePost(content, likeOrDislike, user) {
         content.dislikes.push(likeOrDislike._id);
     else {
         content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
-        Like.findByIdAndDelete(likeOrDislike._id);
+        let p = Like.findOneAndDelete({ typeOfContent: likeOrDislike.typeOfContent, contentId: likeOrDislike.contentId, username: likeOrDislike.username });
+
+        p.then(result => {
+            console.log(result);
+        });
     }
 
     // Remove the like if the user has already liked the content
     content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
-    
+
     // Remove content from user's list of likes
     if (user.likes.includes(likeOrDislike._id))
         user.likes = user.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
