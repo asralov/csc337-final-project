@@ -10,9 +10,9 @@ const commentSchema = new mongoose.Schema({
     username: { type: String, required: true },
     parentId: { type: String, required: true }, // _id tag of parent post or comment object
     content: { type: String, required: true },
-    likes: { type: Number, default: 0 },
-    dislikes: { type: Number, default: 0 },
-    replies: [String] // Array of _id tags of reply comment objects
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }],
+    replies: [this] // Array of replies to this comment
 }, {
     timestamps: true
 });
