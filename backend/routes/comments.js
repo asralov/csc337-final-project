@@ -44,10 +44,20 @@ router.post('/delete/:commentId', async (req, res) => {
         return;
 
     if (comment.isReply) {
+        // Remove the reply from the parent comment
         const parentComment = await Comment.findById(comment.parentId);
         parentComment.replies = parentComment.replies.filter(replyId => replyId.toString() != comment._id.toString());
         await parentComment.save();
+    } else {
+        // Remove the comment from the parent post
+        const post = await Post.findById(comment.parentId);
+        post.comments = post.comments.filter(commentId => commentId.toString() != comment._id.toString());
+        await post.save();
     }
+
+    // Delete all replies to the comment
+    for (let i = 0; i < comment.replies.length; i++)
+        await Comment.findByIdAndDelete(comment.replies[i]);
 
     await Comment.findByIdAndDelete(req.params.commentId);
 });
