@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Like = require('../models/Like');
 const Post = require('../models/Post');
+const User = require('../models/User');
 
 // Add or toggle a like or dislike to a post or comment
 router.post('/toggle', async (req, res) => {
@@ -19,31 +20,11 @@ router.post('/toggle', async (req, res) => {
         await likeOrDislike.save();
 
         const content = typeOfContent == 'Post' ? await Post.findById(contentId) : await Comment.findById(contentId);
+        const user = await User.findOne({ username: username });
 
-        if (like) {
-            // If the user has already liked the content, remove the like
-            if (!content.likes.includes(likeOrDislike._id))
-                content.likes.push(likeOrDislike._id);
-            else {
-                content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
-                await Like.findByIdAndDelete(likeOrDislike._id);
-            }
+        like ? likePost(content, likeOrDislike, user) : dislikePost(content, likeOrDislike, user);
 
-            // Remove the dislike if the user has already disliked the content
-            content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
-        } else {
-            // If the user has already disliked the content, remove the dislike
-            if (!content.dislikes.includes(likeOrDislike._id))
-                content.dislikes.push(likeOrDislike._id);
-            else {
-                content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
-                await Like.findByIdAndDelete(likeOrDislike._id);
-            }
-
-            // Remove the like if the user has already liked the content
-            content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
-        }
-
+        await user.save();
         await content.save();
 
         res.status(201).json({ message: 'Like/Dislike added successfully' });
@@ -69,5 +50,57 @@ router.get('/get/:contentType/:postId', async (req, res) => {
         res.status(500).json({ message: 'Error counting likes/dislikes', error: error.message });
     }
 });
+
+/**
+ * Likes a post and updates the content and user accordingly.
+ * If the user has already liked the content, the like is removed.
+ * If the user has already disliked the content, the dislike is removed.
+ * @param {Object} content - The content object to be updated.
+ * @param {Object} likeOrDislike - The like or dislike object to be added or removed.
+ * @param {Object} user - The user object whose likes are to be updated.
+ */
+function likePost(content, likeOrDislike, user) {
+    // If the user has already liked the content, remove the like
+    if (!content.likes.includes(likeOrDislike._id))
+        content.likes.push(likeOrDislike._id);
+    else {
+        content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
+        Like.findByIdAndDelete(likeOrDislike._id);
+    }
+
+    // Remove the dislike if the user has already disliked the content
+    content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
+
+    // Add content to user's list of likes, or remove it if user is unliking
+    if (!user.likes.includes(likeOrDislike._id))
+        user.likes.push(likeOrDislike._id);
+    else
+        user.likes = user.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
+}
+
+/**
+ * Dislikes a post and updates the content and user accordingly.
+ * If the user has already disliked the content, the dislike is removed.
+ * If the user has already liked the content, the like is removed.
+ * @param {Object} content - The content object to be updated.
+ * @param {Object} likeOrDislike - The like or dislike object to be added or removed.
+ * @param {Object} user - The user object whose likes are to be updated.
+ */
+function dislikePost(content, likeOrDislike, user) {
+    // If the user has already disliked the content, remove the dislike
+    if (!content.dislikes.includes(likeOrDislike._id))
+        content.dislikes.push(likeOrDislike._id);
+    else {
+        content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
+        Like.findByIdAndDelete(likeOrDislike._id);
+    }
+
+    // Remove the like if the user has already liked the content
+    content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
+    
+    // Remove content from user's list of likes
+    if (user.likes.includes(likeOrDislike._id))
+        user.likes = user.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
+}
 
 module.exports = router;

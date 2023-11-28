@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const User = require('../models/User');
 
 // Add a comment to a post
 router.post('/add/:postId', async (req, res) => {
@@ -17,6 +18,10 @@ router.post('/add/:postId', async (req, res) => {
     post.comments.push(comment);
     await comment.save();
     await post.save();
+
+    const user = await User.findOne({ username: comment.username });
+    user.comments.push(comment._id);
+    await user.save();
 });
 
 // Add a reply to a comment
@@ -34,6 +39,10 @@ router.post('/reply/:commentId', async (req, res) => {
     comment.replies.push(reply._id);
     await reply.save();
     await comment.save();
+
+    const user = await User.findOne({ username: reply.username });
+    user.comments.push(reply._id);
+    await user.save();
 });
 
 // Delete a comment
@@ -59,6 +68,11 @@ router.post('/delete/:commentId', async (req, res) => {
     for (let i = 0; i < comment.replies.length; i++)
         await Comment.findByIdAndDelete(comment.replies[i]);
 
+    // Delete the comment from the user's list of comments
+    const user = await User.findOne({ username: comment.username });
+    user.comments = user.comments.filter(commentId => commentId.toString() != comment._id.toString());
+
+    await user.save();
     await Comment.findByIdAndDelete(req.params.commentId);
 });
 
