@@ -22,7 +22,7 @@ hr {
 }
 
 #subbtn {
-  background-color: red;
+  background-color: black;
   color: #fff;
   border: none;
   border-radius: 0 10px 10px 0;
@@ -32,11 +32,11 @@ hr {
 
 #subbtn:hover {
   background-color: #fff;
-  color: red;
+  color: black;
   cursor: pointer;
   .bxs-bell-ring {
     transition: 0.5s;
-    color: red;
+    color: black;
   }
 }
 
