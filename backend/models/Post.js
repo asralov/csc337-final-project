@@ -10,8 +10,8 @@ const postSchema = new mongoose.Schema({
     content: String,
     date: { type: Date, default: Date.now() }, // Date of post creation
     topics: [String], // Array of topics/tags (see topics.txt)
-    likes: { type: Number, default: 0 },
-    dislikes: { type: Number, default: 0 },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     urls: [String], // Array of urls this post was constructed from
 }, {

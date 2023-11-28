@@ -1,90 +1,73 @@
 const express = require('express');
 const router = express.Router();
 const Like = require('../models/Like');
+const Post = require('../models/Post');
 
-// Like or Dislike Content
-router.post('/add', async (req, res) => {
-    const { typeOfContent, contentId, userId, like } = req.body;
-
-    try {
-        let existingLike = await Like.findOne({ typeOfContent, contentId, userId });
-
-        if (existingLike) {
-            existingLike.like = like;
-            existingLike.display = true;
-            await existingLike.save();
-        } else {
-            const newLike = new Like({ typeOfContent, contentId, userId, like, display: true });
-            await newLike.save();
-        }
-
-        res.status(200).json({ message: 'Your response has been recorded' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error processing request', error: error.message });
-    }
-});
-
-// Remove Like or Dislike
-router.post('/remove', async (req, res) => {
-    const { typeOfContent, contentId, userId } = req.body;
+// Add or toggle a like or dislike to a post or comment
+router.post('/toggle', async (req, res) => {
+    const { typeOfContent, contentId, like } = req.body;
+    const username = req.cookies.login.username;
 
     try {
-        let like = await Like.findOne({ typeOfContent, contentId, userId });
+        let likeOrDislike = await Like.findOne({ typeOfContent, contentId, username });
+
+        if (likeOrDislike)
+            likeOrDislike.like = like;
+        else
+            likeOrDislike = new Like({ typeOfContent, contentId, username, like });
+
+        await likeOrDislike.save();
+
+        const content = typeOfContent == 'Post' ? await Post.findById(contentId) : await Comment.findById(contentId);
 
         if (like) {
-            like.display = false;
-            await like.save();
-            res.status(200).json({ message: 'Like/Dislike removed' });
+            // If the user has already liked the content, remove the like
+            if (!content.likes.includes(likeOrDislike._id))
+                content.likes.push(likeOrDislike._id);
+            else {
+                content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
+                await Like.findByIdAndDelete(likeOrDislike._id);
+            }
+
+            // Remove the dislike if the user has already disliked the content
+            content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
         } else {
-            res.status(404).json({ message: 'Like/Dislike not found' });
+            // If the user has already disliked the content, remove the dislike
+            if (!content.dislikes.includes(likeOrDislike._id))
+                content.dislikes.push(likeOrDislike._id);
+            else {
+                content.dislikes = content.dislikes.filter(dislikeId => dislikeId.toString() != likeOrDislike._id.toString());
+                await Like.findByIdAndDelete(likeOrDislike._id);
+            }
+
+            // Remove the like if the user has already liked the content
+            content.likes = content.likes.filter(likeId => likeId.toString() != likeOrDislike._id.toString());
         }
+
+        await content.save();
+
+        res.status(201).json({ message: 'Like/Dislike added successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error processing request', error: error.message });
     }
 });
 
-// Get Likes/Dislikes for a specific content
-router.get('/:contentID', async (req, res) => {
-    const contentID = req.params.contentID;
-    const { typeOfContent, like } = req.query; 
+// Get the number of likes and dislikes for a post or comment
+router.get('/get/:contentType/:postId', async (req, res) => {
+    const contentType = req.params.contentType;
+    const postId = req.params.postId;
+
+    if (contentType != 'Post' && contentType != 'Comment')
+        return res.status(400).json({ message: 'Invalid content type' });
 
     try {
-        const filter = {
-            contentId: contentID,
-            display: true
-        };
+        const likeCount = await Like.countDocuments({ typeOfContent: contentType, contentId: postId, like: true });
+        const dislikeCount = await Like.countDocuments({ typeOfContent: contentType, contentId: postId, like: false });
 
-        if (typeOfContent === 'Post' || typeOfContent === 'Comment') {
-            filter.typeOfContent = typeOfContent;
-        } else {
-            return res.status(400).json({ message: 'Invalid typeOfContent' });
-        }
-        if (like !== undefined) {
-            filter.like = like === 'true';
-        }
-
-        const likesOrDislikes = await Like.find(filter);
-
-        res.status(200).json(likesOrDislikes);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching likes/dislikes', error: error.message });
-    }
-});
-
-
-// Count Likes and Dislikes for a specific post
-router.get('/count/:postID', async (req, res) => {
-    const postID = req.params.postID;
-
-    try {
-        const likesCount = await Like.countDocuments({ typeOfContent: 'Post', contentId: postID, like: true, display: true });
-        const dislikesCount = await Like.countDocuments({ typeOfContent: 'Post', contentId: postID, like: false, display: true });
-
-        res.status(200).json({ likes: likesCount, dislikes: dislikesCount });
+        res.status(200).json({ likes: likeCount, dislikes: dislikeCount });
     } catch (error) {
         res.status(500).json({ message: 'Error counting likes/dislikes', error: error.message });
     }
 });
-
 
 module.exports = router;

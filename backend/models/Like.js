@@ -8,10 +8,9 @@ const mongoose = require('mongoose');
 const likeSchema = new mongoose.Schema({
     typeOfContent: String, // Post or Comment
     contentId: String, // id of the post or comment
-    userId: String, // id of the user who liked the post or comment
-    like: Boolean, // true if the user liked the post or comment, false if the user disliked the post or comment
-    display: Boolean // true if the like is displayed, false if the like was removed
-    }, {
+    username: String, // username of who liked the post or comment
+    like: Boolean // true if the user liked the post or comment, false if the user disliked the post or comment
+}, {
     timestamps: true,
 });
 
