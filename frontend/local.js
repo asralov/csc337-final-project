@@ -4,7 +4,6 @@
 function addPost() {
     var title = document.getElementById("postTitle").value;
     var content = document.getElementById("postContent").value;
-
     var url = '/posts/add';
     var data = {
         'title': title,
@@ -34,10 +33,8 @@ function addPost() {
 function addComment() {
     var comment = document.getElementById("comment").value;
     var post_id = document.getElementById("postId").value;
-
     var url = '/comments/add/' + post_id;
     var data = {
-        'userId': 'mike',
         'parentId': post_id,
         'content': comment
     };
@@ -66,10 +63,8 @@ function addComment() {
 function addReply() {
     var reply = document.getElementById("reply").value;
     var comment_id = document.getElementById("commentId").value;
-
     var url = '/comments/reply/' + comment_id;
     var data = {
-        'userId': 'mike',
         'parentId': comment_id,
         'content': reply
     };
@@ -95,11 +90,10 @@ function addReply() {
  */
 function deleteComment() {
     var comment_id = document.getElementById("deleteCommentId").value;
-
     var url = '/comments/delete/' + comment_id;
 
     fetch(url, {
-        method: 'GET',
+        method: 'POST',
         redirect: 'follow'
     })
         .then(response => response.json())
@@ -129,12 +123,9 @@ function addUserTest() {
 }
 
 function loginUserTest() {
-    console.log("yeah");
     let username = document.getElementById('loginUsername').value;
     let password = document.getElementById('loginPassword').value;
     let data = { username: username, password: password };
-
-    console.log(data);
 
     let p = fetch('/users/login', {
         method: 'POST',
@@ -144,7 +135,6 @@ function loginUserTest() {
 
     p.then((response) => {
         console.log(response);
-        console.log(response.url);
         window.location.href = response.url;
     }).catch((error) => {
         console.log(error);
