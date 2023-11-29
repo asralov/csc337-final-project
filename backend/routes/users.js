@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const authenticator = require('../config/authConfig');
+const crypto = require('crypto');
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -36,11 +37,21 @@ router.post('/add', async (req, res) => {
 
     p.then(results => {
         if (results.length == 0) {
-            let newUser = new User(user);
+            const salt = crypto.randomBytes(16).toString('hex');
+            const hashedPassword = crypto
+                .pbkdf2Sync(user.password, salt, 10000, 64, 'sha512')
+                .toString('hex');
+            
+            console.log(hashedPassword);
+            let newUser = new User({
+                username: user.username,
+                salt: salt,
+                password: hashedPassword
+            });
             newUser.save();
             res.end('User created');
         } else {
-            res.end('User already exists');
+            res.status(404).json({ message: 'User already exists' });
         }
     }).catch(error => {
         res.end(error);
@@ -50,22 +61,32 @@ router.post('/add', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
     let user = req.body;
-    let p = User.find({ username: user.username, password: user.password }).exec();
+    let p = User.find({ username: user.username}).exec();
 
     p.then(results => {
         if (results.length == 0) {
-            res.status(401).json({ error: 'Invalid username or password' });
+            res.status(401).json({ error: 'User does not exist' });
         } else {
-            let sid = authenticator.addSession(user.username);
+            const storedUser = results[0];
+            const hashedEnteredPassword = crypto
+                .pbkdf2Sync(user.password, storedUser.salt, 10000, 64, 'sha512')
+                .toString('hex');
+            // Checks if the given password matches the hashed password in database
+            if (hashedEnteredPassword === storedUser.password) {
+                let sid = authenticator.addSession(user.username);
 
-            res.cookie("login",
-                { username: user.username, sessionID: sid },
-                { maxAge: 60000 * 2 });
-            res.redirect('/app/home.html');
+                res.cookie("login",
+                    { username: user.username, sessionID: sid },
+                    { maxAge: 60000 * 2 });
+                res.redirect('/app/home.html');
+            } else {
+                res.status(401).json({ error: 'Invalid password' });
+            }
         }
+    }).catch(error => {
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     });
-
-    console.log(p);
 });
 
 // Update a user
