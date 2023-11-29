@@ -41,8 +41,12 @@ function addUser() {
         headers: { "Content-Type": "application/json" }
     });
 
-    p.then(() => {
-        window.alert("User " + username + " created!");
+    p.then(resonse => {
+        if (resonse.ok) {
+            window.alert("User " + username + " created!");
+        } else {
+            window.alert("User already exists!");
+        }
     }).catch((error) => {
         console.log(error);
     });
@@ -70,6 +74,6 @@ function loginUser() {
     }).then(data => {
         window.alert(data.error);
     }).catch(error => {
-        console.log(error);
+        console.alert(error);
     });
 }
