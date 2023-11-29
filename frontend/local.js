@@ -141,6 +141,24 @@ function loginUserTest() {
     });
 }
 
+function uploadProfilePicture() {
+    let file = document.getElementById('uploadFile').files[0];
+    let data = new FormData();
+    data.append('file', file);
+
+    let p = fetch('/uploads/profilePicture', {
+        method: 'POST',
+        body: data
+    });
+
+    p.then((response) => {
+        console.log(response);
+        window.location.href = response.url;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
 /**
  * Registers event handlers for various actions.
  */
@@ -151,6 +169,7 @@ function registerHandlers() {
     document.getElementById("deleteComment").onclick = deleteComment;
     document.getElementById("createUser").onclick = addUserTest;
     document.getElementById("loginUser").onclick = loginUserTest;
+    document.getElementById("uploadButton").onclick = uploadProfilePicture;
 }
 
 registerHandlers();
