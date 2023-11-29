@@ -125,7 +125,8 @@ class SearchTopic:
             'Exclude any articles that do not align with the central theme of the topic. '
             'The final output should be concise, providing a succinct debriefing. '
             'The JSON structure should be as follows: {title: String, background: String, summary: String, topics: Array}. '
-            'This format is intended for integration into a program. So please provide just the JSON structure.')
+            'This format is intended for integration into a program. So please provide just the JSON structure, additionally, make sure the topics'
+            'are just the ones I provided.')
         for article in articles:
             json_article = self._articles[article]
             prompt += f"\n\nTitle: {json_article['title']}\n"
@@ -143,7 +144,6 @@ class SearchTopic:
                 summary = self.generate_summary(prompt)
                 file_name = f"Articles/group_{group_id}_{self._term}.json"
                 urls = [self._articles[article_index]['url'] for article_index in article_indices]
-                print(summary)
                 summary_json = {
                     "GPT_response": json.loads(summary),
                     "sentiment": self._articles[article_indices[0]]["sentiment"],
@@ -182,5 +182,3 @@ class SearchTopic:
         except Exception as e:
             print(f"Error generating summary: {e}")
             return ""
-
-

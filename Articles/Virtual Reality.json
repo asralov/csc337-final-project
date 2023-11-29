@@ -1,0 +1,64 @@
+[
+    {
+        "title": "Supreme Court Cases on Social Media Content Moderation",
+        "content": {
+            "background": "The Supreme Court has agreed to hear five cases that reexamine content moderation rules on social media platforms and the government's limitations on affecting speech on these platforms. The cases address issues such as whether elected officials can block constituents on their social media accounts, and whether state laws that regulate social media platforms' content moderation practices violate their First Amendment rights.",
+            "summary": "The Supreme Court will review cases related to content moderation on social media platforms, including the blocking of constituents by elected officials and state laws that regulate content moderation. The court's decisions could impact the definition of public forums in the digital space, the ability of government officials to block users, and the freedom of social media platforms to make editorial choices. The cases also address government efforts to influence content moderation policies and the potential infringement on free speech."
+        },
+        "urls": [
+            "https://crooksandliars.com/2023/11/five-key-5-social-media-cases-scotus",
+            "https://theconversation.com/supreme-court-to-consider-giving-first-amendment-protections-to-social-media-posts-217760"
+        ],
+        "topics": [
+            "politics",
+            "technology"
+        ]
+    },
+    {
+        "title": "Construex Raises $4.6 Million to Digitize Latin American Construction Industry",
+        "content": {
+            "background": "Construex is an Ecuador-based software-as-a-service marketplace that aims to digitize the construction industry in Latin America. The company provides a digital platform for developers to connect with construction product suppliers and simplify the procurement process.",
+            "summary": "Construex, a software-as-a-service marketplace, has raised $4.6 million in seed funding to accelerate its mission of digitizing the construction industry in Latin America. The platform connects construction suppliers with customers, addressing the industry's information scarcity and inefficient sourcing methods. With expansion plans into Mexico and other Spanish-speaking countries, Construex aims to onboard 1 million suppliers and increase its revenue fourfold in the coming year."
+        },
+        "urls": [
+            "https://www.pymnts.com/news/investment-tracker/2023/construex-raises-4-6-million-to-digitize-latin-american-construction-industry/",
+            "https://readwrite.com/construex-secures-4-6m-in-seed-funding-to-transform-latin-americas-construction-industry/"
+        ],
+        "topics": [
+            "business",
+            "economics",
+            "technology"
+        ]
+    },
+    {
+        "title": "Cyber Monday deal: Meta Quest 2 for $200 tops best deals of 2023",
+        "content": {
+            "background": "ZDNET Recommends is a platform that provides recommendations based on extensive testing, research, and comparison shopping. Their editorial team aims to deliver accurate information and knowledgeable advice to help readers make smarter buying decisions. They gather data from reputable sources, including vendor and retailer listings, independent review sites, and customer reviews.",
+            "summary": "ZDNET has recommended the Meta Quest 2 virtual reality headset as the top Cyber Monday deal of 2023, available for $200. This recommendation is based on extensive testing and research, as well as customer reviews. ZDNET follows strict guidelines to ensure their recommendations are unbiased and not influenced by advertisers. They aim to provide accurate information and help readers make informed purchasing decisions for various tech gear and products."
+        },
+        "urls": [
+            "https://www.zdnet.com/article/quest-2-vr-headset-cyber-monday-deal/",
+            "https://www.zdnet.com/article/meta-quest-2-vr-headset-cyber-monday-deal/"
+        ],
+        "topics": [
+            "technology",
+            "economics"
+        ]
+    },
+    {
+        "title": "Immersive engagement in mixed reality can be measured with reaction time",
+        "content": {
+            "background": "Mixed reality combines virtual and physical elements to create immersive experiences. Presence, or the feeling of being present in a mixed reality environment, is an important factor in user engagement. Traditionally, presence is measured through subjective questionnaires, but researchers at UMass Amherst have identified reaction time as a potential real-time measurement tool. By studying participants' reaction times to different virtual stimuli, they found that slower reaction times indicate low presence, while faster reaction times indicate high presence. This finding has implications for improving the calibration of mixed reality experiences and optimizing user engagement.",
+            "summary": "Researchers at UMass Amherst have identified reaction time as a potential measure of presence in mixed reality. Slower reaction times indicate low presence, while faster reaction times indicate high presence. This finding has implications for optimizing user engagement in mixed reality experiences."
+        },
+        "urls": [
+            "https://www.sciencedaily.com/releases/2023/11/231127132457.htm",
+            "https://techxplore.com/news/2023-11-immersive-engagement-reality-reaction.html"
+        ],
+        "topics": [
+            "technology",
+            "health",
+            "science"
+        ]
+    }
+]
