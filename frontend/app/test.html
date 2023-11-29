@@ -27,13 +27,19 @@
     <br><br>
     <input type="text" id="createUsername" placeholder="Username">
     <input type="password" id="createPassword" placeholder="Password">
-    <button id="createUser">Create User</button> 
+    <button id="createUser">Create User</button>
     <br><br>
     <input type="text" id="loginUsername" placeholder="Username">
     <input type="password" id="loginPassword" placeholder="Password">
     <button id="loginUser">Login</button>
+    <br><br>
+    <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
+        <input type="file" name="profilePicture" id="uploadFile">
+        <button type="submit">Upload</button>
+    </form>
+    <br><br>
 
-    <script src="local.js"></script>
+    <script src="../local.js"></script>
 </body>
 
 </html>
