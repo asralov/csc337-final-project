@@ -61,11 +61,15 @@ function loginUser() {
         headers: { "Content-Type": "application/json" }
     });
 
-    p.then((response) => {
-        console.log(response);
-        console.log(response.url);
-        window.location.href = response.url;
-    }).catch((error) => {
+    p.then(response => {
+        if (response.ok) {
+            window.location.href = response.url;
+        } else {
+            return response.json();
+        }
+    }).then(data => {
+        window.alert(data.error);
+    }).catch(error => {
         console.log(error);
     });
 }

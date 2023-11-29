@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
 
     p.then(results => {
         if (results.length == 0) {
-            res.end('Could not find account');
+            res.status(401).json({ error: 'Invalid username or password' });
         } else {
             let sid = authenticator.addSession(user.username);
 
