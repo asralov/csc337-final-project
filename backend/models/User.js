@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     salt: String,
     // email: { type: String, unique: true },
     lastLogin: { type: Date, default: Date.now() },
-    profilePicture: String, // path to profile picture
+    profilePicture: { type: String, default: '../uploads/default.png' },
     interests: {
         userInput: Array, // list of strings that the user is interested in 
         comments: [{ // list of posts that the user has commented on to imply interest

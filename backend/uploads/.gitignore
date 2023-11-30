@@ -1,3 +1,4 @@
 *.png
+!default.png
 *.jpg
 *.jpeg
