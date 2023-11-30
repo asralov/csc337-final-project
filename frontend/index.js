@@ -35,6 +35,9 @@ function addUser() {
     let password = document.getElementById('password').value;
     let data = { username: username, password: password };
 
+    if (username == "" || password == "") 
+        return;
+
     let p = fetch('/users/add', {
         method: 'POST',
         body: JSON.stringify(data),
