@@ -1,0 +1,150 @@
+body, html{
+    margin: 0;
+    padding: 0;
+    background-color: #444444;
+    color: #d8d8d8;
+    font-family: 'Roboto', sans-serif;
+}
+#logo{
+    width: 5%;
+    height: 5%;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+#head{
+    background-color: black;
+    color: #fff;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 100%;
+}
+
+#content {
+    padding-top: 3%;
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+}
+
+#article{
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    padding: 2%;
+    background-color: #333333;
+}
+
+#img-source {
+    font-style: italic;
+    text-align: center;
+}
+
+#article img{
+    display: block;
+    margin: 0 auto;
+    height: 40vh;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+}
+
+#article p,i{
+line-height: 2;
+font-size: 1.2em;
+}
+
+
+#article h1{
+    text-align: center;
+    color: #d8d8d8;
+}
+
+
+#comments{
+    padding: 3%;
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    padding: 2%;
+    background-color: #333333;
+    margin-top: 2%;
+}
+
+.comment{
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    background-color: #555555;
+}
+
+.pfp{
+    width: 4%;
+    height: 4%;
+}
+
+.comment h4{
+    margin-left: 1%;
+}
+
+.comment p{
+    margin-left: 1%;
+}
+
+.reply1{
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    background-color: #555555;
+    margin-left: 2%;
+}
+
+.reply1 h4{
+    margin-left: 1%;
+
+}
+.reply1 p{
+    margin-left: 1%;
+}
+
+#footer{
+    background-color: #444444;
+    color: #fff;
+    margin-top: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 100%;
+    border-top: #fff solid 1px;
+}
+
+/*COPIED THIS CODE FROM ABOUT PAGE */
+.subscription{
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+}
+
+#mail {
+    padding: 1% 2%;
+    border: none;
+    border-radius: 10px 0 0 10px;
+    color: #000;
+  }
+  
+  #subbtn {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    padding: 1% 2%;
+    transition: 0.5s;
+  }
+  
+  #subbtn:hover {
+    background-color: #fff;
+    color: black;
+    cursor: pointer;
+    .bxs-bell-ring {
+      transition: 0.5s;
+      color: black;
+    }
+  }
