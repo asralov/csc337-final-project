@@ -77,6 +77,6 @@ function loginUser() {
     }).then(data => {
         window.alert(data.error);
     }).catch(error => {
-        console.alert(error);
+        console.log(error);
     });
 }
