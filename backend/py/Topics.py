@@ -4,7 +4,6 @@ import openai
 import re
 from newspaper import Article
 from newspaper import Config
-from nltk.sentiment import SentimentIntensityAnalyzer
 from newsapi import NewsApiClient
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity

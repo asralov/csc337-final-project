@@ -14,6 +14,35 @@ router.post('/add', async (req, res) => {
     }
 });
 
+router.get('/:topic/', async (req, res) => {
+    try {
+        // Fetch day old posts 
+        const recentPosts = await Post.find({ 
+            topics: req.params.topic,
+            date: { $gt: new Date(Date.now() - 24*60*60*1000) }
+        }).sort({
+            'likes.length': -1, 
+            'dislikes.length': -1, 
+            'comments.length': -1, 
+        });
+
+        // Fetch older posts
+        const olderPosts = await Post.find({ 
+            topics: req.params.topic,
+            date: { $lte: new Date(Date.now() - 24*60*60*1000) } 
+        }).sort({ date: -1 }); // Sort by date in descending order
+
+        // Combine the two arrays, prioritizing recent posts
+        const sortedPosts = recentPosts.concat(olderPosts);
+
+        res.json(sortedPosts);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching posts', error });
+    }
+});
+
+
 // Edit an existing post
 router.post('/edit/:id', async (req, res) => {
     try {
@@ -50,13 +79,27 @@ router.delete('/delete/:id', async (req, res) => {
 // Get all posts
 router.get('/all', async (req, res) => {
     try {
-        const posts = await Post.find({});
+        const recentPosts = await Post.find({
+            date: { $gt: new Date(Date.now() - 24*60*60*1000) } 
+        }).sort({
+            'likes.length': -1,
+            'dislikes.length': -1, 
+            'comments.length': -1, 
+        });
 
-        res.json(posts);
+        // Fetch older posts
+        const olderPosts = await Post.find({
+            date: { $lte: new Date(Date.now() - 24*60*60*1000) } // Posts older than 24 hours
+        }).sort({ date: -1 }); // Sort by date in descending order
+
+        const sortedPosts = recentPosts.concat(olderPosts);
+
+        res.json(sortedPosts);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
+
 
 // Get a single post by ID
 router.get('/:id', async (req, res) => {
