@@ -1,101 +1,141 @@
 [
     {
-        "title": "U.S. Secretary of State Urges Israel for Truce",
+        "title": "Current Topics: Israeli-Palestinian Conflict, Intelligence Gathering, 2024 Presidential Race, and Children's Respiratory Illnesses",
         "content": {
-            "background": "The U.S. Secretary of State, Antony Blinken, has engaged with Israeli leaders regarding the ongoing conflict and has called for a truce.",
-            "summary": "U.S. Secretary of State Antony Blinken has urged Israeli leaders for a truce in the ongoing conflict.",
-            "bias": "Neutral"
+            "background": "The article covers multiple ongoing issues, including the Israeli-Palestinian conflict, concerns about intelligence gathering in the US, the 2024 presidential race, and the increase in respiratory illnesses among children.",
+            "summary": "The article provides insights into Republican perspectives, featuring criticism of former President Donald Trump by former New Jersey Governor Chris Christie. It also discusses Governor Spencer Cox's concerns about immigration and COVID-19 policies. The viewpoints presented are a mix from politicians and former government officials without a clear partisan bias.",
+            "bias": "The article offers a mix of viewpoints from politicians and former government officials without a clear partisan bias."
         },
         "urls": [
-            "https://www.bostonglobe.com/2023/11/30/world/antony-blinken-israel-hamas-war/",
-            "https://www.ibtimes.com/blinken-says-gaza-truce-producing-results-should-continue-3719863"
+            "https://www.cbsnews.com/news/face-the-nation-full-transcript-12-03-2023/",
+            "https://www.cbsnews.com/news/john-kirby-face-the-nation-transcript-12-03-2023/",
+            "https://www.cbsnews.com/news/spencer-cox-utah-governor-jared-polis-colorado-governor-face-the-nation-transcript-12-03-203/",
+            "https://www.cbsnews.com/news/mike-turner-house-intelligence-committee-chair-face-the-nation-transcript-12-03-2023/"
+        ],
+        "topics": [
+            "politics"
+        ],
+        "imageURL": "https://assets2.cbsnewsstatic.com/hub/i/r/2023/12/03/bfff48a2-e2ca-4705-bd0f-d975e99943f9/thumbnail/1200x630/2e4ff3b81881093e6ac77c6c2ab6b859/1203-ftn-coldopen.jpg?v=2a3c5d91939c9bf28fa0bc6fdfacfdd4",
+        "imageSource": "CBS News"
+    },
+    {
+        "title": "Recent Attacks by Yemen's Houthi Rebels",
+        "content": {
+            "background": "Yemen's Houthi rebels have been involved in a series of attacks targeting ships in the Red Sea. These attacks have also included US warships and multiple commercial vessels. The latest incidents have raised concerns about escalating tensions in the region.",
+            "summary": "In response to the Israel-Hamas war, the Houthis fired ballistic missiles at two Israeli ships and conducted multiple attacks on US and commercial ships in the Red Sea. The Pentagon has reported these attacks and highlighted the need for increased security measures. The Houthi rebels have also launched drones that were intercepted by a US warship. These incidents have further strained the already tense situation in the region.",
+            "bias": "The summaries provide a factual account of the recent attacks by Yemen's Houthi rebels without explicitly specifying any bias."
+        },
+        "urls": [
+            "https://time.com/6342129/pentagon-warship-commercial-attack-red-sea-militants/",
+            "https://www.newser.com/story/343373/uss-carney-commercial-ships-came-under-fire-pentagon.html",
+            "https://www.aljazeera.com/news/2023/12/3/yemens-houthis-say-they-targeted-two-israeli-ships-in-red-sea-report",
+            "https://www.bostonglobe.com/2023/12/03/world/pentagon-us-warship-red-sea-houthis-israel-mideast/",
+            "https://www.newsweek.com/us-warship-comes-under-attack-red-sea-1849070",
+            "https://www.marketwatch.com/story/pentagon-says-a-u-s-warship-commercial-ships-attacked-in-red-sea-7ec0e216",
+            "https://www.npr.org/2023/12/03/1216851042/pentagon-says-a-warship-and-commercial-ships-have-come-under-attack-in-the-red-s",
+            "https://apnews.com/article/red-sea-houthi-yemen-ships-attack-israel-hamas-war-gaza-strip-716770f0a780160e9abed98d3c48fbde",
+            "https://www.politico.com/news/2023/12/03/pentagon-us-warship-attack-red-sea-00129789",
+            "https://www.haaretz.com/israel-news/2023-12-03/ty-article/israeli-owned-ship-attacked-by-missiles-in-red-sea-yemens-houthis-claim-responsibility/0000018c-3077-dc03-a9ec-3c7f413f0000",
+            "https://www.haaretz.com/israel-news/2023-12-03/ty-article/israeli-owned-ship-hit-by-houthi-missiles-uss-carney-intercepts-drones/0000018c-3077-dc03-a9ec-3c7f413f0000",
+            "https://www.haaretz.com/israel-news/2023-12-03/ty-article/pentagon-u-s-warship-and-commercial-ships-in-the-red-sea-have-come-under-attack/0000018c-3077-dc03-a9ec-3c7f413f0000",
+            "https://www.foxnews.com/world/us-warship-shoots-down-three-houthi-drones-targeting-commercial-vessels-red-sea-centcom"
         ],
         "topics": [
             "politics",
             "world"
-        ]
+        ],
+        "imageURL": "https://api.time.com/wp-content/uploads/2023/12/AP23337595573903.jpg?quality=85",
+        "imageSource": "Time"
     },
     {
-        "title": "UN Security Council Meeting on Gaza Crisis",
+        "title": "Israeli Aggression in Gaza Strip",
         "content": {
-            "background": "The UN Security Council met to discuss the ongoing crisis in Gaza, with a focus on the catastrophic humanitarian situation and the need for increased aid and protection of civilians. The meeting included foreign ministers from the region and beyond.",
-            "summary": "The UN Security Council met to discuss the ongoing crisis in Gaza, with a focus on the catastrophic humanitarian situation and the need for increased aid and protection of civilians. Discussions emphasized the calls for a true humanitarian ceasefire, release of hostages, condemnation of Hamas attacks, and recognition of the need for a two-state solution.",
-            "bias": "The article does not display significant bias."
+            "background": "The Israeli Defense Forces (IDF) has recently discovered and targeted certain areas in the Gaza Strip.",
+            "summary": "The Israeli Defense Forces (IDF) have conducted an aggression against the Gaza Strip, resulting in numerous victims.",
+            "bias": "The bias of the articles is not determined from the provided summaries."
         },
         "urls": [
-            "https://www.globalresearch.ca/israel-failed-eradicate-hamas-empty-gaza-palestinians-interview-dr-ahmad-alderzi/5841677",
-            "https://www.globalsecurity.org/military/library/news/2023/11/mil-231129-unnews01.htm"
+            "https://sputnikglobe.com/20231203/israeli-military-says-destroyed-about-500-shafts-to-hamas-tunnels-in-gaza-since-october-27-1115363370.html",
+            "https://sputnikglobe.com/20231203/death-toll-in-gaza-strip-from-israeli-strikes-tops-15500---health-ministry-1115359247.html"
+        ],
+        "topics": [
+            "world"
+        ],
+        "imageURL": "https://cdn1.img.sputnikglobe.com/images/sharing/article/eng/1115363370.jpg?11146673391701626027",
+        "imageSource": "Sputnikglobe.com"
+    },
+    {
+        "title": "Israeli officials dismissed warning of Hamas attack",
+        "content": {
+            "background": "This briefing discusses an article published in The New York Times about Israeli officials dismissing a warning of a Hamas terrorist attack. The article raises questions about the possibility of Israeli involvement or collaboration with Hamas.",
+            "summary": "The article reveals that Israeli officials obtained Hamas' battle plan for a terrorist attack but dismissed it as too difficult for Hamas to carry out. Hamas later executed the attack with precision, resulting in significant casualties. The article suggests Israeli complicity or collaboration with Hamas.",
+            "bias": "The article lacks alternative perspectives or counterarguments, potentially indicating biased reporting."
+        },
+        "urls": [
+            "https://www.politico.com/newsletters/playbook/2023/12/03/harris-throws-bibi-a-brushback-00129792",
+            "https://www.activistpost.com/2023/12/yes-israel-knew-about-the-hamas-attack-plans-long-before-they-took-place.html"
         ],
         "topics": [
             "politics",
             "world"
-        ]
+        ],
+        "imageURL": "https://static.politico.com/84/6f/3d1b51044f00981eb413f20f0d4b/https-delivery-gettyimages.com/downloads/1826298375",
+        "imageSource": "Politico"
     },
     {
-        "title": "UN Security Council meeting on Gaza crisis",
+        "title": "ICC Prosecutor's Visit to Israel and the Palestinian Authority",
         "content": {
-            "background": "This article covers a recent UN Security Council meeting discussing the humanitarian catastrophe in Gaza following Israel's offensive against Hamas.",
-            "summary": "The UN Security Council held a meeting to discuss the humanitarian crisis in Gaza. UN Secretary-General called for a humanitarian ceasefire and the release of hostages. Various council members expressed concern and urged for resolution implementation. Non-council members called for a Palestinian state. Israel's ambassador criticized the council for not addressing Hamas's role.",
-            "bias": "Neutral"
+            "background": "The International Criminal Court Chief Prosecutor, Karim Khan, recently visited Israel and the Palestinian Authority. This visit has attracted attention and raised important legal and political issues.",
+            "summary": "The visit by ICC Prosecutor Karim Khan to Israel and the Palestinian Authority has sparked significant debate and discussions. The purpose of the visit was to gather information and assess the situation regarding alleged war crimes and human rights violations. The visit has emphasized the complex dynamics and controversies surrounding the Israeli-Palestinian conflict.",
+            "bias": "The articles provide a neutral perspective, focusing on the events and their significance without expressing a particular bias."
         },
         "urls": [
-            "https://dianeravitch.net/2023/11/30/when-peace-in-the-middle-east-seemed-possible/",
-            "https://www.globalsecurity.org/military/library/news/2023/11/mil-231129-unnews01.htm"
+            "https://www.haaretz.com/israel-news/2023-12-03/ty-article/icc-prosecutor-calls-oct-7-hamas-attack-on-israelis-serious-international-crimes/0000018c-3069-da74-afce-b5f926bb0000",
+            "https://www.bostonglobe.com/2023/12/03/world/international-court-prosecutor-says-he-will-intensify-investigations-palestinian-territories/",
+            "https://www.jpost.com/arab-israeli-conflict/gaza-news/article-776326"
+        ],
+        "topics": [
+            "politics",
+            "world"
+        ],
+        "imageURL": "https://img.haarets.co.il/bs/0000018c-2a9f-d04a-af9f-fabfe1bb0000/8a/d3/a74e2fa446c084ec9b1751165b66/25447.jpg?height=630&width=1200",
+        "imageSource": "Haaretz"
+    },
+    {
+        "title": "Investigation into Israel-Palestine Conflict by ICC Prosecutor",
+        "content": {
+            "background": "This briefing provides an overview of the investigation into the Israel-Palestine conflict conducted by Karim Khan, the International Criminal Court (ICC) prosecutor.",
+            "summary": "Karim Khan, the ICC prosecutor, recently visited Israel and the Palestinian Territories to investigate alleged crimes related to the conflict. The investigation is a follow-up to previous efforts by the ICC to address potential war crimes committed by both Israeli and Palestinian parties.",
+            "bias": "The bias of the articles regarding this topic is not determined."
+        },
+        "urls": [
+            "https://www.digitaljournal.com/world/icc-prosecutor-vows-to-further-intensify-gaza-probe/article",
+            "https://www.bangkokpost.com/world/2697506/icc-prosecutor-vows-to-further-intensify-gaza-probe",
+            "https://www.ibtimes.com/icc-prosecutor-vows-further-intensify-gaza-probe-3720018"
         ],
         "topics": [
             "world",
             "politics"
-        ]
+        ],
+        "imageURL": "https://www.digitaljournal.com/wp-content/uploads/2023/12/2bf4b77cf3e049d4cfce53c0846778e5d97f956c.jpg",
+        "imageSource": "Digital Journal"
     },
     {
-        "title": "Gaza Cease-Fire Extension and Hostage Release",
+        "title": "Israel-Hamas Cease-fire Collapse and U.S. Officials' Response",
         "content": {
-            "background": "The cease-fire between Israel and Hamas in Gaza has been extended for another day. The conflict has involved accusations of cease-fire violations, airstrikes, and artillery shelling. Israel is committed to achieving its goals, including the release of hostages held by Hamas. International actors and organizations have expressed their positions and concerns. Aid trucks have reached Gaza, but increased humanitarian aid is still needed. Relatives of the hostages have expressed frustration with the lack of information and medical access. The U.S. Secretary of State is actively involved in negotiations and supports the continuation of the truce and discussions on Gaza's future.",
-            "summary": "The cease-fire between Israel and Hamas has been extended in Gaza. Israel accuses Hamas of violating the cease-fire, leading to Israeli airstrikes and artillery shelling. Israeli President seeks help for freeing Israeli hostages held by Hamas. The International Criminal Court prosecutor visits Israel to engage in dialogue. The U.S. Secretary of State supports extending the pause in fighting and hostage releases. China and British actors/artists express their positions on the conflict. Aid trucks reach Gaza, but more humanitarian aid is needed. Relatives of the hostages express frustration. Surveillance footage captures a deadly shooting attack in Jerusalem. Palestinian activist Ahed Tamimi is among those released. The truce extension aims for the release of hostages and continued negotiations on Gaza's future.",
-            "bias": "Neutral"
+            "background": "The collapse of the Israel-Hamas cease-fire and the response of U.S. officials",
+            "summary": "Following the collapse of the Israel-Hamas cease-fire, top U.S. officials, led by Vice President Kamala Harris, are addressing the situation.",
+            "bias": "The bias of the articles is not specified."
         },
         "urls": [
-            "https://www.pbs.org/newshour/politics/live-updates-whats-happening-in-the-israel-hamas-war-as-gaza-cease-fire-extended-as-more-hostages-exchanged",
-            "https://mondoweiss.net/2023/11/operation-al-aqsa-flood-day-55-palestinians-in-gaza-are-once-again-counting-down-the-hours-until-the-bombing-restarts/",
-            "https://www.pbs.org/newshour/world/truce-in-gaza-extended-another-day-as-talks-over-remaining-hostages-held-by-hamas-continue",
-            "https://www.nbcnews.com/news/world/live-blog/israel-hamas-war-live-updates-rcna127335",
-            "https://www.npr.org/2023/11/30/1215998728/israel-hamas-jerusalem-attack-hostages-captives-extension-ceasefire"
+            "https://www.voanews.com/a/southern-gaza-town-under-intense-attack-/7382240.html",
+            "https://www.globalsecurity.org/military/library/news/2023/12/mil-231202-voa01.htm"
         ],
         "topics": [
-            "politics",
-            "world"
-        ]
-    },
-    {
-        "title": "Criticism of the ICRC's Access in Israel-Palestine Conflict",
-        "content": {
-            "background": "The International Committee of the Red Cross (ICRC) is facing criticism from both sides in the Israel-Palestine conflict for its access and operations in the region.",
-            "summary": "The ICRC has been criticized by both the Israeli and Palestinian sides for its actions in the ongoing conflict.",
-            "bias": "Neutral"
-        },
-        "urls": [
-            "https://www.digitaljournal.com/world/we-dont-have-superpowers-says-embattled-red-cross/article",
-            "https://www.ibtimes.com/we-dont-have-superpowers-says-embattled-red-cross-3719846"
+            "world",
+            "politics"
         ],
-        "topics": [
-            "world"
-        ]
-    },
-    {
-        "title": "UN Security Council Meeting on Gaza Crisis",
-        "content": {
-            "background": "The UN Security Council recently held a meeting to discuss the humanitarian crisis in Gaza resulting from Israel's offensive against Hamas.",
-            "summary": "The UN Security Council meeting on the Gaza crisis focused on the urgent need for a humanitarian ceasefire and the release of all hostages. Council members and non-Council members expressed concern about the escalating crisis and called for the full implementation of the Council's resolution on the issue. Various countries highlighted the importance of addressing the root causes of the conflict and emphasized the need for a two-State solution. The bias of the article is fairly balanced, presenting the views and statements of different countries without evident bias.",
-            "bias": "Fairly balanced"
-        },
-        "urls": [
-            "https://www.globalsecurity.org/military/library/news/2023/11/mil-231129-presstv04.htm",
-            "https://mondoweiss.net/2023/11/operation-al-aqsa-flood-day-55-palestinians-in-gaza-are-once-again-counting-down-the-hours-until-the-bombing-restarts/",
-            "https://www.globalsecurity.org/military/library/news/2023/11/mil-231129-unnews01.htm"
-        ],
-        "topics": [
-            "politics",
-            "world"
-        ]
+        "imageURL": "https://gdb.voanews.com/55750282-2298-479C-9ABF-0105D50551C0.jpg",
+        "imageSource": "VOA News"
     }
-]x
+]

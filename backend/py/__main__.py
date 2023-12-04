@@ -1,6 +1,7 @@
 from Topics import SearchTopic
 import json
 import logging
+import requests
 from datetime import datetime
 
 # Set up logging
@@ -10,6 +11,7 @@ logging.basicConfig(
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
 start_time = datetime.now()
+topic_list = ["business", "entertainment", "health", "politics", "science", "sports", "technology"]
 
 
 # Testing Usage Search Topic
@@ -25,9 +27,7 @@ def get_keywords(file="backend/py/keyword.txt"):
     return keywords
 
 
-def send_stories_to_db(stories, keyword):
-    all_stories = []
-
+def send_stories_to_db(stories):
     for story in stories:
         try:
             title = story["GPT_response"]["title"]
@@ -36,20 +36,26 @@ def send_stories_to_db(stories, keyword):
             bias = story["GPT_response"]["bias"]
             urls = list(story["urls"])
             topics = list(story["GPT_response"]["topics"])
+            imageURL = story["imageURL"]
+            imageSource = story["imageSource"]
+
+            for topic in topics:
+                if topic not in topic_list:
+                    topics.remove(topic)
 
             data = {
                 "title": title,
                 "content": {"background": background, "summary": summary, "bias": bias},
                 "urls": urls,
                 "topics": topics,
+                "imageURL": imageURL,
+                "imageSource": imageSource
             }
 
-            all_stories.append(data)  # Add the story to the list
+            requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
         except Exception as e:
             print(f"Error sending story to JSON: {e}")
             logging.error(story)
-    with open(f"Articles/{keyword}.json", "w") as outfile:
-        json.dump(all_stories, outfile)
 
 
 # def main():

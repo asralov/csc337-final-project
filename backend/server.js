@@ -13,7 +13,7 @@ const app = express();
 const port = 80;
 
 // MongoDB connection setup
-mongoose.connect('mongodb://0.0.0.0:27017/losethebias', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/losethebias', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 

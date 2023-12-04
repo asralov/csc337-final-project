@@ -23,7 +23,7 @@ class SearchTopic:
         self.get_articles()
         self._similarity_threshold=similarity_threshold
 
-    def get_articles(self, num_loop=1):
+    def get_articles(self):
         """Function to download articles sorted by time from the newsAPI on a given topic"""
         titles = []
         urls=[]
@@ -44,6 +44,8 @@ class SearchTopic:
                         {
                             "title": article["title"],
                             "url": article["url"],
+                            "image": article["urlToImage"],
+                            "imageSource": article["source"]["name"],
                             "text": "",
                         }
                     )
@@ -165,12 +167,18 @@ class SearchTopic:
         article_groups = self.find_article_groups()
         for group_id, article_indices in article_groups.items():
             try:
+                first_article_idx = article_indices[0]  
+                first_article = self._articles[first_article_idx]  
                 prompt = self.create_prompt([self._articles[idx] for idx in article_indices])
                 summary = self.generate_summary(prompt)
                 urls = [self._articles[idx]['url'] for idx in article_indices]
+                image = first_article['image']  
+                imageSource = first_article['imageSource']
                 summary_json = {
                     "GPT_response": json.loads(summary) if summary else None,
-                    "urls": urls
+                    "urls": urls,
+                    "imageURL": image if image else None,
+                    "imageSource": imageSource if image else None, 
                 }
                 jsons.append(summary_json)
 
