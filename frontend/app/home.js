@@ -43,10 +43,10 @@ function fetchPosts() {
                                 <p>${content.summary}</p>
                                 <h2>Bias</h2>
                                 <p>Need to implement</p>
-                                <div><a href="#" onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"<div>${posts[i].likes.length}</div>>
-                                            <img src=${likePNG} id="like-${i}" width="70px" height="100px"></a>
-                                    <a href="#" onclick="likeOrDislikePost('${posts[i]._id}', false, '${i}')"<div>${posts[i].dislikes.length}</div>>
-                                            <img src=${dislikePNG} id="dislike-${i}" width="70px" height="100px"></a>
+                                <div><img onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"
+                                             src=${likePNG} id="like-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].likes.length}</div>
+                                     <img onclick="likeOrDislikePost('${posts[i]._id}', false, '${i}')"
+                                             src=${dislikePNG} id="dislike-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].dislikes.length}</div>
                                 </div>
                                 </div>
                                 </div>`

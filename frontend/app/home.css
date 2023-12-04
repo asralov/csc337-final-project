@@ -168,3 +168,7 @@ body {
   box-sizing: border-box;
   line-height: 2;
 }
+
+.likeButton:hover {
+  filter: brightness(80%);
+}
