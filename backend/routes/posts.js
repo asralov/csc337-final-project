@@ -75,39 +75,56 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-// Get all posts
 router.get('/all', async (req, res) => {
     try {
+        // Fetch recent posts (last 24 hours)
         const recentPosts = await Post.find({
             date: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) }
         });
 
+        // Sort recent posts based on interactions (likes, dislikes, comments)
         recentPosts.sort((a, b) => {
-            if (a.likes.length == b.likes.length)
-                return b.likes.length - a.likes.length;
-
-            if (a.dislikes.length == b.dislikes.length)
-                return b.dislikes.length - a.dislikes.length;
-
-            if (a.comments.length == b.comments.length)
-                return b.comments.length - a.comments.length;
-
-            return 0;
+            const scoreA = a.likes.length + a.comments.length - a.dislikes.length;
+            const scoreB = b.likes.length + b.comments.length - b.dislikes.length;
+            return scoreB - scoreA; // Sort in descending order of score
         });
 
-        // Fetch older posts
+        // Fetch older posts (older than 24 hours), no change in this logic
         const olderPosts = await Post.find({
-            topics: req.params.topic,
-            date: { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Posts older than 24 hours
-        }).sort({ date: -1 }); // Sort by date in descending order
-        
+            date: { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+        }).sort({ date: -1 }); // Sorted by date in descending order
+
         const sortedPosts = recentPosts.concat(olderPosts);
 
         res.json(sortedPosts);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching posts', error });
+        res.status(500).json({ message: 'Error fetching posts' });
     }
 });
+
+router.get("/search/:query", async (req, res) => {
+    try {
+        const regexQuery = { $regex: req.params.query, $options: "i" };
+        const posts = await Post.find({
+            $or: [
+                { title: regexQuery },
+                { 'content.summary': regexQuery }
+            ]
+        });
+
+        // Sort by likes, then comments, then dislikes
+        posts.sort((a, b) => {
+            const aScore = a.likes.length - a.dislikes.length + a.comments.length;
+            const bScore = b.likes.length - b.dislikes.length + b.comments.length;
+            return bScore - aScore;
+        });
+
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching posts' });
+    }
+});
+
 
 // Get a single post by ID
 router.get('/:id', async (req, res) => {
