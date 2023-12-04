@@ -19,12 +19,7 @@ router.get('/:username', async (req, res) => {
         const user = await User.findOne({ username: req.params.username });
 
         if (user) {
-            const htmlData = `
-                <h1>${user.username}</h1>
-                ${user.firstName && user.lastName ? `<p>${user.firstName} ${user.lastName}</p>` : ''}
-                <img src="../${user.profilePicture}" alt="Profile Picture">
-            `;
-            res.send(htmlData);
+            res.send(user);
         } else {
             res.status(404).json({ message: 'User not found' });
         }

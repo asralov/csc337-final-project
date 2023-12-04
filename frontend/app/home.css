@@ -9,11 +9,19 @@ body {
   height: 100vh;
 }
 
+#userPic {
+  border: none;
+  border-radius: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
 #mainLogo {
   width: 5%;
   border: none;
   border-radius: 100%;
 }
+
 #top-panel {
   position: fixed;
   left: 0;
