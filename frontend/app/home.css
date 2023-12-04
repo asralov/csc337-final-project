@@ -181,3 +181,16 @@ body {
 .likeButton:hover {
   filter: brightness(80%);
 }
+
+.like{
+  display: flex;
+  gap: 1%;
+  transform: translateY(-15px);
+
+}
+
+.like img{
+  width: 3%;
+  height: 3%;
+  
+}

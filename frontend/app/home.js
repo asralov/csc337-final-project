@@ -33,8 +33,11 @@ function fetchPosts() {
                 }
                 let likePNG = "";
                 let dislikePNG = "";
+                
                 checkIfLike(posts[i]._id, localStorage.user)
+                
                 .then(hasUsed => {
+                    console.log("here");
                     if (hasUsed.startsWith("NO")) {
                         likePNG = "./images/like_nofill.png"
                         dislikePNG = "./images/dislike_nofill.png"
@@ -48,6 +51,7 @@ function fetchPosts() {
                     console.log(likePNG);
                     console.log(dislikePNG);
                     let content = JSON.parse(posts[i].content);
+                    console.log(content);
                     let article = `<div class="post-boxes">
                                 <div class="article">
                                 <h1>${posts[i].title}</h1>
@@ -61,15 +65,18 @@ function fetchPosts() {
                                 <h2>Summary</h2>
                                 <p>${content.summary}</p>
                                 <h2>Bias</h2>
-                                <p>Need to implement</p>
-                                <div><img onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"
+                                <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"
                                              src=${likePNG} id="like-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].likes.length}</div>
                                      <img onclick="likeOrDislikePost('${posts[i]._id}', false, '${i}')"
                                              src=${dislikePNG} id="dislike-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].dislikes.length}</div>
                                 </div>
+                                <div class="comments">
+                                    <span style="font-size: 1.8vh"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
+                                </div>
                                 </div>
                                 </div>`
                                 articles += article;
+                                console.log(articles);
                                 document.getElementById('post-pannel').innerHTML = articles;
                 })
                 .catch(error => {
