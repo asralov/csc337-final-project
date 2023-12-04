@@ -89,6 +89,15 @@ function fetchPosts() {
         });
 }
 
+function fetchUserDetails() {
+    fetch('/users/' + localStorage.user)
+        .then(res => res.json())
+        .then(user => {
+            console.log(user);
+            document.getElementById('userPic').src = "../" + user.profilePicture;
+        });
+}
+
 function likeOrDislikePost(contentId, like, index) {
     var data = {
         'typeOfContent': 'Post',
@@ -104,15 +113,17 @@ function likeOrDislikePost(contentId, like, index) {
         .then(res => res.json())
         .then(post => {
             if (like) {
-                let img = document.getElementById("like-"+index);
+                let img = document.getElementById("like-" + index);
                 img.src = "./images/like_fill.png";
             }
+            
             fetchPosts();
         });
 }
+
 function checkIfLike(postID, username) {
     return new Promise((resolve, reject) => {
-        fetch('/likes/check/'+postID+'/'+username)
+        fetch('/likes/check/' + postID + '/' + username)
             .then((response) => {
                 return response.text();
             })
@@ -125,4 +136,6 @@ function checkIfLike(postID, username) {
             });
     });
 }
+
+fetchUserDetails();
 fetchPosts();
