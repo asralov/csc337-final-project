@@ -51,8 +51,9 @@ def send_stories_to_db(stories):
                 "imageURL": imageURL,
                 "imageSource": imageSource
             }
-
-            requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
+            data=json.dumps(data)
+            print(data)
+            #requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
         except Exception as e:
             print(f"Error sending story to JSON: {e}")
             logging.error(story)

@@ -30,6 +30,7 @@ class SearchTopic:
         newsapi = NewsApiClient(api_key=news_api_key)
         # loop set so we can add more articles if needed
         for term in self._terms:
+            print(term)
             api_response = newsapi.get_everything(
                 q=term,
                 language="en",
@@ -115,29 +116,17 @@ class SearchTopic:
                     f'Text: {article["text"]}')
 
             try:
-                if len(prompt.split())>4096:
-                    model_choose="gpt-3.5-turbo-16k"
-                    response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo-16k",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    )
-                    if response.get("choices"):
-                        summaries.append(response["choices"][0].get("message", {"content": ""})["content"].strip())
-                    else:
-                        print("No content in response choices.")
+                response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo-16k",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                )
+                if response.get("choices"):
+                    summaries.append(response["choices"][0].get("message", {"content": ""})["content"].strip())
                 else:
-                    model_choose="text-davinci-003"
-                    response = openai.Completion.create(
-                        model=model_choose,  
-                        prompt=prompt,
-                    )
-                    if response.get("choices"):
-                        summaries.append(response["choices"][0]["text"].strip())
-                    else:
-                        print("No content in response choices.")
+                    print("No content in response choices.")
 
             except Exception as e:
                 print(f"Error generating summary: {e}")
