@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authenticator = require('./config/authConfig');
+const loginRouter = require('./routes/login');
 const uploadRouter = require('./routes/uploads');
 const commentsRouter = require('./routes/comments');
 const likesRouter = require('./routes/likes');
@@ -21,11 +22,12 @@ app.set('json spaces', 2);
 
 app.use(cookieParser());
 app.use(express.json());
+app.use('/login', loginRouter);
 app.use('/uploads', authenticator.authenticate, express.static('uploads'), uploadRouter);
 app.use('/comments', authenticator.authenticate, commentsRouter);
 app.use('/likes', authenticator.authenticate, likesRouter);
 app.use('/posts', authenticator.authenticate, postsRouter);
-app.use('/users', usersRouter);
+app.use('/users', authenticator.authenticate, usersRouter);
 app.use('/app/*', authenticator.authenticate);
 app.get('/app/*', (req, res, next) => {
     next();

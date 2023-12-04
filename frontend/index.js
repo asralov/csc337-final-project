@@ -38,7 +38,7 @@ function addUser() {
     if (username == "" || password == "") 
         return;
 
-    let p = fetch('/users/add', {
+    let p = fetch('/login/add', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
@@ -62,7 +62,7 @@ function loginUser() {
 
     console.log(data);
 
-    let p = fetch('/users/login', {
+    let p = fetch('/login/login', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
