@@ -51,6 +51,27 @@ router.get('/get/:contentType/:postId', async (req, res) => {
     }
 });
 
+router.get('/check/:postID/:username', async (req, res) => {
+    const postID = req.params.postID;
+    const user = req.params.username;
+    console.log(postID, user);
+    Like.find({contentId: postID, username: user}).exec()
+    .then((result) => {
+        if (result.length > 0 ) {
+            if (result[0].like) {
+                res.end("TRUE");
+            } else {
+                res.end("FALSE");
+            }
+        } else {
+            res.end("NO INTERACTION")
+        }
+    }).catch((err) => {
+        res.status(500).json({ message: 'Error checking liked post', error: err.message });
+    })
+
+});
+
 /**
  * Likes a post and updates the content and user accordingly.
  * If the user has already liked the content, the like is removed.

@@ -79,18 +79,28 @@ router.delete('/delete/:id', async (req, res) => {
 router.get('/all', async (req, res) => {
     try {
         const recentPosts = await Post.find({
-            date: { $gt: new Date(Date.now() - 24*60*60*1000) } 
-        }).sort({
-            'likes.length': -1,
-            'dislikes.length': -1, 
-            'comments.length': -1, 
+            date: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+        });
+
+        recentPosts.sort((a, b) => {
+            if (a.likes.length == b.likes.length)
+                return b.likes.length - a.likes.length;
+
+            if (a.dislikes.length == b.dislikes.length)
+                return b.dislikes.length - a.dislikes.length;
+
+            if (a.comments.length == b.comments.length)
+                return b.comments.length - a.comments.length;
+
+            return 0;
         });
 
         // Fetch older posts
         const olderPosts = await Post.find({
-            date: { $lte: new Date(Date.now() - 24*60*60*1000) } // Posts older than 24 hours
+            topics: req.params.topic,
+            date: { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Posts older than 24 hours
         }).sort({ date: -1 }); // Sort by date in descending order
-
+        
         const sortedPosts = recentPosts.concat(olderPosts);
 
         res.json(sortedPosts);
