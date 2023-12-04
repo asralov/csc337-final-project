@@ -1,3 +1,22 @@
+
+const aboutPg = document.getElementById("aboutPage");
+aboutPg.addEventListener('click', ()=>{
+    window.location.href = "./about.html"
+});
+
+const helpPg = document.getElementById("helpPage");
+helpPg.addEventListener('click', ()=>{
+    window.location.href = "./help.html"
+});
+
+const userSettings = document.getElementById("userSettings");
+userSettings.addEventListener('click', showSettings);
+
+function showSettings(){
+    // need to work on the function that would show the user settings 
+}
+
+
 function fetchPosts() {
     fetch('/posts/all')
         .then(res => res.json())

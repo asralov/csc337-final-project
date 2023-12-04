@@ -142,6 +142,15 @@ body {
   border: none;
 }
 
+#userPic:hover{
+  cursor: pointer;
+}
+
+#userSettings{
+  border: none;
+  background-color: transparent;
+}
+
 #post-pannel {
   display: flex;
   flex-direction: column;
