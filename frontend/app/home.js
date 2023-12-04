@@ -10,11 +10,26 @@ function fetchPosts() {
                 }
                 let image = posts[i].image;
                 if (image == undefined) {
-                    image = "./images/news_default.png";
+                    image = "/backend/resources/news_default.png";
                 }
-                let content = JSON.parse(posts[i].content);
-                console.log(content);
-                let article = `<div class="post-boxes">
+                let likePNG = "";
+                let dislikePNG = "";
+                checkIfLike(posts[i]._id, localStorage.user)
+                .then(hasUsed => {
+                    if (hasUsed.startsWith("NO")) {
+                        likePNG = "./images/like_nofill.png"
+                        dislikePNG = "./images/dislike_nofill.png"
+                    } else if (hasUsed.startsWith("FALSE")) {
+                        likePNG = "./images/like_nofill.png"
+                        dislikePNG = "./images/dislike_fill.png" 
+                    } else {
+                        likePNG = "./images/like_fill.png"
+                        dislikePNG = "./images/dislike_nofill.png"
+                    }
+                    console.log(likePNG);
+                    console.log(dislikePNG);
+                    let content = JSON.parse(posts[i].content);
+                    let article = `<div class="post-boxes">
                                 <div class="article">
                                 <h1>${posts[i].title}</h1>
                                 <i>${posts[i].date}</i><br>
@@ -28,24 +43,27 @@ function fetchPosts() {
                                 <p>${content.summary}</p>
                                 <h2>Bias</h2>
                                 <p>Need to implement</p>
+                                <div><a href="#" onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"<div>${posts[i].likes.length}</div>>
+                                            <img src=${likePNG} id="like-${i}" width="70px" height="100px"></a>
+                                    <a href="#" onclick="likeOrDislikePost('${posts[i]._id}', false, '${i}')"<div>${posts[i].dislikes.length}</div>>
+                                            <img src=${dislikePNG} id="dislike-${i}" width="70px" height="100px"></a>
+                                </div>
                                 </div>
                                 </div>`
-                articles += article;
+                                articles += article;
+                                document.getElementById('post-pannel').innerHTML = articles;
+                })
+                .catch(error => {
+                    console.error("Error checking likes:", error);
+                });
+                
             }
 
-            // const postsHTML = posts.map(post => {
-            //     return `<h2>${post.title}</h2>
-            //             <p>${post.content}</p>
-            //             <p>Likes: ${post.likes.length} | Dislikes: ${post.dislikes.length}</p>
-            //             <p>Topics: ${post.topics.join(', ')}</p>
-            //             <span><input type="button" value="Like" onclick="likeOrDislikePost('${post._id}', true)">
-            //             <input type="button" value="Dislike" onclick="likeOrDislikePost('${post._id}', false)"></span>`;
-            // }).join('');
-            document.getElementById('post-pannel').innerHTML = articles;
+            
         });
 }
 
-function likeOrDislikePost(contentId, like) {
+function likeOrDislikePost(contentId, like, index) {
     var data = {
         'typeOfContent': 'Post',
         'contentId': contentId,
@@ -59,8 +77,26 @@ function likeOrDislikePost(contentId, like) {
     })
         .then(res => res.json())
         .then(post => {
+            if (like) {
+                let img = document.getElementById("like-"+index);
+                img.src = "./images/like_fill.png";
+            }
             fetchPosts();
         });
 }
-
+function checkIfLike(postID, username) {
+    return new Promise((resolve, reject) => {
+        fetch('/likes/check/'+postID+'/'+username)
+            .then((response) => {
+                return response.text();
+            })
+            .then((resp) => {
+                resolve(resp);
+            })
+            .catch((error) => {
+                console.error("Error checking likes:", error);
+                reject(error);
+            });
+    });
+}
 fetchPosts();

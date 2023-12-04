@@ -59,6 +59,7 @@ function loginUser() {
     let username = document.getElementById('user').value;
     let password = document.getElementById('password').value;
     let data = { username: username, password: password };
+    localStorage.setItem("user", username);
 
     console.log(data);
 
