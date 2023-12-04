@@ -6,7 +6,7 @@ const Post = require('../models/Post');
 router.post('/add', async (req, res) => {
     try {
         const post = new Post(req.body);
-        
+
         await post.save();
         res.status(201).json({ message: 'Post created successfully', _id: post._id });
     } catch (error) {
@@ -14,7 +14,7 @@ router.post('/add', async (req, res) => {
     }
 });
 
-router.get('/:topic/', async (req, res) => {
+router.get('/topic/:topic', async (req, res) => {
     try {
         // Fetch day old posts 
         const recentPosts = await Post.find({ 
@@ -41,7 +41,6 @@ router.get('/:topic/', async (req, res) => {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
-
 
 // Edit an existing post
 router.post('/edit/:id', async (req, res) => {
@@ -99,7 +98,6 @@ router.get('/all', async (req, res) => {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
-
 
 // Get a single post by ID
 router.get('/:id', async (req, res) => {
