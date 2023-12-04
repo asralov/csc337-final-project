@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
     title: String,
     content: String,
-    image: String,
+    image: { type: String, default: '../resources/news_default.png' }, // Image URL
     date: { type: Date, default: Date.now() }, // Date of post creation
     topics: [String], // Array of topics/tags (see topics.txt)
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Like' }],
