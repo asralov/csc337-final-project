@@ -24,7 +24,7 @@ app.use(express.json());
 app.use('/uploads', authenticator.authenticate, express.static('uploads'), uploadRouter);
 app.use('/comments', authenticator.authenticate, commentsRouter);
 app.use('/likes', authenticator.authenticate, likesRouter);
-app.use('/posts', postsRouter);
+app.use('/posts', authenticator.authenticate, postsRouter);
 app.use('/users', usersRouter);
 app.use('/app/*', authenticator.authenticate);
 app.get('/app/*', (req, res, next) => {
