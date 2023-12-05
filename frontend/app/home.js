@@ -14,8 +14,8 @@ userSettings.addEventListener('click', showSettings);
 
 function showSettings(){
     // need to work on the function that would show the user settings 
+    
 }
-
 
 function fetchPosts() {
     fetch('/posts/all')
@@ -98,6 +98,13 @@ function fetchUserDetails() {
         });
 }
 
+/**
+ * Toggles the like or dislike status of a post.
+ * 
+ * @param {string} contentId - The ID of the post content.
+ * @param {boolean} like - Indicates whether the post should be liked or disliked.
+ * @param {number} index - The index of the post in the list.
+ */
 function likeOrDislikePost(contentId, like, index) {
     var data = {
         'typeOfContent': 'Post',
@@ -116,7 +123,7 @@ function likeOrDislikePost(contentId, like, index) {
                 let img = document.getElementById("like-" + index);
                 img.src = "./images/like_fill.png";
             }
-            
+
             fetchPosts();
         });
 }
@@ -137,5 +144,21 @@ function checkIfLike(postID, username) {
     });
 }
 
+/**
+ * Registers event handlers for topic buttons.
+ */
+function registerTopicButtonHandlers() {
+    let topicButtons = document.getElementsByClassName("topic-button");
+    for (let i = 0; i < topicButtons.length; i++) {
+        topicButtons[i].onclick = function () {
+            let topic = topicButtons[i].textContent.trim();
+
+            // TODO: change this to redirect to a page with the topic as a parameter
+            // Probably just recycle the fetchPosts function with added params
+        }
+    }
+}
+
+registerTopicButtonHandlers();
 fetchUserDetails();
 fetchPosts();
