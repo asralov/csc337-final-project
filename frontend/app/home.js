@@ -312,7 +312,6 @@ function createPosts(posts) {
     }
 }
 
-registerHandlers();
 function getFirstName(user) {
     fetch('/users/fname/'+user)
     .then((result) => {
@@ -364,6 +363,7 @@ function editLName(user) {
         }
     });
 }
-registerTopicButtonHandlers();
+
+registerHandlers();
 fetchUserDetails();
 fetchPosts();
