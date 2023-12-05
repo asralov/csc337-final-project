@@ -56,20 +56,22 @@ function fetchPosts() {
                                 <div class="article">
                                 <h1>${posts[i].title}</h1>
                                 <i>${posts[i].date}</i><br>
-                                <i>Topics:${topics}</i><hr>
+                                <i>Topics:${topics}</i><!--<hr>
                                 <img src="${image}" width="700px" height="450px">
-                                <h3 id="img-source">Source: (Need to implement)</h3>
+                                <h3 id="img-source">Source: (Need to implement)</h3>-->
                                 <hr>
                                 <h2>Background</h2>
                                 <p>${content.background}</p>
                                 <h2>Summary</h2>
                                 <p>${content.summary}</p>
                                 <h2>Bias</h2>
+                                
                                 <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true)"
-                                             src=${likePNG} id="like-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].likes.length}</div>
+                                             src=${likePNG} id="like-${i}" class="likeButton"><div>${posts[i].likes.length}</div>
                                      <img onclick="likeOrDislikePost('${posts[i]._id}', false)"
-                                             src=${dislikePNG} id="dislike-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].dislikes.length}</div>
+                                             src=${dislikePNG} id="dislike-${i}" class="likeButton"><div>${posts[i].dislikes.length}</div>
                                 </div>
+                                
                                 <div class="comments" id="commentLabel-${posts[i]._id}>
                                     <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
                                 </div>
@@ -160,8 +162,8 @@ function showComments(postID) {
     // document.getElementById('commentLabel-'+postID).innerHTML = 
     // `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Hide Comments</span>`;
     
-    content = `<div id="comments-${postID}"><input id="commentBox-${postID}" type="text" placeholder="Post a comment...">
-                    <button onclick="addComment('${postID}');" style="width: 50px; height: 30px">Post!</button>`;
+    content = `<div id="comments-${postID}"><input class="inputComment" id="commentBox-${postID}" type="text" placeholder=" Post a comment...">
+                    <button class="inputCommentButton" onclick="addComment('${postID}');">Post!</button>`;
     fetch('/comments/get/'+postID)
         .then((response) => {
             return response.json();
@@ -171,9 +173,14 @@ function showComments(postID) {
             } else {
                 for (let i = 0; i < comments.length; i++) {
                     console.log(comments[i]);
-                    content += `<div>
-                                <div>@${comments[i].username}  ${getTime(comments[i].createdAt)}</div>
-                                <div>${comments[i].content}</div>
+                    content += `<div class="commentBox">
+                                <div class="commentHead">@<span class="usernamePost"><strong>${comments[i].username}</strong></span> ~ <span class="postDate"><em>${getTime(comments[i].createdAt)}</em></span></div>
+                                <div class="commentContent">
+                                    ${comments[i].content}
+                                    <div class="reply">
+                                        <input class="reply" type="text" placeholder=" reply...">
+                                    </div>
+                                </div>
                                 </div>`
                 }
             }
