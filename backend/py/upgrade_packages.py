@@ -1,3 +1,6 @@
+# Author: Ryder Rhoads
+# File: update_packages.py
+# Description: This file updates all packages in the virtual environment.
 import pkg_resources
 from subprocess import call
 
