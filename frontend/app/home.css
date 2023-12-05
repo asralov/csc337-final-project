@@ -283,9 +283,16 @@ body {
 
 .searchBtn {
   border: none;
+  background-color: transparent;
   border-radius: 100%;
   height: 2.5vh;
 }
+
+.searchBtn img{
+  filter: invert(100%);
+  cursor: pointer;
+}
+
 
 .userN {
   background: transparent;
