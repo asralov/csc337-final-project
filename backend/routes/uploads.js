@@ -57,7 +57,7 @@ router.post('/profilePicture', dynamicUpload.single('profilePicture'), async (re
             user.profilePicture = newPath;
             await user.save();
 
-            res.redirect('/users/' + user.username);
+            res.redirect('/app/home.html');
         });
 });
 

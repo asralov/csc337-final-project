@@ -224,6 +224,10 @@ function showUserSettings() {
                                     gap: 4%;">
                         <img src=${userPic} id="userPicSettings">   
                         <h2>@${userName}</h2>
+                        <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
+                            <input type="file" name="profilePicture" id="uploadFile">
+                            <button type="submit">Upload</button>
+                        </form>
                         </div><br>
                         <div>
                         <label for="fName">First Name</label>
@@ -362,6 +366,26 @@ function editLName(user) {
             console.log("user updated successfully")
         }
     });
+}
+
+function uploadProfilePicture() {
+    let file = document.getElementById('uploadFile').files[0];
+    let data = new FormData();
+    data.append('file', file);
+
+    let p = fetch('/uploads/profilePicture', {
+        method: 'POST',
+        body: data
+    });
+
+    // p.then((response) => {
+    //     console.log("here");
+    //     hideUserSettings();
+    //     showUserSettings()
+
+    // }).catch((error) => {
+    //     console.log(error);
+    // });
 }
 
 registerHandlers();
