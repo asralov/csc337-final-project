@@ -18,7 +18,7 @@ topic_list = ["business", "entertainment", "health", "politics", "science", "spo
 def test_stories():
     stories = SearchTopic(topics=["israel hamas conflict"], similarity_threshold=0.7)
     summarizes = stories.export_GPT_summaries()
-    send_stories_to_db(summarizes, "Israel")
+    send_stories_to_db(summarizes)
 
 
 def get_keywords(file="backend/py/keyword.txt"):
@@ -52,23 +52,20 @@ def send_stories_to_db(stories):
                 "imageSource": imageSource
             }
             data=json.dumps(data)
-            print(data)
-            #requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
+            requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
         except Exception as e:
             print(f"Error sending story to JSON: {e}")
             logging.error(story)
 
-
-# def main():
-#    logging.info("Script started")
-#    keywords=get_keywords()
-#    for keyword in keywords:
-#        stories = SearchTopic(topic=keyword,similarity_threshold=0.7)
-#        summarizes=stories.export_GPT_summaries()
-#        send_stories_to_db(summarizes,keyword)
-#    end_time = datetime.now()
-#    logging.info("Script finished")
-#    logging.info(f"Total runtime: {end_time - start_time}")
+def main():
+    logging.info("Script started")
+    keywords=get_keywords()
+    stories = SearchTopic(topic=keywords,similarity_threshold=0.7)
+    summarizes=stories.export_GPT_summaries()
+    send_stories_to_db(summarizes)
+    end_time = datetime.now()
+    logging.info("Script finished")
+    logging.info(f"Total runtime: {end_time - start_time}")
 
 if __name__ == "__main__":
     test_stories()

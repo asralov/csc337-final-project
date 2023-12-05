@@ -1,6 +1,6 @@
 import json
 import os
-import openai
+from openai import OpenAI
 import re
 from newspaper import Article
 from newspaper import Config
@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Initalize API keys and other variables
 news_api_key = os.environ.get("NEWSAPI_KEY")
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-openai.api_key = openai_api_key
+client = OpenAI(api_key=openai_api_key)
 
 
 class SearchTopic:
@@ -30,7 +30,6 @@ class SearchTopic:
         newsapi = NewsApiClient(api_key=news_api_key)
         # loop set so we can add more articles if needed
         for term in self._terms:
-            print(term)
             api_response = newsapi.get_everything(
                 q=term,
                 language="en",
@@ -106,32 +105,36 @@ class SearchTopic:
         return article_groups
 
     def article_summaries(self, articles):
-        """Function to generate summaries for articles"""
+        """Function to generate summaries for articles using GPT-3.5-turbo-16k"""
         summaries = []
         for article in articles:
-            # Correctly format the f-string
+            # Prepare the prompt with article title and text
             prompt = (f'Summarize the following article in the most concise way possible, highlighting the main ideas '
                     f'and key points. The summary should also identify any notable bias in a few sentences.\n\n'
                     f'Title: {article["title"]}\n\n'
                     f'Text: {article["text"]}')
 
             try:
-                response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-16k",
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": prompt},
-                ],
-                )
-                if response.get("choices"):
-                    summaries.append(response["choices"][0].get("message", {"content": ""})["content"].strip())
+                # API call to OpenAI to generate summary
+                response = client.chat.completions.create(model="gpt-3.5-turbo-16k",
+                                                        messages=[
+                                                            {"role": "system", "content": "You are a helpful assistant."},
+                                                            {"role": "user", "content": prompt},
+                                                        ])
+
+                # Access the 'choices' attribute of the response object
+                if hasattr(response, 'choices') and len(response.choices) > 0:
+                    # Extract and append the content of the first choice's message
+                    content = response.choices[0].message.content if hasattr(response.choices[0].message, 'content') else ""
+                    summaries.append(content.strip())
                 else:
                     print("No content in response choices.")
 
             except Exception as e:
                 print(f"Error generating summary: {e}")
-                
+
         return summaries
+
 
     def create_prompt(self, articles):
         """Function to create a prompt for GPT-3.5 that includes summaries of provided articles."""
@@ -180,19 +183,17 @@ class SearchTopic:
     def generate_summary(self, prompt):
         """Function to generate summaries using GPT-3.5-turbo-16k"""
         try:
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-16k",
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": prompt},
-                ],
-            )
-            if response.get("choices"):
-                return (
-                    response["choices"][0]
-                    .get("message", {"content": ""})["content"]
-                    .strip()
-                )
+            response = client.chat.completions.create(model="gpt-3.5-turbo-16k",
+                                                    messages=[
+                                                        {"role": "system", "content": "You are a helpful assistant."},
+                                                        {"role": "user", "content": prompt},
+                                                    ])
+
+            # Access the 'choices' attribute of the response object
+            if hasattr(response, 'choices') and len(response.choices) > 0:
+                # Extract the content from the first choice's message
+                content = response.choices[0].message.content if hasattr(response.choices[0].message, 'content') else ""
+                return content.strip()  # Return the content after stripping any leading/trailing whitespace
             else:
                 print("No content in response choices.")
                 return ""
@@ -200,4 +201,6 @@ class SearchTopic:
         except Exception as e:
             print(f"Error generating summary: {e}")
             return ""
+
+
 
