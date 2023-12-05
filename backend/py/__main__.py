@@ -1,5 +1,8 @@
-from Topics import SearchTopic
-import json
+# Author: Ryder Rhoads
+# File: __main__.py
+# Description: This file reads a txt file with general keywords, searches for articles on those topics, 
+    # then summarizes them using GPT and sends them to the database.
+from topics import SearchTopic
 import logging
 import requests
 from datetime import datetime
@@ -79,4 +82,4 @@ def main():
     logging.info(f"Total runtime: {end_time - start_time}")
 
 if __name__ == "__main__":
-    test_stories()
+    main()
