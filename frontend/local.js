@@ -6,13 +6,16 @@ function addPost() {
     var background = document.getElementById("postbackground").value;
     var summary = document.getElementById("postsummary").value;
     var bias = document.getElementById("postbias").value;
+    var topics = document.getElementById("posttopics").value;
+    var urls = document.getElementById("posturls").value;
     var url = '/posts/add';
     var data = {
         'title': title,
         'background': background,
         'summary' : summary,
         'bias' : bias,
-        'topics': ['Business', 'Technology']
+        'topics': topics,
+        'urls' : urls
     };
 
     fetch(url, {
