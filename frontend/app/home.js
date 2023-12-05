@@ -191,6 +191,17 @@ function hideComment(postID) {
     }
 }
 
+function search() {
+    const query = document.getElementById('search-box').value
+    fetch('/posts/search/'+query)
+    .then((response) => {
+        console.log(response);
+        return response.json();
+    }).then((result) => {
+        createPosts(result);
+    })
+}
+
 function createPosts(posts) {
     let articles = ""
     if (posts.length == 0) document.getElementById('post-pannel').innerHTML = articles;
@@ -198,10 +209,6 @@ function createPosts(posts) {
         let topics = ""
         for (let j = 0; j < posts[i].topics.length; j++) {
             topics += posts[i].topics[j] + " ";
-        }
-        let image = posts[i].image;
-        if (image == undefined) {
-            image = "/backend/resources/news_default.png";
         }
         let likePNG = "";
         let dislikePNG = "";
@@ -224,9 +231,7 @@ function createPosts(posts) {
                         <div class="article">
                         <h1>${posts[i].title}</h1>
                         <i>${posts[i].date}</i><br>
-                        <i>Topics:${topics}</i><!--<hr>
-                        <img src="${image}" width="700px" height="450px">
-                        <h3 id="img-source">Source: (Need to implement)</h3>-->
+                        <i>Topics:${topics}</i>
                         <hr>
                         <h2>Background</h2>
                         <p>${content.background}</p>

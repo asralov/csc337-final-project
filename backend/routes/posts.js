@@ -113,6 +113,7 @@ router.get('/all', async (req, res) => {
 
 router.get("/search/:query", async (req, res) => {
     try {
+        console.log("hello");
         const regexQuery = { $regex: req.params.query, $options: "i" };
         const posts = await Post.find({
             $or: [
@@ -127,7 +128,6 @@ router.get("/search/:query", async (req, res) => {
             const bScore = b.likes.length - b.dislikes.length + b.comments.length;
             return bScore - aScore;
         });
-
         res.json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching posts' });
