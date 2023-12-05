@@ -1,3 +1,12 @@
+/**
+ * Authors: Ryder Rhoads and Michael Evans
+ * File: server.js
+ * Description: Main entry point for the application.
+ * This script sets up the server, connects to MongoDB, and configures middleware and routes for handling 
+ * different aspects of the application like user authentication, file uploads, comments, likes, posts, 
+ * and user management.
+ */
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');

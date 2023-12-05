@@ -1,3 +1,27 @@
+/* Authors: Ryder Rhoads and Michael Evans
+ * File: authConfig.js
+ * Description: This file creates a custom authentication system for managing user sessions in the application. 
+ * It includes functions to add and remove sessions, a scheduled task to clean up expired sessions, and middleware 
+ * for authenticating requests based on sessions or tokens.
+ *
+ * Key Components:
+ * - sessions: An object that stores active user sessions, keyed by username.
+ * 
+ * Functions:
+ * - addSession(username): Adds a new session for a given user and returns the session ID.
+ * - removeSessions(): Regularly invoked function to clear expired sessions from the 'sessions' object.
+ * - removeSession(sid): Removes a specific session based on the session ID.
+ * - authenticate(req, res, next): Middleware to authenticate requests. It supports both token-based 
+ *   and cookie-based authentication methods.
+ * 
+ * The 'authenticate' middleware can be used in Express routes to secure endpoints, ensuring that only 
+ * authenticated users can access them. The session handling functions help manage user sessions, providing 
+ * a basic level of security and user tracking.
+ *
+ * A scheduled interval is set to invoke the 'removeSessions' function every 2000 milliseconds (2 seconds), 
+ * ensuring that expired sessions are regularly cleaned up.
+ */
+
 const express = require('express');
 const router = express.Router();
 

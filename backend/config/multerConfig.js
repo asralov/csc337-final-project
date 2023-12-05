@@ -1,3 +1,19 @@
+/* Authors: Ryder Rhoads and Michael Evans
+ * File: multerConfig.js
+ * Description: This file configures 'multer', a middleware for handling multipart/form-data, 
+ * primarily used for uploading files. The configuration specifies the storage location, file 
+ * naming convention, file size limits, and a filter for accepting only image files (jpg, jpeg, png).
+ *
+ * Key Components:
+ * - fileFilter: Function to restrict uploads to only image files (jpg, jpeg, png). If a non-image file 
+ *   is uploaded, it returns an error.
+ * - storage: Multer disk storage configuration to define the destination and filename for uploaded files. 
+ *   The filename includes a unique suffix and retains the original file extension.
+ * - upload: The multer instance with defined storage, file size limit (100 MB), and file filter. This 
+ *   instance is used as middleware in routes where file uploading is required.
+ *
+ * The configured multer instance is then exported and can be used in Express routes to handle file uploads.
+ */
 const multer = require('multer');
 const path = require('path');
 

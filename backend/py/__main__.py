@@ -1,19 +1,24 @@
 # Author: Ryder Rhoads
 # File: __main__.py
-# Description: This file reads a txt file with general keywords, searches for articles on those topics, 
-    # then summarizes them using GPT and sends them to the database.
+# Description: This script automates the process of fetching and summarizing news articles. It reads 
+# keywords from a text file, searches for articles related to these topics, summarizes them using GPT, 
+# and then sends the summaries to a database. This script integrates various components like custom 
+# search logic, GPT-based summarization, and database interaction.
+
+
 from topics import SearchTopic
 import logging
 import requests
 from datetime import datetime
 
-# Set up logging
+# Set up logging to track the script's operation and any issues encountered
 logging.basicConfig(
     filename="app.log",
     level=logging.INFO,
     format="%(asctime)s:%(levelname)s:%(message)s",
 )
 start_time = datetime.now()
+# List of general topics to filter by
 topic_list = ["business", "entertainment", "health", "politics", "science", "sports", "technology"]
 
 
@@ -23,13 +28,13 @@ def test_stories():
     summarizes = stories.export_GPT_summaries()
     send_stories_to_db(summarizes)
 
-
+# Function to read keywords from a file, used to guide the article search
 def get_keywords(file="backend/py/keyword.txt"):
     with open(file, "r") as f:
         keywords = f.read().splitlines()
     return keywords
 
-
+# Function to send summarized stories to the database
 def send_stories_to_db(stories):
     for story in stories:
         try:
@@ -71,6 +76,7 @@ def send_stories_to_db(stories):
             print(f"Error sending story to JSON: {e}")
             logging.error(story)
 
+# Main function that orchestrates the reading of keywords, fetching and summarizing articles, and sending them to the database
 def main():
     logging.info("Script started")
     keywords=get_keywords()

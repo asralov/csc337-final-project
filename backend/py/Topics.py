@@ -1,7 +1,9 @@
 # Author: Ryder Rhoads
 # File: Topics.py
-# Description: This file contains the SearchTopic class, which is used to search for articles on a given topic, 
-    # and summarize them using GPT.
+# Description: This file defines the SearchTopic class, which facilitates the searching of news articles on 
+# specific topics, summarizing these articles using OpenAI's GPT model, and organizing the information. 
+# It leverages external APIs and natural language processing techniques to identify, group, and summarize 
+# relevant news articles.
 import json
 import os
 from openai import OpenAI
