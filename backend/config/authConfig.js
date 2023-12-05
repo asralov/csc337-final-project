@@ -53,20 +53,28 @@ function removeSession(sid) {
  * @param {Function} next - Express next middleware function.
  */
 function authenticate(req, res, next) {
-    let cookies = req.cookies;
-    console.log(req.cookies);
-
-    if (cookies && cookies.login && cookies.login.username) {
-        console.log(cookies.login);
-        let username = cookies.login.username;
-
-        if (sessions[username] && sessions[username].sid == cookies.login.sessionID) {
+    // Token-based authentication
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token) {
+        if (token == 'Python_Script_Secret_Key') {
             next();
         } else {
             res.redirect('/');
         }
     } else {
-        res.redirect('/');
+        // Cookie-based authentication (as you already implemented)
+        let cookies = req.cookies;
+        if (cookies && cookies.login && cookies.login.username) {
+            let username = cookies.login.username;
+            if (sessions[username] && sessions[username].sid == cookies.login.sessionID) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        } else {
+            res.redirect('/');
+        }
     }
 }
 

@@ -45,14 +45,25 @@ def send_stories_to_db(stories):
 
             data = {
                 "title": title,
-                "content": {"background": background, "summary": summary, "bias": bias},
+                "content": {
+                    "background": background, 
+                    "summary": summary, 
+                    "bias": bias
+                },
                 "urls": urls,
                 "topics": topics,
                 "imageURL": imageURL,
                 "imageSource": imageSource
             }
-            data=json.dumps(data)
-            requests.post("http://losethebias.com/post/add",json=data)  # Add the story to the db
+            print("Sending data to the server:", data)
+            headers = {
+                'Authorization': 'Bearer Python_Script_Secret_Key'
+            }
+            response = requests.post("http://localhost:80/posts/add", json=data, headers=headers)  # Add the story to the db
+            print("URL:", response.url)
+            print("Status Code:", response.status_code)
+            print("Response Text:", response.text)
+
         except Exception as e:
             print(f"Error sending story to JSON: {e}")
             logging.error(story)

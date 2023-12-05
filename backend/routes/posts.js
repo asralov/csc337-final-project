@@ -2,15 +2,22 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-// Add a new post
+// Add new post 
 router.post('/add', async (req, res) => {
     const postData = req.body;
     try {
+        console.log(postData);
         const post = new Post({
             title: postData.title,
-            content: { background: postData.background, summary: postData.summary, bias: postData.bias },
+            content: {
+                background: postData.content.background,
+                summary: postData.content.summary,
+                bias: postData.content.bias
+            },
             topics: postData.topics,
-            urls: postData.urls
+            urls: postData.urls,
+            imageURL: postData.imageURL,
+            imageSource: postData.imageSource
         });
         await post.save();
         res.status(201).json({ message: 'Post created successfully', _id: post._id });
@@ -19,6 +26,7 @@ router.post('/add', async (req, res) => {
         res.status(500).json({ message: 'Error adding post', error: error.message });
     }
 });
+
 
 
 router.get('/topic/:topic', async (req, res) => {
