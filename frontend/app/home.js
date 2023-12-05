@@ -207,6 +207,35 @@ function search() {
     })
 }
 
+function showUserSettings() {
+    let userPic = document.getElementById('userPic').src;
+    document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
+                                                        <button onclick="search()">Search</button>
+                                                        <button id="userSettings" onclick="hideUserSettings();">
+                                                        <img src="./images/default.png" id="userPic">
+                                                        </button>`
+    let content = `<div id="userSettingsBox">
+                    <button id="close" onclick="hideUserSettings();">Close</button>
+                    <img src=${userPic} id="userPicSettings">
+                    <label for="fName">First Name</label>
+                    <input type="text" name="fName" placeholder="First Name">
+                    <label for="lName">Last Name</label>
+                    <input type="text" name="lName" placeholder="Last Name">
+                    </div>`;
+    
+    document.getElementById('top-panel').innerHTML += content;
+}
+
+function hideUserSettings() {
+    console.log("here");
+    document.getElementById('userSettingsBox').remove();
+    document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
+                                                        <button onclick="search()">Search</button>
+                                                        <button id="userSettings" onclick="showUserSettings();">
+                                                        <img src="./images/default.png" id="userPic">
+                                                        </button>`
+}
+
 function createPosts(posts) {
     let articles = ""
     if (posts.length == 0) document.getElementById('post-pannel').innerHTML = articles;
