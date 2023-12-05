@@ -1,20 +1,5 @@
-const aboutPg = document.getElementById("aboutPage");
-aboutPg.addEventListener('click', ()=>{
-    window.location.href = "./about.html"
-});
 
-const helpPg = document.getElementById("helpPage");
-helpPg.addEventListener('click', ()=>{
-    window.location.href = "./help.html"
-});
 
-const userSettings = document.getElementById("userSettings");
-userSettings.addEventListener('click', showSettings);
-
-function showSettings(){
-    // need to work on the function that would show the user settings 
-    
-}
 
 function fetchPosts() {
     fetch('/posts/all')
@@ -209,28 +194,41 @@ function search() {
 
 function showUserSettings() {
     let userPic = document.getElementById('userPic').src;
+    let userName = localStorage.getItem('user');
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
-                                                        <button onclick="search()">Search</button>
-                                                        <button id="userSettings" onclick="hideUserSettings();">
-                                                        <img src="./images/default.png" id="userPic">
+                                                            <button onclick="search()"><i class='bx bx-search-alt'></i></button>
+                                                            <button id="userSettings" onclick="hideUserSettings();">
+                                                            <img src="./images/default.png" id="userPic">
                                                         </button>`
     let content = `<div id="userSettingsBox">
-                    <button id="close" onclick="hideUserSettings();">Close</button>
-                    <img src=${userPic} id="userPicSettings">
-                    <label for="fName">First Name</label>
-                    <input type="text" name="fName" placeholder="First Name">
-                    <label for="lName">Last Name</label>
-                    <input type="text" name="lName" placeholder="Last Name">
+                        <div>
+                        <button id="close" onclick="hideUserSettings();"><i class='bx bx-x'></i></button>
+                        </div>
+                        <div style="display: flex;
+                                    gap: 4%;">
+                        <img src=${userPic} id="userPicSettings">   
+                        <h2>@${userName}</h2>
+                        </div><br>
+                        <div>
+                        <label for="fName">First Name</label>
+                        <input class="userN" type="text" name="fName">
+                        <button class="addBtn"><i class='bx bx-plus' ></i></button>
+                        </div><br>
+                        <div>
+                        <label for="lName">Last Name</label>
+                        <input class="userN" type="text" name="lName">
+                        <button class="addBtn"><i class='bx bx-plus' ></i></button>
+                        </div><br>
                     </div>`;
     
-    document.getElementById('top-panel').innerHTML += content;
+    document.body.innerHTML += content;
 }
 
 function hideUserSettings() {
     console.log("here");
     document.getElementById('userSettingsBox').remove();
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
-                                                        <button onclick="search()">Search</button>
+                                                        <button onclick="search()"><i class='bx bx-search-alt'></i></button>
                                                         <button id="userSettings" onclick="showUserSettings();">
                                                         <img src="./images/default.png" id="userPic">
                                                         </button>`
