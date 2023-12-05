@@ -222,6 +222,8 @@ function showUserSettings() {
                     </div>`;
     
     document.body.innerHTML += content;
+
+    fetchUserDetails();
 }
 
 function hideUserSettings() {
@@ -232,6 +234,8 @@ function hideUserSettings() {
                                                         <button id="userSettings" onclick="showUserSettings();">
                                                         <img src="" id="userPic">
                                                         </button>`
+
+    fetchUserDetails();
 }
 
 function createPosts(posts) {
