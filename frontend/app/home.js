@@ -21,69 +21,8 @@ function fetchPosts() {
     fetch('/posts/all')
         .then(res => res.json())
         .then(posts => {
-            let articles = ""
-            for (let i = 0; i < posts.length; i++) {
-                let topics = ""
-                for (let j = 0; j < posts[i].topics.length; j++) {
-                    topics += posts[i].topics[j] + " ";
-                }
-                let image = posts[i].image;
-                if (image == undefined) {
-                    image = "/backend/resources/news_default.png";
-                }
-                let likePNG = "";
-                let dislikePNG = "";
-                
-                checkIfLike(posts[i]._id, localStorage.user)
-                
-                .then(hasUsed => {
-                    if (hasUsed.startsWith("NO")) {
-                        likePNG = "./images/like_nofill.png"
-                        dislikePNG = "./images/dislike_nofill.png"
-                    } else if (hasUsed.startsWith("FALSE")) {
-                        likePNG = "./images/like_nofill.png"
-                        dislikePNG = "./images/dislike_fill.png" 
-                    } else {
-                        likePNG = "./images/like_fill.png"
-                        dislikePNG = "./images/dislike_nofill.png"
-                    }
-                    let content = JSON.parse(posts[i].content);
-                    let article = `<div class="post-boxes" id="post-${posts[i]._id}">
-                                <div class="article">
-                                <h1>${posts[i].title}</h1>
-                                <i>${posts[i].date}</i><br>
-                                <i>Topics:${topics}</i><!--<hr>
-                                <img src="${image}" width="700px" height="450px">
-                                <h3 id="img-source">Source: (Need to implement)</h3>-->
-                                <hr>
-                                <h2>Background</h2>
-                                <p>${content.background}</p>
-                                <h2>Summary</h2>
-                                <p>${content.summary}</p>
-                                <h2>Bias</h2>
-                                
-                                <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true)"
-                                             src=${likePNG} id="like-${i}" class="likeButton"><div>${posts[i].likes.length}</div>
-                                     <img onclick="likeOrDislikePost('${posts[i]._id}', false)"
-                                             src=${dislikePNG} id="dislike-${i}" class="likeButton"><div>${posts[i].dislikes.length}</div>
-                                </div>
-                                
-                                <div class="comments" id="commentLabel-${posts[i]._id}">
-                                    <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
-                                </div>
-                                </div>
-                                </div>`
-                                articles += article;
-                                document.getElementById('post-pannel').innerHTML = articles;
-                })
-                .catch(error => {
-                    console.error("Error checking likes:", error);
-                });
-                
-            }
-
-            
-        });
+            createPosts(posts);
+    });
 }
 
 function fetchUserDetails() {
@@ -143,8 +82,17 @@ function registerTopicButtonHandlers() {
     let topicButtons = document.getElementsByClassName("topic-button");
     for (let i = 0; i < topicButtons.length; i++) {
         topicButtons[i].onclick = function () {
-            let topic = topicButtons[i].textContent.trim();
-
+            let topic = topicButtons[i].textContent.trim().toLocaleLowerCase();
+            fetch('/posts/topic/'+topic)
+                .then((response) => {
+                    console.log(response);
+                    return response.json();
+                }).then((posts) => {
+                    for (let i = 0; i < posts.length; i++) {
+                        console.log(posts[i]);
+                    }
+                    createPosts(posts);
+                });
             // TODO: change this to redirect to a page with the topic as a parameter
             // Probably just recycle the fetchPosts function with added params
         }
@@ -240,6 +188,70 @@ function hideComment(postID) {
     `<span style="font-size: 1.8vh" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
     if (document.getElementById('comments-'+postID) != undefined) {
         document.getElementById('comments-'+postID).remove();
+    }
+}
+
+function createPosts(posts) {
+    let articles = ""
+    if (posts.length == 0) document.getElementById('post-pannel').innerHTML = articles;
+    for (let i = 0; i < posts.length; i++) {
+        let topics = ""
+        for (let j = 0; j < posts[i].topics.length; j++) {
+            topics += posts[i].topics[j] + " ";
+        }
+        let image = posts[i].image;
+        if (image == undefined) {
+            image = "/backend/resources/news_default.png";
+        }
+        let likePNG = "";
+        let dislikePNG = "";
+        
+        checkIfLike(posts[i]._id, localStorage.user)
+        
+        .then(hasUsed => {
+            if (hasUsed.startsWith("NO")) {
+                likePNG = "./images/like_nofill.png"
+                dislikePNG = "./images/dislike_nofill.png"
+            } else if (hasUsed.startsWith("FALSE")) {
+                likePNG = "./images/like_nofill.png"
+                dislikePNG = "./images/dislike_fill.png" 
+            } else {
+                likePNG = "./images/like_fill.png"
+                dislikePNG = "./images/dislike_nofill.png"
+            }
+            let content = posts[i].content;
+            let article = `<div class="post-boxes" id="post-${posts[i]._id}">
+                        <div class="article">
+                        <h1>${posts[i].title}</h1>
+                        <i>${posts[i].date}</i><br>
+                        <i>Topics:${topics}</i><!--<hr>
+                        <img src="${image}" width="700px" height="450px">
+                        <h3 id="img-source">Source: (Need to implement)</h3>-->
+                        <hr>
+                        <h2>Background</h2>
+                        <p>${content.background}</p>
+                        <h2>Summary</h2>
+                        <p>${content.summary}</p>
+                        <h2>Bias</h2>
+                        <p>${content.bias}</p>
+                        <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true)"
+                                        src=${likePNG} id="like-${i}" class="likeButton"><div>${posts[i].likes.length}</div>
+                                <img onclick="likeOrDislikePost('${posts[i]._id}', false)"
+                                        src=${dislikePNG} id="dislike-${i}" class="likeButton"><div>${posts[i].dislikes.length}</div>
+                        </div>
+                        
+                        <div class="comments" id="commentLabel-${posts[i]._id}">
+                            <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
+                        </div>
+                        </div>
+                        </div>`
+                        articles += article;
+                        document.getElementById('post-pannel').innerHTML = articles;
+        })
+        .catch(error => {
+            console.error("Error checking likes:", error);
+        });
+        
     }
 }
 registerTopicButtonHandlers();

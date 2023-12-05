@@ -4,10 +4,14 @@ const Post = require('../models/Post');
 
 // Add a new post
 router.post('/add', async (req, res) => {
-    const post = req.body;
+    const postData = req.body;
     try {
-        const post = new Post({title: this.post.title, content: {background: this.post.background, summary: this.post.summary,
-                                         bias: this.post.bias}, topics: this.post.topics});
+        const post = new Post({
+            title: postData.title,
+            content: { background: postData.background, summary: postData.summary, bias: postData.bias },
+            topics: postData.topics,
+            urls: postData.urls
+        });
         await post.save();
         res.status(201).json({ message: 'Post created successfully', _id: post._id });
     } catch (error) {
@@ -16,27 +20,30 @@ router.post('/add', async (req, res) => {
     }
 });
 
+
 router.get('/topic/:topic', async (req, res) => {
     try {
         // Fetch day old posts 
+        console.log()
         const recentPosts = await Post.find({ 
             topics: req.params.topic,
-            date: { $gt: new Date(Date.now() - 24*60*60*1000) }
-        }).sort({
-            'likes.length': -1, 
-            'dislikes.length': -1, 
-            'comments.length': -1, 
-        });
+            date: { $gt: new Date(Date.now() - 3*24*60*60*1000) }
+        })
+        // .sort({
+        //     'likes.length': -1, 
+        //     'dislikes.length': -1, 
+        //     'comments.length': -1, 
+        // });
 
         // Fetch older posts
         const olderPosts = await Post.find({ 
             topics: req.params.topic,
-            date: { $lte: new Date(Date.now() - 24*60*60*1000) } 
-        }).sort({ date: -1 }); // Sort by date in descending order
+            date: { $gt: new Date(Date.now() - 5*24*60*60*1000) } 
+        })
+        //.sort({ date: -1 }); // Sort by date in descending order
 
         // Combine the two arrays, prioritizing recent posts
         const sortedPosts = recentPosts.concat(olderPosts);
-
         res.json(sortedPosts);
     }
     catch (error) {
