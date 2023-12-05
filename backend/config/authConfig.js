@@ -33,6 +33,20 @@ function removeSessions() {
 }
 
 /**
+ * Removes a session from the sessions object based on the provided session ID.
+ * @param {string} sid - The session ID to be removed.
+ */
+function removeSession(sid) {
+    let usernames = Object.keys(sessions);
+
+    usernames.forEach(username => {
+        if (sessions[username].sid == sid) {
+            delete sessions[username];
+        }
+    });
+}
+
+/**
  * Middleware function to authenticate user session.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
@@ -58,4 +72,4 @@ function authenticate(req, res, next) {
 
 setInterval(removeSessions, 2000);
 
-module.exports = { router, authenticate, addSession };
+module.exports = { router, authenticate, addSession, removeSession };

@@ -104,33 +104,12 @@ function deleteComment() {
         .catch(error => console.log('Error deleting comment', error));
 }
 
-function addUserTest() {
-    let username = document.getElementById('createUsername').value;
-    let password = document.getElementById('createPassword').value;
-    let data = { username: username, password: password };
-
-    let p = fetch('/users/add', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
-    });
-
-    p.then(() => {
-        window.alert("User " + username + " created!");
-    }).catch((error) => {
-        console.log(error);
-    });
-}
-
-function loginUserTest() {
-    let username = document.getElementById('loginUsername').value;
-    let password = document.getElementById('loginPassword').value;
-    let data = { username: username, password: password };
-
-    let p = fetch('/users/login', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
+/**
+ * Logs the user out.
+ */
+function logout() {
+    let p = fetch('/login/logout', {
+        method: 'POST'
     });
 
     p.then((response) => {
@@ -167,9 +146,8 @@ function registerHandlers() {
     document.getElementById("postComment").onclick = addComment;
     document.getElementById("postReply").onclick = addReply;
     document.getElementById("deleteComment").onclick = deleteComment;
-    document.getElementById("createUser").onclick = addUserTest;
-    document.getElementById("loginUser").onclick = loginUserTest;
-    document.getElementById("uploadButton").onclick = uploadProfilePicture;
+    // document.getElementById("uploadButton").onclick = uploadProfilePicture;
+    document.getElementById("logoutButton").onclick = logout;
 }
 
 registerHandlers();
