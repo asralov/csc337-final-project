@@ -108,7 +108,7 @@ function showComments(postID) {
             } else {
                 for (let i = 0; i < comments.length; i++) {
                     content += `<div class="commentBox">
-                                <div class="commentHead"><img id="${comments[i]._id}-pfp" class="commentUserPic"><span class="usernamePost">@<strong>${comments[i].username}</strong></span> ~ <span class="postDate"><em>${getTime(comments[i].createdAt)}</em></span></div>
+                                <div class="commentHead"><img id="${comments[i]._id}-pfp" class="commentUserPic"><span class="usernamePost"><p class="commentUsername">@${comments[i].username}</p></span><p class="commentDate">${getTime(comments[i].createdAt)}</div>
                                 <div class="commentContent">
                                     ${comments[i].content}`
                     if (comments[i].username == localStorage.user)

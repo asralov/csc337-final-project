@@ -212,6 +212,13 @@ body {
   align-items: center;
   display: flex;
   padding: 5px 5px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.commentUsername {
+  font-weight: bold;
+  margin-right: 6px;
 }
 
 .commentUserPic {
@@ -221,6 +228,10 @@ body {
   object-fit: cover;
   overflow: hidden;
   margin-right: 5px;
+}
+
+.commentDate {
+  color: #ccc;
 }
 
 .commentContent {
