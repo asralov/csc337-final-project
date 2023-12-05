@@ -37,7 +37,6 @@ function fetchPosts() {
                 checkIfLike(posts[i]._id, localStorage.user)
                 
                 .then(hasUsed => {
-                    console.log("here");
                     if (hasUsed.startsWith("NO")) {
                         likePNG = "./images/like_nofill.png"
                         dislikePNG = "./images/dislike_nofill.png"
@@ -48,10 +47,7 @@ function fetchPosts() {
                         likePNG = "./images/like_fill.png"
                         dislikePNG = "./images/dislike_nofill.png"
                     }
-                    console.log(likePNG);
-                    console.log(dislikePNG);
                     let content = JSON.parse(posts[i].content);
-                    console.log(content);
                     let article = `<div class="post-boxes" id="post-${posts[i]._id}">
                                 <div class="article">
                                 <h1>${posts[i].title}</h1>
@@ -72,7 +68,7 @@ function fetchPosts() {
                                              src=${dislikePNG} id="dislike-${i}" class="likeButton"><div>${posts[i].dislikes.length}</div>
                                 </div>
                                 
-                                <div class="comments" id="commentLabel-${posts[i]._id}>
+                                <div class="comments" id="commentLabel-${posts[i]._id}">
                                     <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
                                 </div>
                                 </div>
@@ -159,8 +155,8 @@ function showComments(postID) {
     if (document.getElementById('comments-'+postID) != undefined) {
         document.getElementById('comments-'+postID).remove();
     }
-    // document.getElementById('commentLabel-'+postID).innerHTML = 
-    // `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Hide Comments</span>`;
+    document.getElementById('commentLabel-'+postID).innerHTML = 
+    `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-down-arrow' ></i>&nbsp;Hide Comments</span>`;
     
     content = `<div id="comments-${postID}"><input class="inputComment" id="commentBox-${postID}" type="text" placeholder=" Post a comment...">
                     <button class="inputCommentButton" onclick="addComment('${postID}');">Post!</button>`;
@@ -172,7 +168,6 @@ function showComments(postID) {
                 content += `<div>Be the first to comment!</div>`;
             } else {
                 for (let i = 0; i < comments.length; i++) {
-                    console.log(comments[i]);
                     content += `<div class="commentBox">
                                 <div class="commentHead">@<span class="usernamePost"><strong>${comments[i].username}</strong></span> ~ <span class="postDate"><em>${getTime(comments[i].createdAt)}</em></span></div>
                                 <div class="commentContent">
@@ -242,7 +237,7 @@ function getTime(date) {
 
 function hideComment(postID) {
     document.getElementById('commentLabel-'+postID).innerHTML = 
-    `<span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
+    `<span style="font-size: 1.8vh" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
     if (document.getElementById('comments-'+postID) != undefined) {
         document.getElementById('comments-'+postID).remove();
     }
