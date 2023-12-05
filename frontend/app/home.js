@@ -1,4 +1,3 @@
-
 const aboutPg = document.getElementById("aboutPage");
 aboutPg.addEventListener('click', ()=>{
     window.location.href = "./about.html"
@@ -93,8 +92,6 @@ function registerTopicButtonHandlers() {
                     }
                     createPosts(posts);
                 });
-            // TODO: change this to redirect to a page with the topic as a parameter
-            // Probably just recycle the fetchPosts function with added params
         }
     }
 }
@@ -116,15 +113,17 @@ function showComments(postID) {
                 content += `<div>Be the first to comment!</div>`;
             } else {
                 for (let i = 0; i < comments.length; i++) {
+
                     content += `<div class="commentBox">
                                 <div class="commentHead">@<span class="usernamePost"><strong>${comments[i].username}</strong></span> ~ <span class="postDate"><em>${getTime(comments[i].createdAt)}</em></span></div>
                                 <div class="commentContent">
-                                    ${comments[i].content}
-                                    <div class="reply">
+                                    ${comments[i].content}`
+                    if (comments[i].username == localStorage.user) {
+                        content += `<button onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</button>`
+                                    }
+                    content +=      `<div class="reply">
                                         <input class="reply" type="text" placeholder=" reply...">
-                                    </div>
-                                </div>
-                                </div>`
+                                    </div></div></div>`
                 }
             }
             content += `</div>`;
@@ -140,7 +139,6 @@ function addComment(post_id) {
         'parentId': post_id,
         'content': comment
     };
-
     fetch(url, {
         method: 'POST',
         headers: {
@@ -150,14 +148,21 @@ function addComment(post_id) {
         redirect: 'follow'
     })
         .then(response => {
-            console.log(response);
-            response.json();
-        })
-        .then(result => {
-            console.log(result);
             showComments(post_id);
         })
         .catch(error => console.log('Error adding comment', error));
+}
+
+function deleteComment(commentID, postID) {
+    var url = '/comments/delete/' + commentID;
+    fetch(url, {
+        method: 'POST',
+        redirect: 'follow'
+    })
+    .then(result => {
+        showComments(postID);
+    })
+    .catch(error => console.log('Error deleting comment', error));
 }
 
 function getTime(date) {
