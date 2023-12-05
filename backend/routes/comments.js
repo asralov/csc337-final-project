@@ -75,6 +75,7 @@ router.post('/delete/:commentId', async (req, res) => {
 
     await user.save();
     await Comment.findByIdAndDelete(req.params.commentId);
+    res.end("DELETED!")
 });
 
 // Get all comments for a post
