@@ -22,7 +22,6 @@ const Post = require('../models/Post');
 router.post('/add', async (req, res) => {
     const postData = req.body;
     try {
-        console.log(postData);
         const post = new Post({
             title: postData.title,
             content: {
@@ -105,7 +104,6 @@ router.get('/all', async (req, res) => {
 
 router.get("/search/:query", async (req, res) => {
     try {
-        console.log("hello");
         const regexQuery = { $regex: req.params.query, $options: "i" };
         const posts = await Post.find({
             $or: [
@@ -130,7 +128,6 @@ router.get("/search/:query", async (req, res) => {
 router.get('/topic/:topic', async (req, res) => {
     try {
         // Fetch day old posts 
-        console.log()
         const recentPosts = await Post.find({ 
             topics: req.params.topic,
             date: { $gt: new Date(Date.now() - 3*24*60*60*1000) }

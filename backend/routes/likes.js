@@ -72,7 +72,6 @@ router.get('/get/:contentType/:postId', async (req, res) => {
 router.get('/check/:postID/:username', async (req, res) => {
     const postID = req.params.postID;
     const user = req.params.username;
-    console.log(postID, user);
     Like.find({contentId: postID, username: user}).exec()
     .then((result) => {
         if (result.length > 0 ) {

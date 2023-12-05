@@ -33,8 +33,6 @@ router.post('/add', async (req, res) => {
             const hashedPassword = crypto
                 .pbkdf2Sync(user.password, salt, 10000, 64, 'sha512')
                 .toString('hex');
-
-            console.log(hashedPassword);
             let newUser = new User({
                 username: user.username,
                 salt: salt,

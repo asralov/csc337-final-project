@@ -44,12 +44,10 @@ function addSession(username) {
  * Removes expired sessions from the sessions object.
  */
 function removeSessions() {
-    console.log(sessions);
     let now = Date.now();
     let usernames = Object.keys(sessions);
 
     usernames.forEach(username => {
-        console.log(now - sessions[username].time);
         if (now - sessions[username].time > 60000 * 10) {
             delete sessions[username];
         }
