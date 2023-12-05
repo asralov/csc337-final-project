@@ -22,6 +22,7 @@ router.post('/add/:postId', async (req, res) => {
     const user = await User.findOne({ username: comment.username });
     user.comments.push(comment._id);
     await user.save();
+    res.end("ADDED!");
 });
 
 // Add a reply to a comment

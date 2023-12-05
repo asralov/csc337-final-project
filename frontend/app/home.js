@@ -52,7 +52,7 @@ function fetchPosts() {
                     console.log(dislikePNG);
                     let content = JSON.parse(posts[i].content);
                     console.log(content);
-                    let article = `<div class="post-boxes">
+                    let article = `<div class="post-boxes" id="post-${posts[i]._id}">
                                 <div class="article">
                                 <h1>${posts[i].title}</h1>
                                 <i>${posts[i].date}</i><br>
@@ -65,18 +65,17 @@ function fetchPosts() {
                                 <h2>Summary</h2>
                                 <p>${content.summary}</p>
                                 <h2>Bias</h2>
-                                <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true, '${i}')"
+                                <div class="like"><img onclick="likeOrDislikePost('${posts[i]._id}', true)"
                                              src=${likePNG} id="like-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].likes.length}</div>
-                                     <img onclick="likeOrDislikePost('${posts[i]._id}', false, '${i}')"
+                                     <img onclick="likeOrDislikePost('${posts[i]._id}', false)"
                                              src=${dislikePNG} id="dislike-${i}" width="70px" height="100px" class="likeButton"><div>${posts[i].dislikes.length}</div>
                                 </div>
-                                <div class="comments">
-                                    <span style="font-size: 1.8vh"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
+                                <div class="comments" id="commentLabel-${posts[i]._id}>
+                                    <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
                                 </div>
                                 </div>
                                 </div>`
                                 articles += article;
-                                console.log(articles);
                                 document.getElementById('post-pannel').innerHTML = articles;
                 })
                 .catch(error => {
@@ -105,7 +104,7 @@ function fetchUserDetails() {
  * @param {boolean} like - Indicates whether the post should be liked or disliked.
  * @param {number} index - The index of the post in the list.
  */
-function likeOrDislikePost(contentId, like, index) {
+function likeOrDislikePost(contentId, like) {
     var data = {
         'typeOfContent': 'Post',
         'contentId': contentId,
@@ -119,11 +118,6 @@ function likeOrDislikePost(contentId, like, index) {
     })
         .then(res => res.json())
         .then(post => {
-            if (like) {
-                let img = document.getElementById("like-" + index);
-                img.src = "./images/like_fill.png";
-            }
-
             fetchPosts();
         });
 }
@@ -159,6 +153,93 @@ function registerTopicButtonHandlers() {
     }
 }
 
+function showComments(postID) {
+    if (document.getElementById('comments-'+postID) != undefined) {
+        document.getElementById('comments-'+postID).remove();
+    }
+    // document.getElementById('commentLabel-'+postID).innerHTML = 
+    // `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Hide Comments</span>`;
+    
+    content = `<div id="comments-${postID}"><input id="commentBox-${postID}" type="text" placeholder="Post a comment...">
+                    <button onclick="addComment('${postID}');" style="width: 50px; height: 30px">Post!</button>`;
+    fetch('/comments/get/'+postID)
+        .then((response) => {
+            return response.json();
+        }).then((comments) => {
+            if (comments.length == 0) {
+                content += `<div>Be the first to comment!</div>`;
+            } else {
+                for (let i = 0; i < comments.length; i++) {
+                    console.log(comments[i]);
+                    content += `<div>
+                                <div>@${comments[i].username}  ${getTime(comments[i].createdAt)}</div>
+                                <div>${comments[i].content}</div>
+                                </div>`
+                }
+            }
+            content += `</div>`;
+            document.getElementById("post-"+postID).innerHTML += content;
+        })
+    
+}
+
+function addComment(post_id) {
+    var comment = document.getElementById("commentBox-"+post_id).value;
+    var url = '/comments/add/' + post_id;
+    var data = {
+        'parentId': post_id,
+        'content': comment
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        redirect: 'follow'
+    })
+        .then(response => {
+            console.log(response);
+            response.json();
+        })
+        .then(result => {
+            console.log(result);
+            showComments(post_id);
+        })
+        .catch(error => console.log('Error adding comment', error));
+}
+
+function getTime(date) {
+    let currentTime = Date.now();
+    dateObj = new Date(date)
+    let dif = (currentTime- dateObj.getTime());
+    let seconds = dif / 1000;
+
+    const days = Math.floor(seconds / 86400);
+    seconds %= 86400;
+    const hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+    if (days >= 1) {
+        return days + (days > 1 ? " days ago" : " day ago");
+    } else if (hours >= 1) {
+        return hours + (hours > 1 ? " hrs ago" : " hr ago");
+    } else if (minutes >= 1) {
+        return minutes + (minutes > 1 ? " mins ago" : " min ago");
+    } else {
+        return "Just now";
+    }
+}
+
+function hideComment(postID) {
+    document.getElementById('commentLabel-'+postID).innerHTML = 
+    `<span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
+    if (document.getElementById('comments-'+postID) != undefined) {
+        document.getElementById('comments-'+postID).remove();
+    }
+}
 registerTopicButtonHandlers();
 fetchUserDetails();
 fetchPosts();

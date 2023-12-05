@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
     title: String,
     // using string since had some problems using the actual object element 
-    content: String, // Background and body of post
+    content: {background: String, summary: String, bias: String},
     imageSource: String, // Verbal image source
     imageURL: { type: String, default: '../resources/news_default.png' }, // Image URL
     date: { type: Date, default: Date.now() }, // Date of post creation

@@ -3,11 +3,15 @@
  */
 function addPost() {
     var title = document.getElementById("postTitle").value;
-    var content = document.getElementById("postContent").value;
+    var background = document.getElementById("postbackground").value;
+    var summary = document.getElementById("postsummary").value;
+    var bias = document.getElementById("postbias").value;
     var url = '/posts/add';
     var data = {
         'title': title,
-        'content': content,
+        'background': background,
+        'summary' : summary,
+        'bias' : bias,
         'topics': ['Business', 'Technology']
     };
 
