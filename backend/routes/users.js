@@ -1,3 +1,17 @@
+/**
+ * File Name: users.js
+ * Authors: Ryder Rhoads and Michael Evans
+ * Description: This file contains Express routes for basic CRUD (Create, Read, Update, Delete) operations 
+ * on user data. It uses the User model to interact with the database. The routes support fetching all users, 
+ * retrieving a specific user by username, updating user information, and deleting a user.
+ * 
+ * Routes:
+ * GET /users/ - Retrieve all users.
+ * GET /users/:username - Fetch a single user by username.
+ * POST /users/update/:username - Update details of a specific user.
+ * DELETE /users/delete/:username - Delete a user by username.
+ */
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');

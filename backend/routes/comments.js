@@ -1,3 +1,18 @@
+/**
+ * File Name: comments.js
+ * Authors: Ryder Rhoads and Michael Evans
+ * Description: This file contains the Express routes for handling operations related to comments on posts. 
+ * It includes functionality for adding, replying to, deleting comments, and retrieving comments and replies. 
+ * The routes interact with Post, Comment, and User models to manage comment-related data in the database.
+ * 
+ * Routes: 
+ * POST /comments/add/:postId - Add a comment to a post.
+ * POST /comments/reply/:commentId - Add a reply to a comment.
+ * POST /comments/delete/:commentId - Delete a comment or reply.
+ * GET /comments/get/:postId - Get all comments for a specific post.
+ * GET /comments/get/replies/:commentId - Get all replies for a specific comment.
+ */
+
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');

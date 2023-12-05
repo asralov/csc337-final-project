@@ -1,3 +1,21 @@
+/**
+ * File Name: likes.js
+ * Authors: Ryder Rhoads and Michael Evans
+ * Description: This file contains Express routes for managing likes and dislikes on posts and comments.
+ * It includes functionality for toggling likes/dislikes, retrieving like/dislike counts, and checking 
+ * if a user has liked a specific post. The routes interact with Like, Post, and User models to manage 
+ * like-related data in the database.
+ * 
+ * Routes:
+ * POST /likes/toggle - Toggle a like or dislike on a post or comment.
+ * GET /likes/get/:contentType/:postId - Get the number of likes and dislikes for a post or comment.
+ * GET /likes/check/:postID/:username - Check if a user has liked a specific post.
+ *
+ * Functions:
+ * likePost(content, likeOrDislike, user) - Handles the logic for liking a post.
+ * dislikePost(content, likeOrDislike, user) - Handles the logic for disliking a post.
+ */
+
 const express = require('express');
 const router = express.Router();
 const Like = require('../models/Like');

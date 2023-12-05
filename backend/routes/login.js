@@ -1,3 +1,21 @@
+/**
+ * File Name: login.js
+ * Authors: Ryds Rhoads and Michael Evans
+ * Description: This file contains Express routes for user authentication. It includes routes for 
+ * adding new users, user login, and logout. The user data is managed using the User model, and 
+ * password hashing is implemented for security. The routes also handle session management using 
+ * custom authenticator middleware.
+ * 
+ * Routes:
+ * POST /login/add - Add a new user with hashed password.
+ * POST /login/login - Authenticate user login, create session, and set login cookie.
+ * POST /login/logout - Terminate user session and clear login cookie.
+ *
+ * External Modules:
+ * crypto - Used for generating random salt and hashing passwords.
+ * authenticator - Custom middleware for session management.
+ */
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
