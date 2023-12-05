@@ -117,7 +117,8 @@ function showComments(postID) {
                         content += `<button onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</button>`
                                     }
                     content +=      `<div class="reply">
-                                        <input class="reply" type="text" placeholder=" reply...">
+                                        <input class="reply" id="reply-${comments[i]._id}" type="text" placeholder=" reply..." style="color: black">
+                                        <button onclick="addReply('${comments[i]._id}');">Reply</button>
                                     </div></div></div>`
                 }
             }
@@ -146,6 +147,11 @@ function addComment(post_id) {
             showComments(post_id);
         })
         .catch(error => console.log('Error adding comment', error));
+}
+
+function addReply(commendID) {
+    const replyText = document.getElementById('reply-'+commendID).value;
+    console.log(commendID, replyText);
 }
 
 function deleteComment(commentID, postID) {
@@ -221,13 +227,13 @@ function showUserSettings() {
                         </div><br>
                         <div>
                         <label for="fName">First Name</label>
-                        <input class="userN" type="text" name="fName">
-                        <button class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <input id="fname" class="userN" type="text" name="fName" value=${getFirstName(userName)}>
+                        <button onclick="editFName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
                         </div><br>
                         <div>
                         <label for="lName">Last Name</label>
-                        <input class="userN" type="text" name="lName">
-                        <button class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <input id="lname" class="userN" type="text" name="lName" value=${getLastName(userName)}>
+                        <button onclick="editLName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
                         </div><br>
                     </div>`;
     
@@ -307,5 +313,57 @@ function createPosts(posts) {
 }
 
 registerHandlers();
+function getFirstName(user) {
+    fetch('/users/fname/'+user)
+    .then((result) => {
+        console.log(result)
+        return result.text();
+    }).then((name) => {
+        document.getElementById('fname').value = name
+    })
+}
+
+function getLastName(user) {
+    fetch('/users/lname/'+user)
+    .then((result) => {
+        console.log(result)
+        return result.text();
+    }).then((name) => {
+        document.getElementById('lname').value = name
+    })
+}
+
+function editFName(user) {
+    let newFName = document.getElementById('fname').value;
+    let data = {username: user, name: newFName};
+    let p = fetch('/users/edit/fname', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then((response) => {
+        if (response.ok) {
+            console.log("user updated successfully")
+        }
+    });
+}
+
+function editLName(user) {
+    let newFName = document.getElementById('lname').value;
+    let data = {username: user, name: newFName};
+    let p = fetch('/users/edit/lname', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    p.then((response) => {
+        if (response.ok) {
+            console.log("user updated successfully")
+        }
+    });
+}
+registerTopicButtonHandlers();
 fetchUserDetails();
 fetchPosts();
