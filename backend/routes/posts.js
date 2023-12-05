@@ -1,3 +1,19 @@
+/**
+ * File Name: posts.js
+ * Authors: Ryder Rhoads and Michael Evans
+ * Description: This file contains Express routes for managing posts in the application. It includes routes 
+ * for adding new posts, fetching posts based on various criteria like topics, search queries, and post ID, 
+ * editing and deleting posts. It uses the Post model to interact with the database and manage post data.
+ * 
+ * Routes:
+ * POST /posts/add - Add a new post with detailed content.
+ * POST /posts/edit/:id - Edit the content of an existing post.
+ * DELETE /posts/delete/:id - Delete a post by its ID.
+ * GET /posts/all - Fetch all posts, sorted by recent interactions and date.
+ * GET /posts/search/:query - Search for posts based on a query string.
+ * GET /posts/topic/:topic - Fetch posts filtered by a specific topic.
+ * GET /posts/:id - Fetch a single post by its ID.
+ */
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
@@ -24,38 +40,6 @@ router.post('/add', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Error adding post', error: error.message });
-    }
-});
-
-
-
-router.get('/topic/:topic', async (req, res) => {
-    try {
-        // Fetch day old posts 
-        console.log()
-        const recentPosts = await Post.find({ 
-            topics: req.params.topic,
-            date: { $gt: new Date(Date.now() - 3*24*60*60*1000) }
-        })
-        // .sort({
-        //     'likes.length': -1, 
-        //     'dislikes.length': -1, 
-        //     'comments.length': -1, 
-        // });
-
-        // Fetch older posts
-        const olderPosts = await Post.find({ 
-            topics: req.params.topic,
-            date: { $gt: new Date(Date.now() - 5*24*60*60*1000) } 
-        })
-        //.sort({ date: -1 }); // Sort by date in descending order
-
-        // Combine the two arrays, prioritizing recent posts
-        const sortedPosts = recentPosts.concat(olderPosts);
-        res.json(sortedPosts);
-    }
-    catch (error) {
-        res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
 
@@ -142,6 +126,36 @@ router.get("/search/:query", async (req, res) => {
     }
 });
 
+// Get posts filtered by topic
+router.get('/topic/:topic', async (req, res) => {
+    try {
+        // Fetch day old posts 
+        console.log()
+        const recentPosts = await Post.find({ 
+            topics: req.params.topic,
+            date: { $gt: new Date(Date.now() - 3*24*60*60*1000) }
+        })
+        // .sort({
+        //     'likes.length': -1, 
+        //     'dislikes.length': -1, 
+        //     'comments.length': -1, 
+        // });
+
+        // Fetch older posts
+        const olderPosts = await Post.find({ 
+            topics: req.params.topic,
+            date: { $gt: new Date(Date.now() - 5*24*60*60*1000) } 
+        })
+        //.sort({ date: -1 }); // Sort by date in descending order
+
+        // Combine the two arrays, prioritizing recent posts
+        const sortedPosts = recentPosts.concat(olderPosts);
+        res.json(sortedPosts);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching posts', error });
+    }
+});
 
 // Get a single post by ID
 router.get('/:id', async (req, res) => {
