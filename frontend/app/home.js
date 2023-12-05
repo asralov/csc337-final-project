@@ -198,7 +198,7 @@ function showUserSettings() {
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
                                                             <button onclick="search()"><i class='bx bx-search-alt'></i></button>
                                                             <button id="userSettings" onclick="hideUserSettings();">
-                                                            <img src="./images/default.png" id="userPic">
+                                                            <img src="" id="userPic">
                                                         </button>`
     let content = `<div id="userSettingsBox">
                         <div>
@@ -222,6 +222,8 @@ function showUserSettings() {
                     </div>`;
     
     document.body.innerHTML += content;
+
+    fetchUserDetails();
 }
 
 function hideUserSettings() {
@@ -230,8 +232,10 @@ function hideUserSettings() {
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
                                                         <button onclick="search()"><i class='bx bx-search-alt'></i></button>
                                                         <button id="userSettings" onclick="showUserSettings();">
-                                                        <img src="./images/default.png" id="userPic">
+                                                        <img src="" id="userPic">
                                                         </button>`
+
+    fetchUserDetails();
 }
 
 function createPosts(posts) {
