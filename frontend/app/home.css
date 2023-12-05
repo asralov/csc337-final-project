@@ -209,6 +209,18 @@ body {
 
 .commentHead {
   border: solid 1px rgba(255, 255, 255, 0.2);
+  align-items: center;
+  display: flex;
+  padding: 5px 5px;
+}
+
+.commentUserPic {
+  width: 30px;
+  border: none;
+  border-radius: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  margin-right: 5px;
 }
 
 .commentContent {
