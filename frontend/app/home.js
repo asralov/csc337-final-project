@@ -81,6 +81,16 @@ function registerTopicButtonHandlers() {
     }
 }
 
+function registerHandlers() {
+    document.getElementById('search-box').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter')
+            search();
+    });
+    document.getElementById('search-button').onclick = search;
+    document.getElementById('userSettings').onclick = showUserSettings;
+    registerTopicButtonHandlers();
+}
+
 function showComments(postID) {
     if (document.getElementById('comments-'+postID) != undefined) {
         document.getElementById('comments-'+postID).remove();
@@ -196,7 +206,7 @@ function showUserSettings() {
     let userPic = document.getElementById('userPic').src;
     let userName = localStorage.getItem('user');
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
-                                                            <button onclick="search()"><i class='bx bx-search-alt'></i></button>
+                                                            <button id="search-button"><i class='bx bx-search-alt'></i></button>
                                                             <button id="userSettings" onclick="hideUserSettings();">
                                                             <img src="" id="userPic">
                                                         </button>`
@@ -230,7 +240,7 @@ function hideUserSettings() {
     console.log("here");
     document.getElementById('userSettingsBox').remove();
     document.getElementById('searchEngine').innerHTML = `<input type="text" id="search-box" placeholder="Search...">
-                                                        <button onclick="search()"><i class='bx bx-search-alt'></i></button>
+                                                        <button id="search-button"><i class='bx bx-search-alt'></i></button>
                                                         <button id="userSettings" onclick="showUserSettings();">
                                                         <img src="" id="userPic">
                                                         </button>`
@@ -295,6 +305,7 @@ function createPosts(posts) {
         
     }
 }
-registerTopicButtonHandlers();
+
+registerHandlers();
 fetchUserDetails();
 fetchPosts();
