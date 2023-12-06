@@ -21,7 +21,6 @@ function fetchPosts() {
     })
     .then((res) => res.json())
     .then((posts) => {
-        postIDs = [];
         for (let i = 0; i < posts.length; i++) {
             postIDs.push(posts[i]._id);
         }
@@ -464,7 +463,7 @@ function createPosts(posts) {
 }
 
 function loadMoreContent() {
-    console.log("here");
+    console.log(postIDs);
     fetchPosts();
 }
 
