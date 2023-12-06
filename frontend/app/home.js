@@ -373,6 +373,7 @@ function showUserSettings() {
                                 <button id="uploadBtn" type="submit">Upload</button>
                             </form>
                         </div>
+                        <button onclick="logout();">Logout</button>
                     </div>`;
 
     document.body.innerHTML += content;
@@ -538,6 +539,18 @@ function uploadProfilePicture() {
     // }).catch((error) => {
     //     console.log(error);
     // });
+}
+
+function logout() {
+    let p = fetch('/login/logout', {
+        method: 'POST'
+    });
+    p.then((response) => {
+        console.log(response);
+        window.location.href = response.url;
+    }).catch((error) => {
+        console.log(error);
+    });
 }
 
 registerHandlers();
