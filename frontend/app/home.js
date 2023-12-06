@@ -90,6 +90,18 @@ function registerHandlers() {
     registerTopicButtonHandlers();
 }
 
+function toggleReplyInput(commentID) {
+    let reply = document.getElementById("reply-" + commentID);
+    let replyButton = document.getElementById("addReply-" + commentID);
+    if (reply.style.display === "none") {
+        reply.style.display = "block";
+        replyButton.style.color = "grey";
+    } else {
+        reply.style.display = "none";
+        replyButton.style.color = "#ddd";
+    }
+}
+
 function showComments(postID) {
     if (document.getElementById('comments-' + postID) != undefined) {
         document.getElementById('comments-' + postID).remove();
@@ -108,16 +120,25 @@ function showComments(postID) {
             } else {
                 for (let i = 0; i < comments.length; i++) {
                     content += `<div class="commentBox">
-                                <div class="commentHead"><img id="${comments[i]._id}-pfp" class="commentUserPic"><span class="usernamePost"><p class="commentUsername">@${comments[i].username}</p></span><p class="commentDate">${getTime(comments[i].createdAt)}</div>
+                                    <div class="commentHead">
+                                        <img id="${comments[i]._id}-pfp" class="commentUserPic">
+                                        <p class="commentUsername">@${comments[i].username}</p>
+                                        <p class="commentDate">${getTime(comments[i].createdAt)}
+                                    </div>
                                 <div class="commentContent">
-                                    ${comments[i].content}`
+                                    ${comments[i].content}
+                                    <div class="actionButtons">
+                                        <p id="addReply-${comments[i]._id}" class="replyText" onclick="toggleReplyInput('${comments[i]._id}');">Reply</p>`;
                     if (comments[i].username == localStorage.user)
-                        content += `<button onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</button>`
+                        content += `<p class="deleteText" onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</p>`; 
 
-                    content += `<div class="reply">
-                                    <input class="reply" id="reply-${comments[i]._id}" type="text" placeholder=" reply..." style="color: black">
-                                    <button onclick="addReply('${comments[i]._id}');">Reply</button>
-                                </div></div></div>`
+                    content += `</div>
+                                <div class="reply" id="reply-${comments[i]._id}" style="display: none;">
+                                    <input class="reply" type="text" placeholder="Reply..." style="color: black">
+                                    <button onclick="addReply('${comments[i]._id}');">Post</button>
+                                </div>
+                            </div>
+                        </div>`
 
                     fetch('/users/' + comments[i].username)
                         .then(res => res.json())
