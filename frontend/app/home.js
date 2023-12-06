@@ -255,25 +255,27 @@ function showUserSettings() {
                                     gap: 4%;">
                         <img src=${userPic} id="userPicSettings">   
                         <h2>@${userName}</h2>
-                        <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
-                            <input type="file" name="profilePicture" id="uploadFile">
-                            <button type="submit">Upload</button>
-                        </form>
                         </div><br>
                         <div>
                         <label for="fName">First Name</label>
                         <input id="fname" class="userN" type="text" name="fName" value=${getFirstName(
         userName
     )}>
-                        <button onclick="editFName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <button onclick="editFName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
                         <div>
                         <label for="lName">Last Name</label>
                         <input id="lname" class="userN" type="text" name="lName" value=${getLastName(
         userName
     )}>
-                        <button onclick="editLName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <button onclick="editLName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
+                        <div>
+                            <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
+                                <input type="file" name="profilePicture" id="uploadFile">
+                                <button id="uploadBtn" type="submit">Upload</button>
+                            </form>
+                        </div>
                     </div>`;
 
     document.body.innerHTML += content;
