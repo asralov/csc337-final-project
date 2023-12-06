@@ -80,10 +80,12 @@ router.delete('/delete/:id', async (req, res) => {
 router.post('/recent', async (req, res) => {
     try {
         const { postIDs } = req.body;
-        console.log(postIDs);
+
+        // Modify the query to exclude posts that are already in the postIDs array
         const posts = await Post.aggregate([
+            { $match: { _id: { $nin: postIDs.map(id => mongoose.Types.ObjectId(id)) } } }, // Matches IDs and makes sure they are not in using nin
             { $sort: { date: -1 } }, 
-            { $limit: 50 }, 
+            { $limit: 50 },
             {
                 $addFields: {
                     interactionScore: { 
@@ -91,7 +93,7 @@ router.post('/recent', async (req, res) => {
                     }
                 }
             },
-            { $sort: { interactionScore: -1 } } 
+            { $sort: { interactionScore: -1 } }
         ]);
 
         res.json(posts);
@@ -99,6 +101,7 @@ router.post('/recent', async (req, res) => {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
+
 
 
 // Get posts based on a search query
