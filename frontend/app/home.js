@@ -400,10 +400,15 @@ function createPosts(posts) {
     if (posts.length == 0)
         document.getElementById("post-pannel").innerHTML = articles;
     for (let i = 0; i < posts.length; i++) {
-        let topics = "";
-        for (let j = 0; j < posts[i].topics.length; j++) {
-            topics += posts[i].topics[j] + " ";
-        }
+        
+        
+        let topicsArr = posts[i].topics[0].split(',');
+        topicsArr = topicsArr.map(topic => {
+            const words = topic.trim().split(' ');
+            const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+            return capitalizedWords.join(' ');
+        });
+        let topics = topicsArr.join(', ');
         let likePNG = "";
         let dislikePNG = "";
 
@@ -420,11 +425,12 @@ function createPosts(posts) {
                     dislikePNG = "./images/dislike_nofill.png";
                 }
                 let content = posts[i].content;
+                let dateObj = new Date(posts[i].date)
                 let article = `<div class="post-boxes" id="post-${posts[i]._id}">
                         <div class="article">
                         <h1>${posts[i].title}</h1>
-                        <i>${posts[i].date}</i><br>
-                        <i>Topics:${topics}</i>
+                        <i>${dateObj.toLocaleDateString()}</i><br>
+                        <i>Topics: ${topics}</i>
                         <hr>
                         <h2>Background</h2>
                         <p>${content.background}</p>
