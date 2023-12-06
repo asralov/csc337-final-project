@@ -21,6 +21,7 @@ function fetchPosts() {
     })
     .then((res) => res.json())
     .then((posts) => {
+        postIDs = [];
         for (let i = 0; i < posts.length; i++) {
             postIDs.push(posts[i]._id);
         }
@@ -96,6 +97,7 @@ function registerTopicButtonHandlers() {
                     return response.json();
                 })
                 .then((posts) => {
+                    postIDs = [];
                     for (let i = 0; i < posts.length; i++) {
                         console.log(posts[i]);
                         postIDs.push(posts[i]._id);
@@ -399,8 +401,7 @@ function hideUserSettings() {
 
 function createPosts(posts) {
     let articles = "";
-    if (posts.length == 0)
-        document.getElementById("post-pannel").innerHTML = articles;
+    document.getElementById("post-pannel").innerHTML = articles;
     for (let i = 0; i < posts.length; i++) {
         
         

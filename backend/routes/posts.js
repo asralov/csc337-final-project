@@ -66,7 +66,7 @@ router.post('/edit/:id', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
-        
+
         if (!post)
             return res.status(404).json({ message: 'Post not found' });
 
@@ -79,16 +79,16 @@ router.delete('/delete/:id', async (req, res) => {
 
 // Get 50 most recent posts
 router.post('/recent', async (req, res) => {
-    try {       
-        const postIDs=req.body.postIDs;
+    try {
+        const postIDs = req.body.postIDs;
         // Modify the query to exclude posts that are already in the postIDs array
         const posts = await Post.aggregate([
-            { $match: { _id: { $nin: postIDs.map(id => mongoose.Types.ObjectId(id)) } } }, 
-            { $sort: { date: -1 } }, 
+            { $match: { _id: { $nin: postIDs.map(id => new mongoose.Types.ObjectId(id)) } } },
+            { $sort: { date: -1 } },
             { $limit: 50 },
             {
                 $addFields: {
-                    interactionScore: { 
+                    interactionScore: {
                         $sum: [{ $size: "$likes" }, { $size: "$dislikes" }, { $size: "$comments" }]
                     }
                 }
@@ -98,7 +98,7 @@ router.post('/recent', async (req, res) => {
 
         res.json(posts);
     } catch (error) {
-        console.log("Error fetching posts"+ error);
+        console.log("Error fetching posts" + error);
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
@@ -122,16 +122,16 @@ router.get('/search/:query', async (req, res) => {
                     ]
                 }
             },
-            { $sort: { date: -1 } }, 
-            { $limit: 50 }, 
+            { $sort: { date: -1 } },
+            { $limit: 50 },
             {
                 $addFields: {
-                    totalInteractions: { 
+                    totalInteractions: {
                         $sum: [
-                            { $size: "$likes" }, 
-                            { $size: "$dislikes" }, 
+                            { $size: "$likes" },
+                            { $size: "$dislikes" },
                             { $size: "$comments" }
-                        ] 
+                        ]
                     }
                 }
             },
@@ -145,10 +145,10 @@ router.get('/search/:query', async (req, res) => {
 });
 
 // Get posts filtered by topic
-router.post('/topic', async (req, res) => {
+router.post('/topic/:topic', async (req, res) => {
     try {
-        topic = req.body.topic;
-        const topicRegex = new RegExp(topic, 'i'); 
+        topic = req.params.topic;
+        const topicRegex = new RegExp(topic, 'i');
 
         const posts = await Post.aggregate([
             {
@@ -156,16 +156,16 @@ router.post('/topic', async (req, res) => {
                     topics: { $regex: topicRegex }
                 }
             },
-            { $sort: { date: -1 } }, 
-            { $limit: 50 }, 
+            { $sort: { date: -1 } },
+            { $limit: 50 },
             {
                 $addFields: {
-                    totalInteractions: { 
+                    totalInteractions: {
                         $sum: [
-                            { $size: "$likes" }, 
-                            { $size: "$dislikes" }, 
+                            { $size: "$likes" },
+                            { $size: "$dislikes" },
                             { $size: "$comments" }
-                        ] 
+                        ]
                     }
                 }
             },
