@@ -149,7 +149,7 @@ function addComment(post_id) {
         .catch((error) => console.log("Error adding comment", error));
 }
 
-function addReply(commentID) {
+async function addReply(commentID) {
     const replyText = document.getElementById("reply-" + commentID).getElementsByTagName('input')[0].value;
     var url = '/comments/reply/' + commentID;
     var data = {
@@ -165,9 +165,18 @@ function addReply(commentID) {
         redirect: 'follow'
     })
         .then(result => {
-            console.log(result);
+            toggleRepliesAfterPost(commentID);
         })
         .catch(error => console.log('Error adding reply', error));
+}
+
+async function toggleRepliesAfterPost(commentID) {
+    const replies = await checkReplies(commentID);
+    console.log(replies);
+    globalReplies[commentID] = replies;
+    content = `<p class="viewReplies" onclick="showReplies('${commentID}');">Show Replies</p>`;
+    document.getElementById("reply-" + commentID).parentNode.innerHTML += content;
+    showReplies(commentID);
 }
 
 function checkReplies(commentID) {
@@ -187,9 +196,12 @@ async function commentCreator(comments, postID) {
     } else {
         content += '<div>';
         for (let i = 0; i < comments.length; i++) {
+            if (document.getElementById("commentBox-"+comments[i]._id) !== null) {
+                continue;
+            }
             const replies = await checkReplies(comments[i]._id);
 
-            content += `<div class="commentBox">
+            content += `<div class="commentBox" id="commentBox-${comments[i]._id}">
                 <div class="commentHead">
                     <img id="${comments[i]._id}-pfp" class="commentUserPic">
                     <p class="commentUsername">@${comments[i].username}</p>
@@ -221,6 +233,7 @@ async function commentCreator(comments, postID) {
         content += '</div>';
         return content
     }
+    return content;
 }
 
 async function showReplies(postID) {
