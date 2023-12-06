@@ -144,9 +144,10 @@ router.get('/search/:query', async (req, res) => {
 });
 
 // Get posts filtered by topic
-router.get('/topic/:topic', async (req, res) => {
+router.post('/topic', async (req, res) => {
     try {
-        const topicRegex = new RegExp(req.params.topic, 'i'); 
+        topic = req.body.topic;
+        const topicRegex = new RegExp(topic, 'i'); 
 
         const posts = await Post.aggregate([
             {

@@ -86,7 +86,11 @@ function registerTopicButtonHandlers() {
     for (let i = 0; i < topicButtons.length; i++) {
         topicButtons[i].onclick = function () {
             let topic = topicButtons[i].textContent.trim().toLocaleLowerCase();
-            fetch("/posts/topic/" + topic)
+            fetch("/posts/topic/", {
+                method:'POST',
+                headers: {'Content-Type' : 'application/json',},
+                body: JSON.stringify({topic}),
+            })
                 .then((response) => {
                     console.log(response);
                     return response.json();
