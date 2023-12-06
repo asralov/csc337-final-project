@@ -54,7 +54,7 @@ app.get('/app/*', (req, res, next) => {
     next();
 });
 app.use('/favicon.ico', express.static('resources/favicon.ico'));
-app.use(express.static('../frontend/')); // TODO change how/where this is served
+app.use(express.static('../frontend/'));
 
 // Starting both http & https servers
 const httpServer = http.createServer(app);

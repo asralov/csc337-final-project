@@ -35,6 +35,18 @@ html, body {
     background-color: #333333;
     padding: 2%;
 }
+a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+a:hover {
+    color: #ccc;
+}
+#example3{
+    border: 1px solid #ccc;
+    width: 50vw;
+}
 #header {
     display: flex;
     justify-content: space-between;
