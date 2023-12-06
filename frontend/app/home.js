@@ -1,9 +1,31 @@
+let globalReplies = {};
+let postIDs = [];
+// function fetchPosts() {
+//     fetch("/posts/recent")
+//         .then((res) => res.json())
+//         .then((posts) => {
+//             for (let i = 0; i < posts.length; i++) {
+//                 servedPosts.push(posts[i]._id)
+//             }
+//             createPosts(posts);
+//         });
+// }
+
 function fetchPosts() {
-    fetch("/posts/all")
-        .then((res) => res.json())
-        .then((posts) => {
-            createPosts(posts);
-        });
+    fetch("/posts/recent", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postIDs }),
+    })
+    .then((res) => res.json())
+    .then((posts) => {
+        for (let i = 0; i < posts.length; i++) {
+            postIDs.push(posts[i]._id);
+        }
+        createPosts(posts);
+    });
 }
 
 function fetchUserDetails() {
@@ -90,46 +112,41 @@ function registerHandlers() {
     registerTopicButtonHandlers();
 }
 
-function showComments(postID) {
+function toggleReplyInput(commentID) {
+    let reply = document.getElementById("reply-" + commentID);
+    let replyButton = document.getElementById("addReply-" + commentID);
+    if (reply.style.display === "none") {
+        reply.style.display = "block";
+        replyButton.style.color = "grey";
+    } else {
+        reply.style.display = "none";
+        replyButton.style.color = "#ddd";
+    }
+}
+
+async function showComments(postID) {
     if (document.getElementById('comments-' + postID) != undefined) {
         document.getElementById('comments-' + postID).remove();
     }
     document.getElementById('commentLabel-' + postID).innerHTML =
-        `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-down-arrow' ></i>&nbsp;Hide Comments</span>`;
+        `<span class="toggleComments" onclick="hideComment('${postID}');"><i class='bx bxs-down-arrow' ></i>&nbsp;Hide Comments</span>`;
 
     content = `<div id="comments-${postID}"><input class="inputComment" id="commentBox-${postID}" type="text" placeholder=" Post a comment...">
                     <button class="inputCommentButton" onclick="addComment('${postID}');">Post!</button>`;
-    fetch('/comments/get/' + postID)
-        .then((response) => {
-            return response.json();
-        }).then((comments) => {
-            if (comments.length == 0) {
-                content += `<div>Be the first to comment!</div>`;
-            } else {
-                for (let i = 0; i < comments.length; i++) {
-                    content += `<div class="commentBox">
-                                <div class="commentHead"><img id="${comments[i]._id}-pfp" class="commentUserPic"><span class="usernamePost"><p class="commentUsername">@${comments[i].username}</p></span><p class="commentDate">${getTime(comments[i].createdAt)}</div>
-                                <div class="commentContent">
-                                    ${comments[i].content}`
-                    if (comments[i].username == localStorage.user)
-                        content += `<button onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</button>`
 
-                    content += `<div class="reply">
-                                    <input class="reply" id="reply-${comments[i]._id}" type="text" placeholder=" reply..." style="color: black">
-                                    <button onclick="addReply('${comments[i]._id}');">Reply</button>
-                                </div></div></div>`
+    const response = await fetch('/comments/get/' + postID);
+    const comments = await response.json();
 
-                    fetch('/users/' + comments[i].username)
-                        .then(res => res.json())
-                        .then(user => {
-                            document.getElementById(comments[i]._id + "-pfp").src = "../" + user.profilePicture;
-                        });
-                }
-            }
-
-            content += `</div>`;
-            document.getElementById("post-" + postID).innerHTML += content;
+    content += await commentCreator(comments, postID)
+    
+    document.getElementById("post-" + postID).innerHTML += content;
+    for (let i = 0; i < comments.length; i++) {
+        fetch('/users/' + comments[i].username)
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById(comments[i]._id + "-pfp").src = "../" + user.profilePicture;
         });
+    }
 }
 
 function addComment(post_id) {
@@ -153,9 +170,105 @@ function addComment(post_id) {
         .catch((error) => console.log("Error adding comment", error));
 }
 
-function addReply(commendID) {
-    const replyText = document.getElementById("reply-" + commendID).value;
-    console.log(commendID, replyText);
+async function addReply(commentID) {
+    const replyText = document.getElementById("reply-" + commentID).getElementsByTagName('input')[0].value;
+    var url = '/comments/reply/' + commentID;
+    var data = {
+        'parentId': commentID,
+        'content': replyText
+    };
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        redirect: 'follow'
+    })
+        .then(result => {
+            toggleRepliesAfterPost(commentID);
+        })
+        .catch(error => console.log('Error adding reply', error));
+}
+
+async function toggleRepliesAfterPost(commentID) {
+    const replies = await checkReplies(commentID);
+    console.log(replies);
+    globalReplies[commentID] = replies;
+    content = `<p class="viewReplies" onclick="showReplies('${commentID}');">Show Replies</p>`;
+    document.getElementById("reply-" + commentID).parentNode.innerHTML += content;
+    showReplies(commentID);
+}
+
+function checkReplies(commentID) {
+    return fetch('/comments/get/replies/' + commentID)
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+async function commentCreator(comments, postID) {
+    let content = ``
+    if (comments.length == 0) {
+        content += `<div>Be the first to comment!</div>`;
+    } else {
+        content += '<div>';
+        for (let i = 0; i < comments.length; i++) {
+            if (document.getElementById("commentBox-"+comments[i]._id) !== null) {
+                continue;
+            }
+            const replies = await checkReplies(comments[i]._id);
+
+            content += `<div class="commentBox" id="commentBox-${comments[i]._id}">
+                <div class="commentHead">
+                    <img id="${comments[i]._id}-pfp" class="commentUserPic">
+                    <p class="commentUsername">@${comments[i].username}</p>
+                    <p class="commentDate">${getTime(comments[i].createdAt)}
+                </div>
+                <div class="commentContent">
+                    ${comments[i].content}
+                    <div class="actionButtons">
+                        <p id="addReply-${comments[i]._id}" class="replyText" onclick="toggleReplyInput('${comments[i]._id}');">Reply</p>`;
+
+            if (replies.length > 0) {
+                globalReplies[comments[i]._id] = replies;
+                content += `<p class="viewReplies" onclick="showReplies('${comments[i]._id}');">Show Replies</p>`;
+            }
+
+            if (comments[i].username == localStorage.user) {
+                content += `<p class="deleteText" onclick="deleteComment('${comments[i]._id}','${postID}');">Delete</p>`;
+            }
+
+            content += `
+                    </div>
+                    <div class="reply" id="reply-${comments[i]._id}" style="display: none;">
+                        <input class="reply" type="text" placeholder="Reply..." style="color: black">
+                        <button onclick="addReply('${comments[i]._id}');">Post</button>
+                    </div>
+                    </div>
+                    </div>`;
+        }
+        content += '</div>';
+        return content
+    }
+    return content;
+}
+
+async function showReplies(postID) {
+    let comments = globalReplies[postID];
+    let content = await commentCreator(comments, postID)
+    document.getElementById("reply-" + postID).innerHTML += content;
+    for (let i = 0; i < comments.length; i++) {
+        fetch('/users/' + comments[i].username)
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById(comments[i]._id + "-pfp").src = "../" + user.profilePicture;
+        });
+    }
+    toggleReplyInput(postID);
 }
 
 function deleteComment(commentID, postID) {
@@ -196,7 +309,7 @@ function getTime(date) {
 function hideComment(postID) {
     document.getElementById(
         "commentLabel-" + postID
-    ).innerHTML = `<span style="font-size: 1.8vh" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
+    ).innerHTML = `<span class="toggleComments" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
     if (document.getElementById("comments-" + postID) != undefined) {
         document.getElementById("comments-" + postID).remove();
     }
@@ -234,25 +347,27 @@ function showUserSettings() {
                                     gap: 4%;">
                         <img src=${userPic} id="userPicSettings">   
                         <h2>@${userName}</h2>
-                        <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
-                            <input type="file" name="profilePicture" id="uploadFile">
-                            <button type="submit">Upload</button>
-                        </form>
                         </div><br>
                         <div>
                         <label for="fName">First Name</label>
                         <input id="fname" class="userN" type="text" name="fName" value=${getFirstName(
         userName
     )}>
-                        <button onclick="editFName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <button onclick="editFName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
                         <div>
                         <label for="lName">Last Name</label>
                         <input id="lname" class="userN" type="text" name="lName" value=${getLastName(
         userName
     )}>
-                        <button onclick="editLName('${userName}')" class="addBtn"><i class='bx bx-plus' ></i></button>
+                        <button onclick="editLName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
+                        <div>
+                            <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
+                                <input type="file" name="profilePicture" id="uploadFile">
+                                <button id="uploadBtn" type="submit">Upload</button>
+                            </form>
+                        </div>
                     </div>`;
 
     document.body.innerHTML += content;
@@ -320,17 +435,24 @@ function createPosts(posts) {
                         </div>
                         
                         <div class="comments" id="commentLabel-${posts[i]._id}">
-                            <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
+                            <span class="toggleComments" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
                         </div>
                         </div>
                         </div>`;
                 articles += article;
+
                 document.getElementById("post-pannel").innerHTML = articles;
+                document.getElementById("post-pannel").innerHTML += `<button id="loadMore" onclick="loadMoreContent();">Load More</button>`
             })
             .catch((error) => {
                 console.error("Error checking likes:", error);
             });
     }
+}
+
+function loadMoreContent() {
+    console.log("here");
+    fetchPosts();
 }
 
 function getFirstName(user) {
