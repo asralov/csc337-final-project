@@ -9,7 +9,7 @@
  * POST /posts/add - Add a new post with detailed content.
  * POST /posts/edit/:id - Edit the content of an existing post.
  * DELETE /posts/delete/:id - Delete a post by its ID.
- * GET /posts/all - Fetch all posts, sorted by recent interactions and date.
+ * GET /posts/recent - Fetch 50 recent posts, sorted by interactions
  * GET /posts/search/:query - Search for posts based on a query string.
  * GET /posts/topic/:topic - Fetch posts filtered by a specific topic.
  * GET /posts/:id - Fetch a single post by its ID.
@@ -76,81 +76,97 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-router.get('/all', async (req, res) => {
+// Get 50 most recent posts
+router.get('/recent', async (req, res) => {
     try {
-        // Fetch recent posts (last 24 hours)
-        const recentPosts = await Post.find({
-            date: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) }
-        });
+        const posts = await Post.aggregate([
+            { $sort: { date: -1 } }, 
+            { $limit: 50 }, 
+            {
+                $addFields: {
+                    interactionScore: { 
+                        $sum: [{ $size: "$likes" }, { $size: "$dislikes" }, { $size: "$comments" }]
+                    }
+                }
+            },
+            { $sort: { interactionScore: -1 } } 
+        ]);
 
-        // Sort recent posts based on interactions (likes, dislikes, comments)
-        recentPosts.sort((a, b) => {
-            const scoreA = a.likes.length + a.comments.length - a.dislikes.length;
-            const scoreB = b.likes.length + b.comments.length - b.dislikes.length;
-            return scoreB - scoreA; // Sort in descending order of score
-        });
-
-        // Fetch older posts (older than 24 hours), no change in this logic
-        const olderPosts = await Post.find({
-            date: { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
-        }).sort({ date: -1 }); // Sorted by date in descending order
-
-        const sortedPosts = recentPosts.concat(olderPosts);
-
-        res.json(sortedPosts);
+        res.json(posts);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching posts' });
+        res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
 
-router.get("/search/:query", async (req, res) => {
-    try {
-        const regexQuery = { $regex: req.params.query, $options: "i" };
-        const posts = await Post.find({
-            $or: [
-                { title: regexQuery },
-                { 'content.summary': regexQuery }
-            ]
-        });
 
-        // Sort by likes, then comments, then dislikes
-        posts.sort((a, b) => {
-            const aScore = a.likes.length - a.dislikes.length + a.comments.length;
-            const bScore = b.likes.length - b.dislikes.length + b.comments.length;
-            return bScore - aScore;
-        });
+// Get posts based on a search query
+router.get('/search/:query', async (req, res) => {
+    try {
+        const queryRegex = new RegExp(req.params.query, 'i');
+
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { title: { $regex: queryRegex } },
+                        { "content.summary": { $regex: queryRegex } },
+                        { "content.background": { $regex: queryRegex } },
+                        { "content.bias": { $regex: queryRegex } },
+                        { topics: { $regex: queryRegex } }
+                    ]
+                }
+            },
+            { $sort: { date: -1 } }, 
+            { $limit: 50 }, 
+            {
+                $addFields: {
+                    totalInteractions: { 
+                        $sum: [
+                            { $size: "$likes" }, 
+                            { $size: "$dislikes" }, 
+                            { $size: "$comments" }
+                        ] 
+                    }
+                }
+            },
+            { $sort: { totalInteractions: -1 } }
+        ]);
+
         res.json(posts);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching posts' });
+        res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
 
 // Get posts filtered by topic
 router.get('/topic/:topic', async (req, res) => {
     try {
-        // Fetch day old posts 
-        const recentPosts = await Post.find({ 
-            topics: req.params.topic,
-            date: { $gt: new Date(Date.now() - 3*24*60*60*1000) }
-        })
-        // .sort({
-        //     'likes.length': -1, 
-        //     'dislikes.length': -1, 
-        //     'comments.length': -1, 
-        // });
+        const topicRegex = new RegExp(req.params.topic, 'i'); 
 
-        // Fetch older posts
-        const olderPosts = await Post.find({ 
-            topics: req.params.topic,
-            date: { $gt: new Date(Date.now() - 5*24*60*60*1000) } 
-        })
-        //.sort({ date: -1 }); // Sort by date in descending order
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    topics: { $regex: topicRegex }
+                }
+            },
+            { $sort: { date: -1 } }, 
+            { $limit: 50 }, 
+            {
+                $addFields: {
+                    totalInteractions: { 
+                        $sum: [
+                            { $size: "$likes" }, 
+                            { $size: "$dislikes" }, 
+                            { $size: "$comments" }
+                        ] 
+                    }
+                }
+            },
+            { $sort: { totalInteractions: -1 } }
+        ]);
 
-        // Combine the two arrays, prioritizing recent posts
-        const sortedPosts = recentPosts.concat(olderPosts);
-        res.json(sortedPosts);
-    }
-    catch (error) {
+        res.json(posts);
+    } catch (error) {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });

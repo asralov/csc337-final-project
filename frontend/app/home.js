@@ -1,6 +1,6 @@
 let globalReplies = {};
 function fetchPosts() {
-    fetch("/posts/all")
+    fetch("/posts/recent")
         .then((res) => res.json())
         .then((posts) => {
             createPosts(posts);
