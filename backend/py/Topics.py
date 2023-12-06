@@ -152,7 +152,7 @@ class SearchTopic:
             "The categories include: economics, technology, politics, health, business, sports, entertainment, science, world. "
             "The JSON structure should be as follows: {title: String, background: String, summary: String, bias: String, topics: Array}. "
             "Please make sure the topics are only the ones provided and they are in a python list format: ['str2','str1',...] , and you keep the JSON structure the same."
-            "Below are the summaries:\n\n"
+            "Additionally try to avoid referencing the articles directly and if you do refer to them in the plural tense. Below are the summaries:\n\n"
         )
         summaries = self.article_summaries(articles)
         for index, summary in enumerate(summaries):
