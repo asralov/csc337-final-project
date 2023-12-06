@@ -67,7 +67,7 @@ def send_stories_to_db(stories):
             headers = {
                 'Authorization': 'Bearer Python_Script_Secret_Key'
             }
-            response = requests.post("http://localhost:80/posts/add", json=data, headers=headers)  # Add the story to the db
+            response = requests.post("https://losethebias.com/posts/add", json=data, headers=headers)  # Add the story to the db
             print("URL:", response.url)
             print("Status Code:", response.status_code)
             print("Response Text:", response.text)
