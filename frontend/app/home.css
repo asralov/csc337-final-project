@@ -44,6 +44,7 @@ body {
   justify-content: left;
   margin-left: 15px;
   width: 60%;
+  text-decoration: none;
 }
 
 #search-box {
