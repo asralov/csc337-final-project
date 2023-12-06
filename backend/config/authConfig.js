@@ -48,7 +48,7 @@ function removeSessions() {
     let usernames = Object.keys(sessions);
 
     usernames.forEach(username => {
-        if (now - sessions[username].time > 60000 * 10) {
+        if (now - sessions[username].time > 60000 * 60) { // 1 hour cookie timeout
             delete sessions[username];
         }
     });
