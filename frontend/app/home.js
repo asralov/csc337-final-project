@@ -86,10 +86,10 @@ function registerTopicButtonHandlers() {
     for (let i = 0; i < topicButtons.length; i++) {
         topicButtons[i].onclick = function () {
             let topic = topicButtons[i].textContent.trim().toLocaleLowerCase();
-            fetch("/posts/topic/", {
+            fetch("/posts/topic/"+topic, {
                 method:'POST',
                 headers: {'Content-Type' : 'application/json',},
-                body: JSON.stringify({topic}),
+                body: JSON.stringify({postIDs}),
             })
                 .then((response) => {
                     console.log(response);
@@ -98,6 +98,7 @@ function registerTopicButtonHandlers() {
                 .then((posts) => {
                     for (let i = 0; i < posts.length; i++) {
                         console.log(posts[i]);
+                        postIDs.push(posts[i]._id);
                     }
                     createPosts(posts);
                 });

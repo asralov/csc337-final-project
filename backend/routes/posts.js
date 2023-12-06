@@ -17,6 +17,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const mongoose = require('mongoose');
 
 // Add new post 
 router.post('/add', async (req, res) => {
@@ -78,12 +79,11 @@ router.delete('/delete/:id', async (req, res) => {
 
 // Get 50 most recent posts
 router.post('/recent', async (req, res) => {
-    try {
-        const { postIDs } = req.body;
-
+    try {       
+        const postIDs=req.body.postIDs;
         // Modify the query to exclude posts that are already in the postIDs array
         const posts = await Post.aggregate([
-            { $match: { _id: { $nin: postIDs.map(id => mongoose.Types.ObjectId(id)) } } }, // Matches IDs and makes sure they are not in using nin
+            { $match: { _id: { $nin: postIDs.map(id => mongoose.Types.ObjectId(id)) } } }, 
             { $sort: { date: -1 } }, 
             { $limit: 50 },
             {
@@ -98,6 +98,7 @@ router.post('/recent', async (req, res) => {
 
         res.json(posts);
     } catch (error) {
+        console.log("Error fetching posts"+ error);
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
