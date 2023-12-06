@@ -21,6 +21,7 @@ const Post = require('../models/Post');
 // Add new post 
 router.post('/add', async (req, res) => {
     const postData = req.body;
+    console.log(req.body);
     try {
         const post = new Post({
             title: postData.title,

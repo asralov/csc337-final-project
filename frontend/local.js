@@ -26,7 +26,6 @@ function addPost() {
         body: JSON.stringify(data),
         redirect: 'follow'
     })
-        .then(response => response.json())
         .then(result => {
             console.log(result);
             window.location.href = '/posts/' + result._id;

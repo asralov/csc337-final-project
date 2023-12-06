@@ -59,6 +59,7 @@ router.post('/reply/:commentId', async (req, res) => {
     const user = await User.findOne({ username: reply.username });
     user.comments.push(reply._id);
     await user.save();
+    res.end("ADDED");
 });
 
 // Delete a comment
