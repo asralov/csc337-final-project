@@ -186,6 +186,13 @@ body {
   text-shadow: 0 0 1px #111;
   box-sizing: border-box;
   line-height: 2;
+  border-radius: 10px;
+  border: 1px solid #111;
+}
+
+.toggleComments {
+  user-select: none;
+  cursor: pointer;
 }
 
 .likeButton:hover {
@@ -196,6 +203,7 @@ body {
   display: flex;
   gap: 1%;
   transform: translateY(-15px);
+  margin-top: 20px;
 }
 
 .like img {
@@ -206,10 +214,8 @@ body {
 .commentBox {
   border: solid 1px rgb(150, 150, 150);
   border-radius: 5px;
-  width: 100%;
-  margin-top: 1%;
-  margin-bottom: 1%;
-  margin-right: 40px;
+  width: calc(100% - 10px);
+  margin-top: 6px;
   padding: 5px;
   background-color: #444;
 }

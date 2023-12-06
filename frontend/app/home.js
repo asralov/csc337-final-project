@@ -107,7 +107,7 @@ function showComments(postID) {
         document.getElementById('comments-' + postID).remove();
     }
     document.getElementById('commentLabel-' + postID).innerHTML =
-        `<span style="font-size: 1.8vh" onclick="hideComment('${postID}');"><i class='bx bxs-down-arrow' ></i>&nbsp;Hide Comments</span>`;
+        `<span class="toggleComments" onclick="hideComment('${postID}');"><i class='bx bxs-down-arrow' ></i>&nbsp;Hide Comments</span>`;
 
     content = `<div id="comments-${postID}"><input class="inputComment" id="commentBox-${postID}" type="text" placeholder=" Post a comment...">
                     <button class="inputCommentButton" onclick="addComment('${postID}');">Post!</button>`;
@@ -217,7 +217,7 @@ function getTime(date) {
 function hideComment(postID) {
     document.getElementById(
         "commentLabel-" + postID
-    ).innerHTML = `<span style="font-size: 1.8vh" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
+    ).innerHTML = `<span class="toggleComments" onclick="showComments('${postID}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>`;
     if (document.getElementById("comments-" + postID) != undefined) {
         document.getElementById("comments-" + postID).remove();
     }
@@ -341,7 +341,7 @@ function createPosts(posts) {
                         </div>
                         
                         <div class="comments" id="commentLabel-${posts[i]._id}">
-                            <span style="font-size: 1.8vh" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
+                            <span class="toggleComments" onclick="showComments('${posts[i]._id}');"><i class='bx bxs-right-arrow' ></i>&nbsp;Show Comments</span>
                         </div>
                         </div>
                         </div>`;
