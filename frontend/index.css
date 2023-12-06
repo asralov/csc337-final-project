@@ -217,3 +217,15 @@ body{
 }
 
 
+#help a{
+  position: fixed;
+  right: 1%;
+  bottom: 1%;
+  color: #fff;
+  z-index: 999;
+  text-decoration: none;
+}
+
+#help a:hover{
+  text-shadow: 0 0 3px #fff;
+}
