@@ -145,13 +145,13 @@ class SearchTopic:
     def create_prompt(self, articles):
         """Function to create a prompt for GPT-3.5 that includes summaries of provided articles."""
         prompt = (
-            "Another GPT has summarized some articles. Now, create a high-level briefing based on these summaries. "
-            "The briefing should be returned in a JSON structure with the following fields: "
+            "Another GPT has summarized some articles. Now, create a high-level briefing based on these summaries which will be used as a news story. "
+            "You should refer to articles in the plural form and the briefing should be returned in a JSON structure with the following fields: "
             "'title' for a general title, 'background' for an overview of the topic, 'bias' a summary of the bias of the articles, "
             "'summary' for a combined summary of all relevant articles, and 'topics' to list applicable categories. "
             "The categories include: economics, technology, politics, health, business, sports, entertainment, science, world. "
             "The JSON structure should be as follows: {title: String, background: String, summary: String, bias: String, topics: Array}. "
-            "Please make sure the topics are only the ones provided, and you keep the JSON structure the same."
+            "Please make sure the topics are only the ones provided and they are in a python list format: ['str2','str1',...] , and you keep the JSON structure the same."
             "Below are the summaries:\n\n"
         )
         summaries = self.article_summaries(articles)

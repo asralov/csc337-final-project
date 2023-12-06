@@ -11,6 +11,8 @@ import logging
 import requests
 from datetime import datetime
 
+discord_hook = "https://discord.com/api/webhooks/1181768646901641277/WX2r5wjdoz1eSnpRs935GcNUKhdjec1LbYjzxz7_iyw-sBo1ktqRaVACVW_-jho7C1_e"
+
 # Set up logging to track the script's operation and any issues encountered
 logging.basicConfig(
     filename="app.log",
@@ -34,8 +36,17 @@ def get_keywords(file="backend/py/keyword.txt"):
         keywords = f.read().splitlines()
     return keywords
 
+def send_to_discord(log_content,hook_url=discord_hook):
+    data = {
+        'content': f"{log_content}"
+    }
+    requests.post(hook_url, json=data)
+    logging.info(f"Sent to Discord: {log_content}")
+
 # Function to send summarized stories to the database
 def send_stories_to_db(stories):
+    send_to_discord(f"Sending {len(stories)} stories to the database")
+    count = 0
     for story in stories:
         try:
             title = story["GPT_response"]["title"]
@@ -47,9 +58,7 @@ def send_stories_to_db(stories):
             imageURL = story["imageURL"]
             imageSource = story["imageSource"]
 
-            for topic in topics:
-                if topic not in topic_list:
-                    topics.remove(topic)
+            topics = [topic for topic in topics if topic.lower() in topic_list]  # Filter out topics that aren't in the list
 
             data = {
                 "title": title,
@@ -68,23 +77,24 @@ def send_stories_to_db(stories):
                 'Authorization': 'Bearer Python_Script_Secret_Key'
             }
             response = requests.post("https://losethebias.com/posts/add", json=data, headers=headers)  # Add the story to the db
-            print("URL:", response.url)
-            print("Status Code:", response.status_code)
-            print("Response Text:", response.text)
-
+            if response.status_code == 201:
+                count+=1
+                send_to_discord(f"Successfully sent story to the database: {title}")
         except Exception as e:
             print(f"Error sending story to JSON: {e}")
             logging.error(story)
+        send_to_discord(f"Successfully sent {count} stories to the database")
 
 # Main function that orchestrates the reading of keywords, fetching and summarizing articles, and sending them to the database
 def main():
     logging.info("Script started")
     keywords=get_keywords()
-    stories = SearchTopic(topic=keywords,similarity_threshold=0.7)
+    stories = SearchTopic(topics=keywords,similarity_threshold=0.7)
     summarizes=stories.export_GPT_summaries()
     send_stories_to_db(summarizes)
     end_time = datetime.now()
     logging.info("Script finished")
+    send_to_discord(f"Script finished. Total runtime: {end_time - start_time}")
     logging.info(f"Total runtime: {end_time - start_time}")
 
 if __name__ == "__main__":
