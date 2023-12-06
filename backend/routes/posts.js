@@ -77,8 +77,10 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 // Get 50 most recent posts
-router.get('/recent', async (req, res) => {
+router.post('/recent', async (req, res) => {
     try {
+        const { postIDs } = req.body;
+        console.log(postIDs);
         const posts = await Post.aggregate([
             { $sort: { date: -1 } }, 
             { $limit: 50 }, 

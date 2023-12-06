@@ -1,10 +1,31 @@
 let globalReplies = {};
+let postIDs = [];
+// function fetchPosts() {
+//     fetch("/posts/recent")
+//         .then((res) => res.json())
+//         .then((posts) => {
+//             for (let i = 0; i < posts.length; i++) {
+//                 servedPosts.push(posts[i]._id)
+//             }
+//             createPosts(posts);
+//         });
+// }
+
 function fetchPosts() {
-    fetch("/posts/recent")
-        .then((res) => res.json())
-        .then((posts) => {
-            createPosts(posts);
-        });
+    fetch("/posts/recent", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postIDs }),
+    })
+    .then((res) => res.json())
+    .then((posts) => {
+        for (let i = 0; i < posts.length; i++) {
+            postIDs.push(posts[i]._id);
+        }
+        createPosts(posts);
+    });
 }
 
 function fetchUserDetails() {
@@ -419,12 +440,19 @@ function createPosts(posts) {
                         </div>
                         </div>`;
                 articles += article;
+
                 document.getElementById("post-pannel").innerHTML = articles;
+                document.getElementById("post-pannel").innerHTML += `<button id="loadMore" onclick="loadMoreContent();">Load More</button>`
             })
             .catch((error) => {
                 console.error("Error checking likes:", error);
             });
     }
+}
+
+function loadMoreContent() {
+    console.log("here");
+    fetchPosts();
 }
 
 function getFirstName(user) {
