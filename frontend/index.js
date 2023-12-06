@@ -13,6 +13,9 @@ function getCreatePage(){
                     </button>`;
     promt.innerHTML =  `<p>
                             Already got an account? <button onclick="getLoginPage()" id="reg-link">Login</button>
+                            <a href="./help.html">
+                                Need Help?
+                            </a>
                         </p>`;
     document.getElementById("user").value = "";
     document.getElementById("password").value = "";
@@ -25,6 +28,9 @@ function getLoginPage(){
                     </button>`;
     promt.innerHTML =  `<p>
                             Don't have an account? <button onclick="getCreatePage()" id="reg-link">Sign Up</button>
+                            <a href="./help.html">
+                                Need Help?
+                            </a>
                         </p>`;
     document.getElementById("user").value = "";
     document.getElementById("password").value = "";
