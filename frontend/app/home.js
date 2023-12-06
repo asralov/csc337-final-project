@@ -375,7 +375,7 @@ function showUserSettings() {
                                 <button id="uploadBtn" type="submit">Upload</button>
                             </form>
                         </div>
-                        <button onclick="logout();">Logout</button>
+                        <button id="logoutBtn" onclick="logout();">Logout</button>
                     </div>`;
 
     document.body.innerHTML += content;
