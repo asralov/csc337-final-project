@@ -426,3 +426,17 @@ body {
   border:none;
   transform: translateX(10px);
 }
+
+#loadMore{
+  border: none;
+
+  background-color: #222;
+  color: #fff;
+  padding: 10px 30px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#loadMore:hover{
+  background-color: #444;
+}
