@@ -52,7 +52,8 @@ function likeOrDislikePost(contentId, like) {
     })
         .then((res) => res.json())
         .then((post) => {
-            fetchPosts();
+            changeLikeContent(contentId, like);
+            // fetchPosts();
         });
 }
 
@@ -72,6 +73,44 @@ function checkIfLike(postID, username) {
     });
 }
 
+function changeLikeContent(postID, like) {
+    let likeHTML = (document.getElementById('post-'+postID).getElementsByClassName('article')[0].getElementsByClassName('like')[0]);
+    if (like) {
+        console.log('ye');
+        likeIMG = likeHTML.getElementsByClassName("likeButton")[0].src;
+        if (likeIMG == "http://localhost/app/images/like_nofill.png") {
+            likeHTML.getElementsByClassName("likeButton")[0].src = "http://localhost/app/images/like_fill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[0].innerText)+1);
+            likeHTML.getElementsByTagName("div")[0].innerText = newNum;
+        } else {
+            likeHTML.getElementsByClassName("likeButton")[0].src = "http://localhost/app/images/like_nofill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[0].innerText)-1);
+            likeHTML.getElementsByTagName("div")[0].innerText = newNum;
+        }
+        if (likeHTML.getElementsByClassName("likeButton")[1].src == "http://localhost/app/images/dislike_fill.png") {
+            likeHTML.getElementsByClassName("likeButton")[1].src = "http://localhost/app/images/dislike_nofill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[1].innerText)-1);
+            likeHTML.getElementsByTagName("div")[1].innerText = newNum;
+        }
+        
+    } else {
+        dislikeIMG = likeHTML.getElementsByClassName("likeButton")[1].src;
+        if (dislikeIMG == "http://localhost/app/images/dislike_nofill.png") {
+            likeHTML.getElementsByClassName("likeButton")[1].src = "http://localhost/app/images/dislike_fill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[1].innerText)+1);
+            likeHTML.getElementsByTagName("div")[1].innerText = newNum;
+        } else {
+            likeHTML.getElementsByClassName("likeButton")[1].src = "http://localhost/app/images/dislike_nofill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[1].innerText)-1);
+            likeHTML.getElementsByTagName("div")[1].innerText = newNum;
+        }
+        if (likeHTML.getElementsByClassName("likeButton")[0].src == "http://localhost/app/images/like_fill.png") {
+            likeHTML.getElementsByClassName("likeButton")[0].src = "http://localhost/app/images/like_nofill.png"
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[0].innerText)-1);
+            likeHTML.getElementsByTagName("div")[0].innerText = newNum;
+        }
+    }
+}   
 /**
  * Registers event handlers for topic buttons.
  */
@@ -342,6 +381,7 @@ function showUserSettings() {
                                                         </button>`;
     let content = `<div id="userSettingsBox">
                         <div>
+                        <button onclick="logout();" id="logoutBtn"><i class='bx bx-log-out'></i></button>
                         <button id="close" onclick="hideUserSettings();"><i class='bx bx-x'></i></button>
                         </div>
                         <div style="display: flex;
@@ -368,6 +408,7 @@ function showUserSettings() {
                                 <button id="uploadBtn" type="submit">Upload</button>
                             </form>
                         </div>
+
                     </div>`;
 
     document.body.innerHTML += content;
