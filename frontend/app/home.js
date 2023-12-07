@@ -368,7 +368,7 @@ function showUserSettings() {
                                 <button id="uploadBtn" type="submit">Upload</button>
                             </form>
                         </div>
-                        <button id="logoutBtn" onclick="logout();">Logout</button>
+                        <button id="logoutBtn" onclick="logout();"><i class='bx bx-log-out'></i></button>
                     </div>`;
 
     document.body.innerHTML += content;
