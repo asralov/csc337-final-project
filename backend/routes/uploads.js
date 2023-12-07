@@ -25,9 +25,11 @@ const fs = require('fs');
 router.post('/profilePicture', dynamicUpload.single('profilePicture'), async (req, res) => {
     const user = await User.findOne({ username: req.cookies.login.username });
 
-    if (!user) {
+    if (!user)
         return res.status(404).send('User not found');
-    }
+
+    if (!req.file)
+        return res.redirect('/app/home.html');
 
     const newPath = 'uploads/pfps/' + req.file.filename;
 
