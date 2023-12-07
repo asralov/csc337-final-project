@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
 
                 res.cookie("login",
                     { username: user.username, sessionID: sid },
-                    { maxAge: 60000 * 10 });
+                    { maxAge: 60000 * 60 });
                 res.redirect('/app/home.html');
             } else {
                 res.status(401).json({ error: 'Invalid password' });
