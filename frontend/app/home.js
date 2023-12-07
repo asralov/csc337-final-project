@@ -342,6 +342,7 @@ function showUserSettings() {
                                                         </button>`;
     let content = `<div id="userSettingsBox">
                         <div>
+                        <button onclick="logout();" id="logoutBtn"><i class='bx bx-log-out'></i></button>
                         <button id="close" onclick="hideUserSettings();"><i class='bx bx-x'></i></button>
                         </div>
                         <div style="display: flex;
@@ -368,6 +369,7 @@ function showUserSettings() {
                                 <button id="uploadBtn" type="submit">Upload</button>
                             </form>
                         </div>
+
                     </div>`;
 
     document.body.innerHTML += content;
