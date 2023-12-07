@@ -18,6 +18,10 @@ html, body {
     width: 6%;
     border: none;
     border-radius: 100%;
+    
+}
+.logo:hover{
+    cursor: pointer;
 }
 
 .container h1 {
@@ -43,9 +47,9 @@ a {
 a:hover {
     color: #ccc;
 }
-#example3{
+.example {
     border: 1px solid #ccc;
-    width: 50vw;
+    width: 50vw !important;
 }
 #header {
     display: flex;
