@@ -374,6 +374,7 @@ function showUserSettings() {
     document.body.innerHTML += content;
 
     fetchUserDetails();
+    registerHandlers();
 }
 
 function hideUserSettings() {
