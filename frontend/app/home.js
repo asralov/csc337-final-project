@@ -359,14 +359,13 @@ function showUserSettings() {
                         <input id="fname" class="userN" type="text" name="fName" value=${getFirstName(
         userName
     )}>
-                        <button onclick="editFName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
                         <div>
                         <label for="lName">Last Name</label>
                         <input id="lname" class="userN" type="text" name="lName" value=${getLastName(
         userName
     )}>
-                        <button onclick="editLName('${userName}')" class="addBtn"> Save </button>
+                        <button onclick="editName('${userName}')" class="addBtn"> Save </button>
                         </div><br>
                         <div>
                             <form action="/uploads/profilePicture" method="post" enctype="multipart/form-data">
@@ -402,8 +401,6 @@ function createPosts(posts) {
     let articles = "";
     document.getElementById("post-pannel").innerHTML = articles;
     for (let i = 0; i < posts.length; i++) {
-        
-        
         let topicsArr = posts[i].topics[0].split(',');
         topicsArr = topicsArr.map(topic => {
             const words = topic.trim().split(' ');
@@ -463,83 +460,91 @@ function createPosts(posts) {
 }
 
 function loadMoreContent() {
-    console.log(postIDs);
     fetchPosts();
 }
 
-function getFirstName(user) {
-    fetch("/users/fname/" + user)
-        .then((result) => {
-            console.log(result);
-            return result.text();
-        })
-        .then((name) => {
-            document.getElementById("fname").value = name;
-        });
+async function getFirstName(user) {
+    try {
+        const result = await fetch("/users/fname/" + user);
+        const name = await result.text();
+        document.getElementById("fname").value = name;
+        return name;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
 }
 
-function getLastName(user) {
-    fetch("/users/lname/" + user)
-        .then((result) => {
-            console.log(result);
-            return result.text();
-        })
-        .then((name) => {
-            document.getElementById("lname").value = name;
-        });
+async function getLastName(user) {
+    try {
+        const result = await fetch("/users/lname/" + user);
+        const name = await result.text();
+        document.getElementById("lname").value = name;
+        return name; 
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
 }
 
-function editFName(user) {
+async function editFName(user, newFName) {
+    try {
+        const data = { username: user, name: newFName };
+        const response = await fetch("/users/edit/fname", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+            console.log("First name updated successfully");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+
+async function editLName(user, newLName) {
+    try {
+        const data = { username: user, name: newLName };
+        const response = await fetch("/users/edit/lname", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+            console.log("Last name updated successfully");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+async function editName(user) {
+    let newLName = document.getElementById("lname").value;
     let newFName = document.getElementById("fname").value;
-    let data = { username: user, name: newFName };
-    let p = fetch("/users/edit/fname", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-    });
+    try {
+        const [firstNameResult, lastNameResult] = await Promise.all([
+            getFirstName(user),
+            getLastName(user)
+        ]);
 
-    p.then((response) => {
-        if (response.ok) {
-            console.log("user updated successfully");
+        if (newFName === firstNameResult && newLName === lastNameResult) {
+            console.log("No changes made");
+        } else {
+            console.log(newFName, firstNameResult, newLName, lastNameResult);
+            await editFName(user, newFName);
+            await editLName(user, newLName);
+            getFirstName(user),
+            getLastName(user)
         }
-    });
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
-function editLName(user) {
-    let newFName = document.getElementById("lname").value;
-    let data = { username: user, name: newFName };
-    let p = fetch("/users/edit/lname", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-    });
-
-    p.then((response) => {
-        if (response.ok) {
-            console.log("user updated successfully");
-        }
-    });
-}
-
-function uploadProfilePicture() {
-    let file = document.getElementById('uploadFile').files[0];
-    let data = new FormData();
-    data.append('file', file);
-
-    let p = fetch('/uploads/profilePicture', {
-        method: 'POST',
-        body: data
-    });
-
-    // p.then((response) => {
-    //     console.log("here");
-    //     hideUserSettings();
-    //     showUserSettings()
-
-    // }).catch((error) => {
-    //     console.log(error);
-    // });
-}
 
 function logout() {
     let p = fetch('/login/logout', {
