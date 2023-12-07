@@ -106,8 +106,8 @@ function changeLikeContent(postID, like) {
         }
         if (likeHTML.getElementsByClassName("likeButton")[0].src == "http://localhost/app/images/like_fill.png") {
             likeHTML.getElementsByClassName("likeButton")[0].src = "http://localhost/app/images/like_nofill.png"
-            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[1].innerText)+1);
-            likeHTML.getElementsByTagName("div")[1].innerText = newNum;
+            let newNum = (parseInt(likeHTML.getElementsByTagName("div")[0].innerText)-1);
+            likeHTML.getElementsByTagName("div")[0].innerText = newNum;
         }
     }
 }   
