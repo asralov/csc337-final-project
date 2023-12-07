@@ -331,8 +331,9 @@ body {
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 3px #000000;
-  
+  box-shadow: 0 0 100px rgb(0, 0, 0);
+  border: solid 5px #666666;
+  border-radius: 50px;
 }
 /*
 #userSettingsBox div{
@@ -362,6 +363,7 @@ body {
   float: right;
   transition: .2s;
   border:none;
+  transform: translateX(-50px);
 }
 
 #close:hover, #logoutBtn:hover{
@@ -423,4 +425,5 @@ body {
   width: 5%;
   transition: .3s;
   border:none;
+  transform: translateX(50px);
 }
