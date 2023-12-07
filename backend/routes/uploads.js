@@ -29,7 +29,7 @@ router.post('/profilePicture', dynamicUpload.single('profilePicture'), async (re
         return res.status(404).send('User not found');
 
     if (!req.file)
-        return res.redirect('/app/home.html');
+        return res.status(400).send('No file uploaded');
 
     const newPath = 'uploads/pfps/' + req.file.filename;
 
