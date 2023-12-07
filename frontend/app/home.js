@@ -1,15 +1,5 @@
 let globalReplies = {};
 let postIDs = [];
-// function fetchPosts() {
-//     fetch("/posts/recent")
-//         .then((res) => res.json())
-//         .then((posts) => {
-//             for (let i = 0; i < posts.length; i++) {
-//                 servedPosts.push(posts[i]._id)
-//             }
-//             createPosts(posts);
-//         });
-// }
 
 function fetchPosts() {
     fetch("/posts/recent")
@@ -57,6 +47,12 @@ function likeOrDislikePost(contentId, like) {
         });
 }
 
+/**
+ * Checks if a user has liked a post.
+ * @param {string} postID - The ID of the post.
+ * @param {string} username - The username of the user.
+ * @returns {Promise<string>} A promise that resolves with the response indicating if the user has liked the post.
+ */
 function checkIfLike(postID, username) {
     return new Promise((resolve, reject) => {
         fetch("/likes/check/" + postID + "/" + username)
@@ -73,6 +69,11 @@ function checkIfLike(postID, username) {
     });
 }
 
+/**
+ * Changes the like content of a post based on the provided parameters.
+ * @param {string} postID - The ID of the post.
+ * @param {boolean} like - Indicates whether the like button was clicked (true) or the dislike button was clicked (false).
+ */
 function changeLikeContent(postID, like) {
     let likeHTML = (document.getElementById('post-'+postID).getElementsByClassName('article')[0].getElementsByClassName('like')[0]);
     if (like) {
@@ -111,6 +112,7 @@ function changeLikeContent(postID, like) {
         }
     }
 }   
+
 /**
  * Registers event handlers for topic buttons.
  */
@@ -141,6 +143,10 @@ function registerTopicButtonHandlers() {
     }
 }
 
+/**
+ * Registers event handlers for the search box, search button, and user settings button.
+ * Also registers handlers for topic buttons.
+ */
 function registerHandlers() {
     document
         .getElementById("search-box")
@@ -152,6 +158,10 @@ function registerHandlers() {
     registerTopicButtonHandlers();
 }
 
+/**
+ * Toggles the display of the reply input for a comment.
+ * @param {string} commentID - The ID of the comment.
+ */
 function toggleReplyInput(commentID) {
     let reply = document.getElementById("reply-" + commentID);
     let replyButton = document.getElementById("addReply-" + commentID);
@@ -164,6 +174,17 @@ function toggleReplyInput(commentID) {
     }
 }
 
+/**
+ * Displays comments for a given post ID.
+ * If comments are already displayed, removes them before displaying again.
+ * Updates the comment label to show "Hide Comments" option.
+ * Allows users to post new comments.
+ * Retrieves comments from the server and displays them.
+ * Updates the profile picture of each comment's author.
+ * 
+ * @param {string} postID - The ID of the post.
+ * @returns {Promise<void>} - A promise that resolves when the comments are displayed.
+ */
 async function showComments(postID) {
     if (document.getElementById('comments-' + postID) != undefined) {
         document.getElementById('comments-' + postID).remove();
@@ -189,6 +210,12 @@ async function showComments(postID) {
     }
 }
 
+/**
+ * Adds a comment to a post.
+ * 
+ * @param {string} post_id - The ID of the post to add the comment to.
+ * @returns {void}
+ */
 function addComment(post_id) {
     var comment = document.getElementById("commentBox-" + post_id).value;
     var url = "/comments/add/" + post_id;
@@ -210,6 +237,11 @@ function addComment(post_id) {
         .catch((error) => console.log("Error adding comment", error));
 }
 
+/**
+ * Adds a reply to a comment.
+ * @param {string} commentID - The ID of the comment to reply to.
+ * @returns {Promise<void>} - A promise that resolves when the reply is added successfully.
+ */
 async function addReply(commentID) {
     const replyText = document.getElementById("reply-" + commentID).getElementsByTagName('input')[0].value;
     var url = '/comments/reply/' + commentID;
@@ -231,6 +263,12 @@ async function addReply(commentID) {
         .catch(error => console.log('Error adding reply', error));
 }
 
+/**
+ * Toggles the display of replies after a post.
+ * 
+ * @param {string} commentID - The ID of the comment.
+ * @returns {Promise<void>} - A promise that resolves when the replies are checked and displayed.
+ */
 async function toggleRepliesAfterPost(commentID) {
     const replies = await checkReplies(commentID);
     console.log(replies);
@@ -240,6 +278,11 @@ async function toggleRepliesAfterPost(commentID) {
     showReplies(commentID);
 }
 
+/**
+ * Fetches replies for a given comment ID.
+ * @param {string} commentID - The ID of the comment to fetch replies for.
+ * @returns {Promise} - A promise that resolves to the JSON response containing the replies.
+ */
 function checkReplies(commentID) {
     return fetch('/comments/get/replies/' + commentID)
         .then((response) => {
@@ -250,6 +293,12 @@ function checkReplies(commentID) {
         });
 }
 
+/**
+ * Creates the HTML content for displaying comments.
+ * @param {Array} comments - The array of comments.
+ * @param {string} postID - The ID of the post.
+ * @returns {string} - The HTML content for displaying comments.
+ */
 async function commentCreator(comments, postID) {
     let content = ``
     if (comments.length == 0) {
@@ -297,6 +346,11 @@ async function commentCreator(comments, postID) {
     return content;
 }
 
+/**
+ * Displays replies for a given post ID.
+ * @param {string} postID - The ID of the post.
+ * @returns {Promise<void>} - A promise that resolves when the replies are displayed.
+ */
 async function showReplies(postID) {
     let comments = globalReplies[postID];
     let content = await commentCreator(comments, postID)
@@ -311,6 +365,11 @@ async function showReplies(postID) {
     toggleReplyInput(postID);
 }
 
+/**
+ * Deletes a comment with the specified commentID.
+ * @param {string} commentID - The ID of the comment to be deleted.
+ * @param {string} postID - The ID of the post associated with the comment.
+ */
 function deleteComment(commentID, postID) {
     var url = "/comments/delete/" + commentID;
     fetch(url, {
@@ -323,6 +382,11 @@ function deleteComment(commentID, postID) {
         .catch((error) => console.log("Error deleting comment", error));
 }
 
+/**
+ * Calculates the time elapsed between the given date and the current time.
+ * @param {string} date - The date to calculate the time elapsed from.
+ * @returns {string} - The formatted time elapsed string.
+ */
 function getTime(date) {
     let currentTime = Date.now();
     dateObj = new Date(date);
@@ -346,6 +410,11 @@ function getTime(date) {
     }
 }
 
+/**
+ * Hides the comment section for a given post.
+ * 
+ * @param {string} postID - The ID of the post.
+ */
 function hideComment(postID) {
     document.getElementById(
         "commentLabel-" + postID
@@ -355,6 +424,9 @@ function hideComment(postID) {
     }
 }
 
+/**
+ * Performs a search based on the value entered in the search box.
+ */
 function search() {
     const query = document.getElementById("search-box").value;
     fetch("/posts/search/" + query)
@@ -367,6 +439,9 @@ function search() {
         });
 }
 
+/**
+ * Displays the user settings on the page.
+ */
 function showUserSettings() {
     let userPic = document.getElementById("userPic").src;
     let userName = localStorage.getItem("user");
@@ -417,6 +492,10 @@ function showUserSettings() {
     registerHandlers();
 }
 
+/**
+ * Hides the user settings box and updates the search engine UI.
+ * @function hideUserSettings
+ */
 function hideUserSettings() {
     console.log("here");
     document.getElementById("userSettingsBox").remove();
@@ -433,6 +512,11 @@ function hideUserSettings() {
     fetchUserDetails();
 }
 
+/**
+ * Creates and displays posts on the webpage.
+ * 
+ * @param {Array} posts - An array of post objects.
+ */
 function createPosts(posts) {
     let articles = "";
     document.getElementById("post-pannel").innerHTML = articles;
@@ -495,6 +579,9 @@ function createPosts(posts) {
     }
 }
 
+/**
+ * Loads more content by making a POST request to "/posts/loadnew" and appending the received posts to the existing ones.
+ */
 function loadMoreContent() {
     fetch("/posts/loadnew", {
         method: 'POST',
@@ -512,6 +599,12 @@ function loadMoreContent() {
     });
 }
 
+/**
+ * Retrieves the first name of a user from the server and updates the value of an HTML element.
+ * @param {string} user - The username of the user.
+ * @returns {Promise<string>} The first name of the user.
+ * @throws {Error} If there is an error during the fetch request.
+ */
 async function getFirstName(user) {
     try {
         const result = await fetch("/users/fname/" + user);
@@ -524,6 +617,12 @@ async function getFirstName(user) {
     }
 }
 
+/**
+ * Retrieves the last name of a user from the server and updates the "lname" input field with the retrieved value.
+ * @param {string} user - The username of the user.
+ * @returns {Promise<string>} - A promise that resolves with the retrieved last name.
+ * @throws {Error} - If an error occurs during the retrieval process.
+ */
 async function getLastName(user) {
     try {
         const result = await fetch("/users/lname/" + user);
@@ -536,6 +635,12 @@ async function getLastName(user) {
     }
 }
 
+/**
+ * Updates the first name of a user.
+ * @param {string} user - The username of the user.
+ * @param {string} newFName - The new first name to be set.
+ * @throws {Error} If there is an error during the update process.
+ */
 async function editFName(user, newFName) {
     try {
         const data = { username: user, name: newFName };
@@ -553,7 +658,12 @@ async function editFName(user, newFName) {
     }
 }
 
-
+/**
+ * Updates the last name of a user.
+ * @param {string} user - The username of the user.
+ * @param {string} newLName - The new last name to be set.
+ * @throws {Error} If there is an error during the update process.
+ */
 async function editLName(user, newLName) {
     try {
         const data = { username: user, name: newLName };
@@ -571,6 +681,11 @@ async function editLName(user, newLName) {
     }
 }
 
+/**
+ * Edits the name of a user.
+ * @param {string} user - The user's identifier.
+ * @returns {Promise<void>} - A promise that resolves when the name is successfully edited.
+ */
 async function editName(user) {
     let newLName = document.getElementById("lname").value;
     let newFName = document.getElementById("fname").value;
@@ -594,7 +709,10 @@ async function editName(user) {
     }
 }
 
-
+/**
+ * Logs out the user by sending a POST request to the '/login/logout' endpoint
+ * and redirects the user to the response URL.
+ */
 function logout() {
     let p = fetch('/login/logout', {
         method: 'POST'
