@@ -196,7 +196,7 @@ async function toggleRepliesAfterPost(commentID) {
     const replies = await checkReplies(commentID);
     console.log(replies);
     globalReplies[commentID] = replies;
-    content = `<p class="viewReplies" onclick="showReplies('${commentID}');">Show Replies</p>`;
+    content = `<p class="replyText" onclick="showReplies('${commentID}');">Show Replies</p>`;
     document.getElementById("reply-" + commentID).parentNode.innerHTML += content;
     showReplies(commentID);
 }
@@ -236,7 +236,7 @@ async function commentCreator(comments, postID) {
 
             if (replies.length > 0) {
                 globalReplies[comments[i]._id] = replies;
-                content += `<p class="viewReplies" onclick="showReplies('${comments[i]._id}');">Show Replies</p>`;
+                content += `<p class="replyText" onclick="showReplies('${comments[i]._id}');">Show Replies</p>`;
             }
 
             if (comments[i].username == localStorage.user) {
