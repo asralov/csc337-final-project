@@ -1,17 +1,17 @@
 const createAcc = document.getElementById("reg-link");
-let signUp = false;
-// getting main components
 const st = document.getElementById("statusTitle");
-
 const btn = document.getElementById("btnBox");
 const promt = document.getElementById("logreg-link");
 
-function getCreatePage(){
+/**
+ * Sets up the create account page with appropriate content and clears input fields.
+ */
+function getCreatePage() {
     st.textContent = "Create Account";
     btn.innerHTML = `<button onclick="addUser();" type="submit" id="btn">
                         Sign Up
                     </button>`;
-    promt.innerHTML =  `<p>
+    promt.innerHTML = `<p>
                             Already got an account? <button onclick="getLoginPage()" id="reg-link">Login</button>
                             <a href="./help.html">
                                 Need Help?
@@ -21,12 +21,15 @@ function getCreatePage(){
     document.getElementById("password").value = "";
 }
 
-function getLoginPage(){
+/**
+ * Renders the login page with appropriate content and resets the input fields.
+ */
+function getLoginPage() {
     st.textContent = "Login";
     btn.innerHTML = `<button onclick="loginUser();" type="submit" id="btn">
                         Login
                     </button>`;
-    promt.innerHTML =  `<p>
+    promt.innerHTML = `<p>
                             Don't have an account? <button onclick="getCreatePage()" id="reg-link">Sign Up</button>
                             <a href="./help.html">
                                 Need Help?
@@ -36,12 +39,16 @@ function getLoginPage(){
     document.getElementById("password").value = "";
 }
 
+/**
+ * Adds a user by sending a POST request to the server with the provided username and password.
+ * If the user is successfully created, a success message is displayed. Otherwise, an error message is displayed.
+ */
 function addUser() {
     let username = document.getElementById('user').value;
     let password = document.getElementById('password').value;
     let data = { username: username, password: password };
 
-    if (username == "" || password == "") 
+    if (username == "" || password == "")
         return;
 
     let p = fetch('/login/add', {
@@ -61,6 +68,11 @@ function addUser() {
     });
 }
 
+/**
+ * Logs in the user by sending a POST request to the server with the provided username and password.
+ * If the login is successful, the user is redirected to the response URL.
+ * If the login fails, an error message is displayed.
+ */
 function loginUser() {
     let username = document.getElementById('user').value;
     let password = document.getElementById('password').value;
