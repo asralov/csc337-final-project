@@ -78,7 +78,29 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 // Get 50 most recent posts
-router.post('/recent', async (req, res) => {
+router.get('/recent', async (req, res) => {
+    try {
+        const posts = await Post.aggregate([
+            { $sort: { date: -1 } }, 
+            { $limit: 50 }, 
+            {
+                $addFields: {
+                    interactionScore: { 
+                        $sum: [{ $size: "$likes" }, { $size: "$dislikes" }, { $size: "$comments" }]
+                    }
+                }
+            },
+            { $sort: { interactionScore: -1 } } 
+        ]);
+
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching posts', error });
+    }
+});
+
+// Get 50 most recent posts
+router.post('/loadnew', async (req, res) => {
     try {
         const postIDs = req.body.postIDs;
         // Modify the query to exclude posts that are already in the postIDs array
@@ -102,6 +124,7 @@ router.post('/recent', async (req, res) => {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 });
+
 
 
 

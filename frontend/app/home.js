@@ -12,20 +12,14 @@ let postIDs = [];
 // }
 
 function fetchPosts() {
-    fetch("/posts/recent", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ postIDs }),
-    })
-    .then((res) => res.json())
-    .then((posts) => {
-        for (let i = 0; i < posts.length; i++) {
-            postIDs.push(posts[i]._id);
-        }
-        createPosts(posts);
-    });
+    fetch("/posts/recent")
+        .then((res) => res.json())
+        .then((posts) => {
+            createPosts(posts);
+            for (let i = 0; i < posts.length; i++) {
+                postIDs.push(posts[i]._id);
+            }
+        });
 }
 
 function fetchUserDetails() {
@@ -84,6 +78,7 @@ function checkIfLike(postID, username) {
 function registerTopicButtonHandlers() {
     let topicButtons = document.getElementsByClassName("topic-button");
     for (let i = 0; i < topicButtons.length; i++) {
+        console.log(topicButtons[i]);
         topicButtons[i].onclick = function () {
             let topic = topicButtons[i].textContent.trim().toLocaleLowerCase();
             fetch("/posts/topic/"+topic, {
@@ -460,7 +455,20 @@ function createPosts(posts) {
 }
 
 function loadMoreContent() {
-    fetchPosts();
+    fetch("/posts/loadnew", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postIDs }),
+    })
+    .then((res) => res.json())
+    .then((posts) => {
+        for (let i = 0; i < posts.length; i++) {
+            postIDs.push(posts[i]._id);
+        }
+        createPosts(posts);
+    });
 }
 
 async function getFirstName(user) {
