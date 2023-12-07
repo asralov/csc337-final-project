@@ -326,12 +326,12 @@ body {
   position: fixed;
   top: 20%;
   right: 20%;
-  width: 60%;
+  width: 50%;
   height: 60%;
-  z-index: 999;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 3px #a19999;
+  box-shadow: 0 0 3px #000000;
   
 }
 /*
@@ -420,7 +420,7 @@ body {
 
 #logoutBtn{
   position: inherit;
-  width: 8%;
+  width: 5%;
   transition: .3s;
   border:none;
 }
